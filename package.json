@@ -2,7 +2,7 @@
   "name": "my-react-app",
   "private": true,
   "version": "0.0.0",
-  "homepage": ".",
+  "homepage": "https://brownjason.github.io/golf_league_test",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
