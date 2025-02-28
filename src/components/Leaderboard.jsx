@@ -12,7 +12,7 @@ function RenderLeaderboard({ week, index }) {
   return (
     <>
       <div key={index} className={clsx("flex border border-black bg-gray-200 dark:bg-[#3c505c] rounded-t-lg", expanded ? "rounded-t-lg" : "rounded-lg")}>
-        <div className="justify-start w-128 grow indent-4 text-white text-3xl ">Week of {week.week}</div>
+        <div className="justify-start w-full grow indent-4 text-white md:text-3xl ">Week of {week.week}</div>
         <button className={clsx("flex-none border border-black rounded-l-lg bg-[#6c844c] text-[#f9e6bf]  w-32", expanded ? "rounded-t-lg" : "rounded-lg")} onClick={toggaleCollapse}>
           {expanded ? "Collapse" : "Expand"}
         </button>
@@ -47,8 +47,8 @@ function Leaderboard() {
   const data = leaderboardData.weeks.sort((a, b) => new Date(b.week) - new Date(a.week));
 
   return (
-    <div className="grid bg-none m-32mx-auto p-8">
-      <div className={clsx("flex border border-black bg-white text-center dark:bg-[#3c505c] text-white text-3xl table-auto w-full indent-4 rounded-lg", data === undefined ? "hidden" : "")}>Leaderboard</div>
+    <div className="grid bg-none m-32mx-auto p-2 md:p-8">
+      <div className={clsx("flex border border-black bg-white text-center dark:bg-[#3c505c] text-white md:text-3xl table-auto w-full indent-4 rounded-lg", data === undefined ? "hidden" : "")}>Leaderboard</div>
       {data.map((week, i) => (
         <RenderLeaderboard week={week} key={week.week + "_main"} index={i} />
       ))}
