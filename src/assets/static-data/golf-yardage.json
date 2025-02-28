@@ -1,0 +1,348 @@
+{
+  "id": "12",
+  "name": "Green Oaks",
+  "tees": [
+    {
+      "tee_id": "12",
+      "tee": "Blue",
+      "holes": [
+        {
+          "number": "1",
+          "yards": "395",
+          "par": "4",
+          "handicap": "9"
+        },
+        {
+          "number": "2",
+          "yards": "466",
+          "par": "5",
+          "handicap": "3"
+        },
+        {
+          "number": "3",
+          "yards": "188",
+          "par": "3",
+          "handicap": "11"
+        },
+        {
+          "number": "4",
+          "yards": "377",
+          "par": "4",
+          "handicap": "1"
+        },
+        {
+          "number": "5",
+          "yards": "352",
+          "par": "4",
+          "handicap": "7"
+        },
+        {
+          "number": "6",
+          "yards": "159",
+          "par": "3",
+          "handicap": "13"
+        },
+        {
+          "number": "7",
+          "yards": "356",
+          "par": "4",
+          "handicap": "5"
+        },
+        {
+          "number": "8",
+          "yards": "472",
+          "par": "5",
+          "handicap": "17"
+        },
+        {
+          "number": "9",
+          "yards": "339",
+          "par": "4",
+          "handicap": "15"
+        },
+        {
+          "number": "10",
+          "yards": "370",
+          "par": "4",
+          "handicap": "4"
+        },
+        {
+          "number": "11",
+          "yards": "136",
+          "par": "3",
+          "handicap": "18"
+        },
+        {
+          "number": "12",
+          "yards": "350",
+          "par": "4",
+          "handicap": "8"
+        },
+        {
+          "number": "13",
+          "yards": "358",
+          "par": "4",
+          "handicap": "12"
+        },
+        {
+          "number": "14",
+          "yards": "357",
+          "par": "4",
+          "handicap": "6"
+        },
+        {
+          "number": "15",
+          "yards": "165",
+          "par": "3",
+          "handicap": "14"
+        },
+        {
+          "number": "16",
+          "yards": "414",
+          "par": "4",
+          "handicap": "2"
+        },
+        {
+          "number": "17",
+          "yards": "483",
+          "par": "5",
+          "handicap": "16"
+        },
+        {
+          "number": "18",
+          "yards": "368",
+          "par": "4",
+          "handicap": "10"
+        }
+      ]
+    },
+    {
+      "tee_id": "12",
+      "tee": "White",
+      "holes": [
+        {
+          "number": "1",
+          "yards": "395",
+          "par": "4",
+          "handicap": "9"
+        },
+        {
+          "number": "2",
+          "yards": "466",
+          "par": "5",
+          "handicap": "3"
+        },
+        {
+          "number": "3",
+          "yards": "188",
+          "par": "3",
+          "handicap": "11"
+        },
+        {
+          "number": "4",
+          "yards": "377",
+          "par": "4",
+          "handicap": "1"
+        },
+        {
+          "number": "5",
+          "yards": "352",
+          "par": "4",
+          "handicap": "7"
+        },
+        {
+          "number": "6",
+          "yards": "159",
+          "par": "3",
+          "handicap": "13"
+        },
+        {
+          "number": "7",
+          "yards": "356",
+          "par": "4",
+          "handicap": "5"
+        },
+        {
+          "number": "8",
+          "yards": "472",
+          "par": "5",
+          "handicap": "17"
+        },
+        {
+          "number": "9",
+          "yards": "339",
+          "par": "4",
+          "handicap": "15"
+        },
+        {
+          "number": "10",
+          "yards": "370",
+          "par": "4",
+          "handicap": "4"
+        },
+        {
+          "number": "11",
+          "yards": "136",
+          "par": "3",
+          "handicap": "18"
+        },
+        {
+          "number": "12",
+          "yards": "350",
+          "par": "4",
+          "handicap": "8"
+        },
+        {
+          "number": "13",
+          "yards": "358",
+          "par": "4",
+          "handicap": "12"
+        },
+        {
+          "number": "14",
+          "yards": "357",
+          "par": "4",
+          "handicap": "6"
+        },
+        {
+          "number": "15",
+          "yards": "165",
+          "par": "3",
+          "handicap": "14"
+        },
+        {
+          "number": "16",
+          "yards": "414",
+          "par": "4",
+          "handicap": "2"
+        },
+        {
+          "number": "17",
+          "yards": "483",
+          "par": "5",
+          "handicap": "16"
+        },
+        {
+          "number": "18",
+          "yards": "368",
+          "par": "4",
+          "handicap": "10"
+        }
+      ]
+    },
+    {
+      "tee_id": "12",
+      "tee": "Red",
+      "holes": [
+        {
+          "number": "1",
+          "yards": "395",
+          "par": "4",
+          "handicap": "9"
+        },
+        {
+          "number": "2",
+          "yards": "466",
+          "par": "5",
+          "handicap": "3"
+        },
+        {
+          "number": "3",
+          "yards": "188",
+          "par": "3",
+          "handicap": "11"
+        },
+        {
+          "number": "4",
+          "yards": "377",
+          "par": "4",
+          "handicap": "1"
+        },
+        {
+          "number": "5",
+          "yards": "352",
+          "par": "4",
+          "handicap": "7"
+        },
+        {
+          "number": "6",
+          "yards": "159",
+          "par": "3",
+          "handicap": "13"
+        },
+        {
+          "number": "7",
+          "yards": "356",
+          "par": "4",
+          "handicap": "5"
+        },
+        {
+          "number": "8",
+          "yards": "472",
+          "par": "5",
+          "handicap": "17"
+        },
+        {
+          "number": "9",
+          "yards": "339",
+          "par": "4",
+          "handicap": "15"
+        },
+        {
+          "number": "10",
+          "yards": "370",
+          "par": "4",
+          "handicap": "4"
+        },
+        {
+          "number": "11",
+          "yards": "136",
+          "par": "3",
+          "handicap": "18"
+        },
+        {
+          "number": "12",
+          "yards": "350",
+          "par": "4",
+          "handicap": "8"
+        },
+        {
+          "number": "13",
+          "yards": "358",
+          "par": "4",
+          "handicap": "12"
+        },
+        {
+          "number": "14",
+          "yards": "357",
+          "par": "4",
+          "handicap": "6"
+        },
+        {
+          "number": "15",
+          "yards": "165",
+          "par": "3",
+          "handicap": "14"
+        },
+        {
+          "number": "16",
+          "yards": "414",
+          "par": "4",
+          "handicap": "2"
+        },
+        {
+          "number": "17",
+          "yards": "483",
+          "par": "5",
+          "handicap": "16"
+        },
+        {
+          "number": "18",
+          "yards": "368",
+          "par": "4",
+          "handicap": "10"
+        }
+      ]
+    }
+  ]
+}
