@@ -63,7 +63,7 @@ function Leaderboard() {
     <div className="flex flex-col bg-none m-32mx-auto p-2 md:p-8">
       <div className={clsx("flex border border-black bg-gray-200 dark:bg-[#3c505c] rounded-t-lg")}>
         <div className={clsx("justify-start w-full grow indent-4 text-white md:text-3xl ", data === undefined ? "hidden" : "")}>Leaderboard</div>
-        <div className="flex-none text-white pr-2">Week of</div>
+        <div className="flex-none text-white pr-2 text-white md:text-3xl ">Week of</div>
         <select value={selected} onChange={handleChange} className="flex-none border border-black rounded-l-lg bg-[#6c844c] text-[#f9e6bf] rounded-t-lg w-32">
           {weeks.map((week) => {
             return (
