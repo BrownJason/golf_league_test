@@ -46,10 +46,35 @@ function RenderLeaderboard({ week, index }) {
 function Leaderboard() {
   const data = leaderboardData.weeks.sort((a, b) => new Date(b.week) - new Date(a.week));
 
+  let weeks = [];
+
+  data.forEach((res) => {
+    weeks.push(res.week);
+  });
+
+  const [selected, setSelected] = useState(weeks.at(0));
+  const currentWeekData = data.filter((res) => res.week == selected);
+
+  function handleChange(e) {
+    setSelected(e.target.value);
+  }
+
   return (
-    <div className="grid bg-none m-32mx-auto p-2 md:p-8">
-      <div className={clsx("flex border border-black bg-white text-center dark:bg-[#3c505c] text-white md:text-3xl table-auto w-full indent-4 rounded-lg", data === undefined ? "hidden" : "")}>Leaderboard</div>
-      {data.map((week, i) => (
+    <div className="flex flex-col bg-none m-32mx-auto p-2 md:p-8">
+      <div className={clsx("flex border border-black bg-gray-200 dark:bg-[#3c505c] rounded-t-lg")}>
+        <div className={clsx("justify-start w-full grow indent-4 text-white md:text-3xl ", data === undefined ? "hidden" : "")}>Leaderboard</div>
+        <div className="flex-none text-white pr-2">Week of</div>
+        <select value={selected} onChange={handleChange} className="flex-none border border-black rounded-l-lg bg-[#6c844c] text-[#f9e6bf] rounded-t-lg w-32">
+          {weeks.map((week) => {
+            return (
+              <option key={week} value={week}>
+                {week}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      {currentWeekData.map((week, i) => (
         <RenderLeaderboard week={week} key={week.week + "_main"} index={i} />
       ))}
     </div>
