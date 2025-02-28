@@ -5,7 +5,7 @@ import Scorecard from "./components/Scorecard";
 function App() {
   return (
     <div className="relative min-h-screen bg-cover bg-center bg-no-repeat bg-[url(./assets/golf-course-2.jpg)]">
-      <header className="h-32 items-center bg-white rounded-b-lg shadow-sm dark:bg-[#6c844c] fixed inset-x-0 top-0 z-100">
+      <header className="md:h-32 items-center bg-white rounded-b-lg shadow-sm dark:bg-[#6c844c] fixed inset-x-0 top-0 z-100">
         <div className="w-full h-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-[#f9e6bf]">
             © 2023{" "}
