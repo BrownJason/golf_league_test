@@ -32,7 +32,7 @@ function App() {
         <div className="relative z-10 mx-auto pt-32 w-full max-w-screen-lg">
           <Leaderboard />
         </div>
-        <div className="relative z-10 mx-auto pb-16 w-full max-w-screen-lg">
+        <div className="relative z-10 mx-auto pb-32 w-full max-w-screen-lg">
           <Scorecard />
         </div>
       </div>
