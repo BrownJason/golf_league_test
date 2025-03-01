@@ -1,14 +1,27 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import leaderboardData from "../assets/static-data/leaderboard.json";
 
 function RenderLeaderboard({ week, index }) {
   const [expanded, setExpanded] = useState(false);
 
+  useEffect(() => {
+    const expanded = JSON.parse(localStorage.getItem("expanded"));
+
+    if (expanded) {
+      setExpanded(expanded);
+    }
+  }, []);
+
   const toggaleCollapse = () => {
     setExpanded(!expanded);
   };
+
+  useEffect(() => {
+    localStorage.setItem("expanded", JSON.stringify(expanded));
+  }, [expanded]);
+
   return (
     <>
       <div key={index} className={clsx("flex border border-black bg-gray-200 dark:bg-[#3c505c] rounded-t-lg", expanded ? "rounded-t-lg" : "rounded-lg")}>

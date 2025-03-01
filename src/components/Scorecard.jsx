@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import scorecardData from "../assets/static-data/golf-yardage.json";
 
 const renderHoles = (holes, keyName, start, end) => {
@@ -19,9 +19,21 @@ function Scorecard() {
   const data = scorecardData;
   const [expanded, setExpanded] = useState(false);
 
+  useEffect(() => {
+    const expanded = JSON.parse(localStorage.getItem("expanded"));
+
+    if (expanded) {
+      setExpanded(expanded);
+    }
+  }, []);
+
   const toggleCollapse = () => {
     setExpanded(!expanded);
   };
+
+  useEffect(() => {
+    localStorage.setItem("expanded", JSON.stringify(expanded));
+  }, [expanded]);
 
   return (
     <div className="grid bg-none text-white md:m-8 mx-auto md:p-8 p-2 rounded-t-lg sm:mt-0">
