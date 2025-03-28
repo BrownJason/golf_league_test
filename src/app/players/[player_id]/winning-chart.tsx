@@ -16,7 +16,7 @@ const PieChart = ({ values }: { values: any }) => {
       {
         label: "Total Winnings",
         data: [greens, skins, partners],
-        backgroundColor: ["#40459A", "#9A4072", "#9A9540"],
+        backgroundColor: ["#1a1c3e", "#3e1a2e", "#3e3c1a"],
       },
     ],
   };
