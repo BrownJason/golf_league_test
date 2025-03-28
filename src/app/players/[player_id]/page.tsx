@@ -1,15 +1,24 @@
-import { fetchPlayer, fetchPlayerScores } from "@/app/data/data";
-import { columns } from "@/app/weekly_score/columns";
-import { WeeklyScoreDataTable } from "@/app/weekly_score/data-table";
+import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchWeeks } from "@/app/data/data";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { PlayerScoreDataTable } from "./data-table";
+import { columns } from "./columns";
+import HandleFilter from "./handlefilter";
 
-export default async function Page({ params }: { params: Promise<{ player_id: number }> }) {
+export default async function Page({ params, searchParams }: { params: { player_id: number }; searchParams: { week: string } }) {
+  const sp = await searchParams;
+  const selectedWeek = String(sp?.week) || null;
+
+  const distinctWeeks = await fetchWeeks();
+
   const { player_id } = await params;
   const player = await fetchPlayer(player_id);
   const player_scores = await fetchPlayerScores(player_id);
+  let player_scores_by_week = player_scores;
+  if (selectedWeek !== null && selectedWeek !== "undefined" && selectedWeek !== " ") {
+    player_scores_by_week = await fetchPlayerScoresByWeek(player_id, selectedWeek);
+  }
   //const player_winnings = await fetchPlayerWinnings(player_id);
 
-  console.log(player_scores);
   //Change later to use player id to pull from weekly score/weekly winnings rather than
   return (
     <div className="mx-auto py-10 items-center">
@@ -49,7 +58,8 @@ export default async function Page({ params }: { params: Promise<{ player_id: nu
         </div>
       </div>
       <div className="mx-auto items-center">
-        <WeeklyScoreDataTable columns={columns} data={player_scores} />
+        <HandleFilter week={distinctWeeks} />
+        <PlayerScoreDataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} />
       </div>
     </div>
   );

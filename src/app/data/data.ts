@@ -1,5 +1,6 @@
 import postgres from "postgres";
 import { WeeklyScore } from "../weekly_score/columns";
+import { PlayerScore } from "../players/[player_id]/columns";
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
@@ -58,12 +59,31 @@ export async function fetchPlayer(player_id: number) {
 export async function fetchPlayerScores(player_id: number) {
   try {
     console.log("Fetching Players data...");
-    const data = await sql<WeeklyScore[]>`SELECT ws.id, p.player_id, p.player_name, ws.score, 
+    const data = await sql<PlayerScore[]>`SELECT ws.id, p.player_id, p.player_name, ws.score, 
             ws."handicap", ws.adjusted_score, ws.hole_1,
             ws.hole_2, ws.hole_3, ws.hole_4, ws.hole_5, ws.hole_6, ws.hole_7, ws.hole_8,
             ws.hole_9, ws.week_date, ws.side FROM weekly_score ws, players p
                   WHERE p.player_id = ws.player_id
                   AND p.player_id = ${player_id}
+                    ORDER BY ws.week_date asc`;
+    console.log("Data fetch completed after 3 seconds.");
+
+    return data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch Players data.");
+  }
+}
+export async function fetchPlayerScoresByWeek(player_id: number, selectedWeek: string) {
+  try {
+    console.log("Fetching Players data...");
+    const data = await sql<PlayerScore[]>`SELECT ws.id, p.player_id, p.player_name, ws.score, 
+            ws."handicap", ws.adjusted_score, ws.hole_1,
+            ws.hole_2, ws.hole_3, ws.hole_4, ws.hole_5, ws.hole_6, ws.hole_7, ws.hole_8,
+            ws.hole_9, ws.week_date, ws.side FROM weekly_score ws, players p
+                  WHERE p.player_id = ws.player_id
+                  AND p.player_id = ${player_id}
+                  AND ws.week_date = TO_DATE(${selectedWeek}, 'MM/DD/YYYY')
                     ORDER BY ws.week_date asc`;
     console.log("Data fetch completed after 3 seconds.");
 
@@ -86,5 +106,20 @@ export async function fetchPlayerWinnings(player_id: number) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch Players data.");
+  }
+}
+
+export async function fetchWeeks() {
+  try {
+    console.log("Fetching distinct weeks");
+    const data = await sql`SELECT DISTINCT WEEK_DATE FROM weekly_score
+    UNION
+    SELECT null AS WEEK_DATE FROM weekly_score`;
+    console.log("Data fetch completed after 3 seconds");
+
+    return data;
+  } catch (error) {
+    console.log("Database Error: ", error);
+    throw new Error("Failed to fetch distinct weeks");
   }
 }

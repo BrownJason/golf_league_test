@@ -1,3 +1,3 @@
-export default function PlayerLayout({ children }: { children: React.ReactNode }) {
+export default function PlayersLayout({ children }: { children: React.ReactNode }) {
   return <section>{children}</section>;
 }
