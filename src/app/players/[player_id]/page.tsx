@@ -1,4 +1,4 @@
-import { fetchPlayer, fetchPlayerScores, fetchPlayerWinnings } from "@/app/data/data";
+import { fetchPlayer, fetchPlayerScores } from "@/app/data/data";
 import { columns } from "@/app/weekly_score/columns";
 import { WeeklyScoreDataTable } from "@/app/weekly_score/data-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
