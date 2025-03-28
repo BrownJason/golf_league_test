@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { PlayerScoreDataTable } from "./data-table";
 import { columns } from "./columns";
 import HandleFilter from "./handlefilter";
+import { Fragment } from "react";
 
 export default async function Page({ params, searchParams }: { params: Promise<{ player_id: number }>; searchParams: Promise<{ week: string }> }) {
   const sp = await searchParams;
@@ -24,35 +25,37 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     <div className="mx-auto py-10 items-center">
       <div className="mx-auto items-center">
         <div className="flex flex-col m-4 rounded-lg">
-          <div className="mx-auto bg-[#6c844c] border border-[#f9e6bf] shadow-lg shadow-black rounded-xl p-4 text-2xl mb-4">Player Info</div>
-          <div className="rounded-xl border text-[#f9e6bf] bg-[#6c844c] border-[#f9e6bf] shadow-lg shadow-black md:max-h-128 overflow-auto w-48">
-            <Table className="flex flex-row ">
-              <TableHeader>
-                <TableRow className="h-10">
+          <div className="mx-auto bg-[#1A3E2A] border border-[#9A9540] shadow-lg shadow-black rounded-xl p-4 text-2xl mb-4">Player Info</div>
+          <div className="rounded-xl border text-[#9A9540] bg-[#1A3E2A] border-[#9A9540] shadow-lg shadow-black md:max-h-128 overflow-auto md:w-96">
+            <Table className="flex flex-row w-full text-lg text-center items-center justify-center">
+              <TableHeader className="flex flex-col justify-start w-full">
+                <TableRow className="h-12">
                   <TableHead>Player:</TableHead>
                 </TableRow>
-                <TableRow className="h-10">
+                <TableRow className="h-12">
                   <TableHead>Handicap:</TableHead>
                 </TableRow>
-                <TableRow className="h-10">
+                <TableRow className="h-12">
                   <TableHead>Current Winnings:</TableHead>
                 </TableRow>
               </TableHeader>
-              {player.map((res) => {
-                return (
-                  <TableBody key={res.player_id}>
-                    <TableRow className="h-10">
-                      <TableCell>{res.player_name}</TableCell>
-                    </TableRow>
-                    <TableRow className="h-10">
-                      <TableCell>{res.handicap}</TableCell>
-                    </TableRow>
-                    <TableRow className="h-10">
-                      <TableCell>$0</TableCell>
-                    </TableRow>
-                  </TableBody>
-                );
-              })}
+              <TableBody className="flex flex-col justify-start">
+                {player.map((res) => {
+                  return (
+                    <Fragment key={res.player_id}>
+                      <TableRow className="h-12">
+                        <TableCell>{res.player_name}</TableCell>
+                      </TableRow>
+                      <TableRow className="h-12">
+                        <TableCell>{res.handicap}</TableCell>
+                      </TableRow>
+                      <TableRow className="h-12">
+                        <TableCell>$0</TableCell>
+                      </TableRow>
+                    </Fragment>
+                  );
+                })}
+              </TableBody>
             </Table>
           </div>
         </div>

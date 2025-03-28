@@ -4,13 +4,13 @@ import Link from "next/link";
 export default async function Player() {
   const players = await fetchPlayers();
   return (
-    <div className="text-[#f9e6bf]">
+    <div className="text-[#9A9540]">
       <main className="flex flex-col gap-[32px]">
-        <div className="text-xl border border-[#f9e6bf] p-4 rounded-xl shadow-lg shadow-black bg-[#6c844c]">Players List</div>
+        <div className="text-xl border border-[#9A9540] p-4 rounded-xl shadow-lg shadow-black bg-[#1A3E2A]">Players List</div>
         {players.map((player) => {
           return (
             <div key={player.player_id}>
-              <Link href={`/players/${player.player_id}`} className="border border-[#f9e6bf] bg-[#6c844c] p-4 rounded-xl shadow-lg shadow-black w-full hover:text-black">
+              <Link href={`/players/${player.player_id}`} className="border border-[#9A9540] bg-[#1A3E2A] p-4 rounded-xl shadow-lg shadow-black w-full hover:text-black">
                 {player.player_name}
               </Link>
             </div>

@@ -4,8 +4,8 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[5%_1fr_5%] items-center justify-items-center gap-16 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[16px] row-start-2 items-center sm:items-start contianer md:m-0 m-4 ">
-        <h1 className="border border-[#f9e6bf] rounded-xl shadow-xl p-4 text-center w-full text-[#f9e6bf] bg-[#6c844c]">Welcome to Brown Family Golf</h1>
-        <div className="border border-[#f9e6bf] rounded-xl shadow-xl p-4 text-wrap md:w-128 text-[#f9e6bf] bg-[#6c844c]">
+        <h1 className="border border-[#9A9540] rounded-xl shadow-xl p-4 text-center w-full text-[#9A9540] bg-[#1A3E2A]">Welcome to Brown Family Golf</h1>
+        <div className="border border-[#9A9540] rounded-xl shadow-xl p-4 text-wrap md:w-128 text-[#9A9540] bg-[#1A3E2A]">
           To view the weekly winnings, go to the{" "}
           <Link href="/weekly_score" className="text-lg italic">
             Weekly Scores
