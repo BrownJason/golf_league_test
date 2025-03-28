@@ -1,18 +1,14 @@
 import postgres from "postgres";
-import { WeeklyScore } from "../weekly_score/columns";
+import { WeeklyScore } from "../weekly_score/score-columns";
 import { PlayerScore } from "../players/[player_id]/columns";
+import { WeeklyWinnings } from "../weekly_score/winnings-columns";
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
 export async function fetchPlayers() {
   try {
     console.log("Fetching Players data...");
-    const data = await sql`SELECT p.player_id, p.player_name, p.handicap, ws.score, ws.hole_1,
-            ws.hole_2,ws.hole_3,ws.hole_4,ws.hole_5,ws.hole_6,ws.hole_7,ws.hole_8,ws.hole_9,
-            ww.skins,ww.greens,ww.partners, ww.week_date  FROM public.players p, public.weekly_score ws, public.weekly_winnings ww
-             WHERE ws.player_id = p.player_id
-             AND ww.player_id = ws.player_id
-             AND ww.week_date = ws.week_date
+    const data = await sql`SELECT p.player_id, p.player_name FROM public.players p
               ORDER BY p.player_name asc`;
     console.log("Data fetch completed after 3 seconds.");
 
@@ -31,7 +27,23 @@ export async function fetchWeeklyScores() {
             ws.hole_2, ws.hole_3, ws.hole_4, ws.hole_5, ws.hole_6, ws.hole_7, ws.hole_8,
             ws.hole_9, ws.week_date, ws.side FROM weekly_score ws, players p
                   WHERE p.player_id = ws.player_id
-                  ORDER BY player_id asc`;
+                  ORDER BY ws.week_date, p.player_id  asc`;
+    console.log("Data fetch completed after 3 seconds.");
+
+    return data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch weekly score data.");
+  }
+}
+
+export async function fetchWeeklyWinnings() {
+  try {
+    console.log("Fetching weekly score data...");
+    const data = await sql<WeeklyWinnings[]>`SELECT ws.id, p.player_id, p.player_name, ws.skins, 
+            ws.greens, ws.partners, ws.week_date FROM weekly_winnings ws, players p
+                  WHERE p.player_id = ws.player_id
+                  ORDER BY ws.week_date, p.player_id asc`;
     console.log("Data fetch completed after 3 seconds.");
 
     return data;
