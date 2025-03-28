@@ -4,7 +4,7 @@ import { PlayerScoreDataTable } from "./data-table";
 import { columns } from "./columns";
 import HandleFilter from "./handlefilter";
 
-export default async function Page({ params, searchParams }: { params: { player_id: number }; searchParams: { week: string } }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ player_id: number }>; searchParams: Promise<{ week: string }> }) {
   const sp = await searchParams;
   const selectedWeek = String(sp?.week) || null;
 
