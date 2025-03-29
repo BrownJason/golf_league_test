@@ -6,16 +6,16 @@ export default async function Player() {
   return (
     <div className="text-[#9A9540]">
       <main className="flex flex-col gap-[32px]">
-        <div className="text-xl border border-[#9A9540] p-4 rounded-xl shadow-lg shadow-black bg-[#1A3E2A]">Players List</div>
-        {players.map((player) => {
-          return (
-            <div key={player.player_id} className="flex text-center mx-auto w-36 border border-[#9A9540] bg-[#1A3E2A] p-4 rounded-xl shadow-lg shadow-black items-center">
-              <Link href={`/players/${player.player_id}`} className="flex justify-center mx-auto">
-                {player.player_name}
+        <div className="text-xl border border-[#9A9540] p-4 rounded-xl shadow-lg shadow-black bg-[#1A3E2A] mx-auto justify-center">Players List</div>
+        <div className="flex flex-row gap-[32px]">
+          {players.map((player) => {
+            return (
+              <Link key={player.player_id} href={`/players/${player.player_id}`} className="flex-1 text-center mx-auto w-36 border border-[#9A9540] bg-[#1A3E2A] p-4 rounded-xl shadow-lg shadow-black items-center">
+                <div className=" flex justify-center mx-auto">{player.player_name}</div>
               </Link>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </main>
     </div>
   );
