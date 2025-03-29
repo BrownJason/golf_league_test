@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col relative bg-[#1A3E2A]`}>
         <div className="flex flex-col min-h-dvh text-[#9A9540] border-[#9A9540] bg-gray-400 bg-[url(/golf_bg_image.jpg)] bg-cover bg-center bg-blend-multiply bg-fixed">
-          <header className="flex flex-row gap-6 flex-wrap justify-end pt-2 pr-6 fixed sticky top-0 border-b rounded-b-lg pb-2 z-1000 scroll:h-8 text-[#9A9540] bg-[#1A3E2A] border-[#9A9540] md:h-12">
+          <header className="flex flex-row gap-6 flex-wrap justify-end pt-2 pr-6 fixed sticky top-0 border-b rounded-b-lg pb-2 z-1000 scroll:h-8 text-[#9A9540] bg-[#1A3E2A] border-[#9A9540] ">
             <NavBar />
           </header>
           <div className="flex-grow dark my--10  border-[#9A9540]">{children}</div>
