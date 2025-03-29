@@ -27,7 +27,7 @@ export async function fetchWeeklyScores() {
             ws.hole_2, ws.hole_3, ws.hole_4, ws.hole_5, ws.hole_6, ws.hole_7, ws.hole_8,
             ws.hole_9, ws.week_date, ws.side FROM weekly_score ws, players p
                   WHERE p.player_id = ws.player_id
-                  ORDER BY ws.week_date, p.player_id  asc`;
+                  ORDER BY ws.week_date desc , p.player_id  asc`;
     console.log("Data fetch completed after 3 seconds.");
 
     return data;
@@ -43,7 +43,7 @@ export async function fetchWeeklyWinnings() {
     const data = await sql<WeeklyWinnings[]>`SELECT ws.id, p.player_id, p.player_name, ws.skins, 
             ws.greens, ws.partners, ws.best_ball, ws.low_score, ws.week_date FROM weekly_winnings ws, players p
                   WHERE p.player_id = ws.player_id
-                  ORDER BY ws.week_date, p.player_id asc`;
+                  ORDER BY ws.week_date desc, p.player_id asc`;
     console.log("Data fetch completed after 3 seconds.");
 
     return data;

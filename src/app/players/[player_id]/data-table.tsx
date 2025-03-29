@@ -22,7 +22,7 @@ export function PlayerScoreDataTable<TData, TValue>({ columns, data }: PlayerSco
 
   return (
     <div className="flex flex-col m-4 rounded-lg text-[#9A9540]">
-      <div className="rounded-xl border text-[#9A9540] bg-[#1A3E2A] border-[#9A9540] shadow-lg shadow-black md:max-h-128 overflow-auto">
+      <div className="rounded-xl border text-[#9A9540] bg-[#1A3E2A] border-[#9A9540] shadow-lg shadow-black lg:max-h-128 overflow-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

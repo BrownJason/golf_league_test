@@ -3,6 +3,13 @@
 
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
+import { Chart } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+Chart.register(ChartDataLabels);
+Chart.defaults.set("plugins.datalabels", {
+  color: "#000000",
+});
 
 const PieChart = ({ values }: { values: any }) => {
   const greens = values.map((res: { greens: number }) => res.greens);
@@ -19,7 +26,16 @@ const PieChart = ({ values }: { values: any }) => {
       {
         label: "Total Winnings",
         data: [greens, skins, partners, best_ball, low_score],
-        backgroundColor: ["#1a1c3e", "#3e1a2e", "#3e3c1a", "#f3ec99", "#9A9540"],
+        backgroundColor: ["#1a1c3e", "#3e1a2e", "#3e3c1a", "#3d060f", "#645b48"],
+        datalabels: {
+          color: "#9A9540",
+          font: {
+            size: 24,
+          },
+          textStrokeWidth: 0,
+          textShadowBlur: 20,
+          textShadowColor: "#000000",
+        },
       },
     ],
   };
@@ -29,6 +45,9 @@ const PieChart = ({ values }: { values: any }) => {
         labels: {
           color: "#9A9540",
         },
+      },
+      datalabels: {
+        color: "#36A2EB",
       },
     },
   };
