@@ -70,6 +70,11 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
   {
     accessorKey: "score",
     header: "Score",
+    cell: ({ row }) => {
+      const score = parseInt(row.getValue("score"));
+      const par = row.getValue("side") === "front" ? 35 : 46;
+      return <div className={clsx(score < par ? "text-red-500 mx-auto" : score > par ? "text-gray-300 mx-auto" : "text-[#9A9540]")}>{score}</div>;
+    },
   },
   {
     accessorKey: "handicap",
@@ -78,6 +83,11 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
   {
     accessorKey: "adjusted_score",
     header: "Adjusted Score",
+    cell: ({ row }) => {
+      const adjusted_score = parseInt(row.getValue("adjusted_score"));
+      const par = row.getValue("side") === "front" ? 35 : 46;
+      return <div className={clsx(adjusted_score < par ? "text-red-500 mx-auto" : adjusted_score > par ? "text-gray-300 mx-auto" : "text-[#9A9540]")}>{adjusted_score}</div>;
+    },
   },
   {
     accessorKey: "hole_1",

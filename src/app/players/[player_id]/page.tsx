@@ -23,15 +23,24 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   let winnings = 0;
   player_winnings.map((res) => {
-    winnings = winnings + res.skins;
-    winnings = winnings + res.greens;
-    winnings = winnings + res.partners;
+    winnings = winnings + parseInt(res.skins);
+    winnings = winnings + parseInt(res.greens);
+    winnings = winnings + parseInt(res.partners);
+    winnings = winnings + parseInt(res.best_ball);
+    winnings = winnings + parseInt(res.low_score);
   });
 
   const formattedWinnings = winnings.toLocaleString("en-US", { style: "currency", currency: "USD" });
-  console.log(winnings);
 
   const avg_score = player_scores.map((res) => res.score).reduce((acc, val) => acc + val, 0) / player_scores.length;
+
+  let weeks_played = 0;
+  player_scores.forEach((res) => {
+    if (res.week_date) {
+      weeks_played = weeks_played + 1;
+    }
+  });
+  console.log(weeks_played);
 
   //Change later to use player id to pull from weekly score/weekly winnings rather than
   return (
@@ -56,6 +65,9 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 <TableRow className="h-12">
                   <TableHead>Average Score:</TableHead>
                 </TableRow>
+                <TableRow className="h-12">
+                  <TableHead>Weeks Played:</TableHead>
+                </TableRow>
               </TableHeader>
               <TableBody className="flex flex-col justify-start">
                 {player.map((res) => {
@@ -72,6 +84,9 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                       </TableRow>
                       <TableRow className="h-12">
                         <TableCell>{avg_score}</TableCell>
+                      </TableRow>
+                      <TableRow className="h-12">
+                        <TableCell>{weeks_played}</TableCell>
                       </TableRow>
                     </Fragment>
                   );

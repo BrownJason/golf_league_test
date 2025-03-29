@@ -13,6 +13,8 @@ export type WeeklyWinnings = {
   skins: number;
   greens: number;
   partners: number;
+  best_ball: number;
+  low_score: number;
   total: number;
   week_date: Date;
 };
@@ -74,13 +76,31 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     },
   },
   {
+    accessorKey: "best_ball",
+    header: "Best Ball",
+    cell: ({ row }) => {
+      const best_ball: string = parseInt(row.getValue("best_ball")).toLocaleString("en-US", { style: "currency", currency: "USD" });
+      return <div>{best_ball}</div>;
+    },
+  },
+  {
+    accessorKey: "low_score",
+    header: "Low Score",
+    cell: ({ row }) => {
+      const low_score: string = parseInt(row.getValue("low_score")).toLocaleString("en-US", { style: "currency", currency: "USD" });
+      return <div>{low_score}</div>;
+    },
+  },
+  {
     accessorKey: "total",
     header: "Total",
     cell: ({ row }) => {
       const partners: number = parseInt(row.getValue("partners"));
       const greens: number = parseInt(row.getValue("greens"));
       const skins: number = parseInt(row.getValue("skins"));
-      const totals = (partners + greens + skins).toLocaleString("en-US", { style: "currency", currency: "USD" });
+      const low_score: number = parseInt(row.getValue("low_score"));
+      const best_ball: number = parseInt(row.getValue("best_ball"));
+      const totals = (partners + greens + skins + low_score + best_ball).toLocaleString("en-US", { style: "currency", currency: "USD" });
       return <div>{totals}</div>;
     },
   },

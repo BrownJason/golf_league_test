@@ -41,7 +41,7 @@ export async function fetchWeeklyWinnings() {
   try {
     console.log("Fetching weekly score data...");
     const data = await sql<WeeklyWinnings[]>`SELECT ws.id, p.player_id, p.player_name, ws.skins, 
-            ws.greens, ws.partners, ws.week_date FROM weekly_winnings ws, players p
+            ws.greens, ws.partners, ws.best_ball, ws.low_score, ws.week_date FROM weekly_winnings ws, players p
                   WHERE p.player_id = ws.player_id
                   ORDER BY ws.week_date, p.player_id asc`;
     console.log("Data fetch completed after 3 seconds.");
@@ -109,9 +109,10 @@ export async function fetchPlayerScoresByWeek(player_id: number, selectedWeek: s
 export async function fetchPlayerWinnings(player_id: number) {
   try {
     console.log("Fetching Players data...");
-    const data = await sql`SELECT p.*  FROM public.weekly_winnings p
+    const data = await sql`SELECT p.player_id, sum(p.skins) skins, sum(p.greens) greens, sum(p.partners) partners, sum(p.best_ball) best_ball, sum(p.low_score) low_score  FROM public.weekly_winnings p
                    WHERE p.player_id = ${player_id}
-                    ORDER BY p.week_date asc`;
+                   group by p.player_id
+                    ORDER BY p.player_id asc`;
     console.log("Data fetch completed after 3 seconds.");
 
     return data;
