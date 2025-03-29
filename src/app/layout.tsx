@@ -27,11 +27,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col relative bg-[#1A3E2A]`}>
         <div className="flex flex-col min-h-dvh text-[#9A9540] border-[#9A9540] bg-gray-400 bg-[url(/golf_bg_image.jpg)] bg-cover bg-center bg-blend-multiply bg-fixed">
-          <header className="flex flex-row gap-6 flex-wrap justify-end pt-6 pr-6 fixed sticky top-0 border-b rounded-b-lg pb-6 z-1000 scroll:h-8 text-[#9A9540] bg-[#1A3E2A] border-[#9A9540]">
+          <header className="flex flex-row gap-6 flex-wrap justify-end pt-2 pr-6 fixed sticky top-0 border-b rounded-b-lg pb-2 z-1000 scroll:h-8 text-[#9A9540] bg-[#1A3E2A] border-[#9A9540] md:h-12">
             <NavBar />
           </header>
           <div className="flex-grow dark my--10  border-[#9A9540]">{children}</div>
-          <footer className="row-start-3 fixed flex gap-6 md:flex-col items-center justify-center fixed sticky bottom-0 p-8 rounded-t-lg text-[#9A9540] bg-[#1A3E2A] border-t border-[#9A9540]">
+          <footer className="row-start-3 fixed flex gap-6 md:flex-col items-center justify-center fixed sticky bottom-0 p-2 rounded-t-lg text-[#9A9540] bg-[#1A3E2A] border-t border-[#9A9540] md:h-12">
             <ul className="flex md:flex-row flex-col">
               <li className="none md:pr-4 ">&#9400; 2025 Brown Family Golf League</li>
               <li className="none">
