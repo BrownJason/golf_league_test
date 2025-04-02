@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-interface WinningsDataTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  header: string;
+  filterItem: string;
 }
 
-export function WinningsDataTable<TData, TValue>({ columns, data }: WinningsDataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, header, filterItem }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
@@ -33,14 +35,22 @@ export function WinningsDataTable<TData, TValue>({ columns, data }: WinningsData
 
   return (
     <div className="flex flex-col m-4 rounded-lg text-[#9A9540]">
-      <div className="flex items-center w-full justify-center text-[#9A9540] ">
-        <div className="border border-[#9A9540] bg-[#1A3E2A] p-4 rounded-lg shadow-lg shadow-black">Winnings by Week</div>
-      </div>
-      <div className="flex items-center py-4 text-[#9A9540] border-[#9A9540] bg-none">
-        <div className="text-[#9A9540] border-[#9A9540] bg-[#1A3E2A] rounded-lg" title="Filter by player name">
-          <Input placeholder="Filter player name..." value={(table.getColumn("player_name")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("player_name")?.setFilterValue(event.target.value)} className="max-w-sm" />
+      {header !== "" ? (
+        <div className="flex items-center w-full justify-center text-[#9A9540] ">
+          <div className="border border-[#9A9540] bg-[#1A3E2A] p-4 rounded-lg shadow-lg shadow-black">{header}</div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
+      {filterItem !== "" && header !== "" ? (
+        <div className="flex items-center py-4 text-[#9A9540] border-[#9A9540] bg-none">
+          <div className="text-[#9A9540] border-[#9A9540] bg-[#1A3E2A] rounded-lg" title="Filter by player name">
+            <Input placeholder="Filter player name..." value={(table.getColumn(filterItem)?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn(filterItem)?.setFilterValue(event.target.value)} className="max-w-sm" />
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
       <div className="rounded-xl border text-[#9A9540] border-[#9A9540] bg-[#1A3E2A] shadow-lg shadow-black lg:max-h-128 overflow-auto">
         <Table>
           <TableHeader>
@@ -48,7 +58,7 @@ export function WinningsDataTable<TData, TValue>({ columns, data }: WinningsData
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className={clsx(header.id.includes("player_name") ? "sticky left-0 text-left text-[#9A9540] bg-[#1A3E2A] z-1000" : "text-center text-[#9A9540]")}>
+                    <TableHead key={header.id} className={clsx(header.id.includes(filterItem) ? "sticky left-0 text-left text-[#9A9540] bg-[#1A3E2A] z-1000" : "text-center text-[#9A9540]")}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
@@ -61,7 +71,7 @@ export function WinningsDataTable<TData, TValue>({ columns, data }: WinningsData
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className={clsx(cell.id.includes("player_name") ? "sticky left-0 text-left bg-[#1A3E2A]" : "text-center")}>
+                    <TableCell key={cell.id} className={clsx(cell.id.includes(filterItem) ? "sticky left-0 text-left bg-[#1A3E2A]" : "text-center")}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

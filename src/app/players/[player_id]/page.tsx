@@ -1,10 +1,10 @@
 import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeks } from "@/app/data/data";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlayerScoreDataTable } from "./data-table";
 import { columns } from "./columns";
 import HandleFilter from "./handlefilter";
 import { Fragment } from "react";
 import PieChart from "./winning-chart";
+import { DataTable } from "@/components/ui/data-table";
+import PlayerInfo from "@/components/ui/player-info";
 
 export default async function Page({ params, searchParams }: { params: Promise<{ player_id: number }>; searchParams: Promise<{ week: string }> }) {
   const sp = await searchParams;
@@ -19,6 +19,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   if (selectedWeek !== null && selectedWeek !== "undefined" && selectedWeek !== " ") {
     player_scores_by_week = await fetchPlayerScoresByWeek(player_id, selectedWeek);
   }
+
   const player_winnings = await fetchPlayerWinnings(player_id);
 
   let winnings = 0;
@@ -32,7 +33,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const formattedWinnings = winnings.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
-  const avg_score = player_scores.map((res) => res.score).reduce((acc, val) => acc + val, 0) / player_scores.length;
+  const avg_score = player_scores.length === 0 ? 0 : player_scores.map((res) => res.score).reduce((acc, val) => acc + val, 0) / player_scores.length;
 
   let weeks_played = 0;
   player_scores.forEach((res) => {
@@ -40,68 +41,26 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       weeks_played = weeks_played + 1;
     }
   });
-  console.log(weeks_played);
 
-  //Change later to use player id to pull from weekly score/weekly winnings rather than
   return (
-    <div className="mx-auto py-10 items-center">
-      <div className="mx-auto m-4 items-center">
+    <div className="mx-auto items-center">
+      <div className="mx-auto items-center">
         <div className="flex flex-col rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black text-center justify-center items-center text-lg mx-auto w-78"> Player Info</div>
       </div>
-      <div className="flex md:flex-row flex-col mx-auto justify-center items-center">
-        <div className="mx-auto items-center w-78">
-          <div className="flex flex-col justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black ">
-            <Table className="flex flex-row w-full text-lg text-center items-center justify-center">
-              <TableHeader className="flex flex-col justify-start w-full">
-                <TableRow className="h-12">
-                  <TableHead>Player:</TableHead>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableHead>Handicap:</TableHead>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableHead>Current Winnings:</TableHead>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableHead>Average Score:</TableHead>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableHead>Weeks Played:</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="flex flex-col justify-start">
-                {player.map((res) => {
-                  return (
-                    <Fragment key={res.player_id}>
-                      <TableRow className="h-12">
-                        <TableCell>{res.player_name}</TableCell>
-                      </TableRow>
-                      <TableRow className="h-12">
-                        <TableCell>{res.handicap}</TableCell>
-                      </TableRow>
-                      <TableRow className="h-12">
-                        <TableCell>{formattedWinnings}</TableCell>
-                      </TableRow>
-                      <TableRow className="h-12">
-                        <TableCell>{avg_score}</TableCell>
-                      </TableRow>
-                      <TableRow className="h-12">
-                        <TableCell>{weeks_played}</TableCell>
-                      </TableRow>
-                    </Fragment>
-                  );
-                })}
-              </TableBody>
-            </Table>
+      <div className="flex md:flex-row flex-col mx-auto items-center">
+        <PlayerInfo player={player} formattedWinnings={formattedWinnings} avg_score={avg_score} weeks_played={weeks_played} />
+        {winnings > 0 ? (
+          <div className="mx-auto items-center">
+            {" "}
+            <PieChart values={player_winnings} />{" "}
           </div>
-        </div>
-        <div className="mx-auto items-center">
-          <PieChart values={player_winnings} />
-        </div>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="mx-auto items-center">
         <HandleFilter week={distinctWeeks} />
-        <PlayerScoreDataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} />
+        <DataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} header="" filterItem="week_date" />
       </div>
     </div>
   );

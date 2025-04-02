@@ -18,6 +18,9 @@ export default function Home() {
             Players Info
           </Link>{" "}
           page.
+          <br />
+          <br />
+          Weekly jackpots are $5 per person. We play every Friday starting @ 6:00 p.m. through-out the summer at Green Oaks.
         </div>
         <div className="flex gap-4 items-center flex-col sm:flex-row"></div>
       </main>

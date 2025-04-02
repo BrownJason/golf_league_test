@@ -1,8 +1,7 @@
 import { fetchWeeklyWinnings, fetchWeeklyScores } from "../data/data";
+import { DataTable } from "../../components/ui/data-table";
 import { scoreColumns } from "./score-columns";
-import { WeeklyScoreDataTable } from "./weekly-score-data-table";
 import { winningsColumns } from "./winnings-columns";
-import { WinningsDataTable } from "./winnings-data-table";
 
 export default async function Page() {
   const weekly_scores = await fetchWeeklyScores();
@@ -10,8 +9,8 @@ export default async function Page() {
 
   return (
     <div className="mx-auto py-10 items-center">
-      <WeeklyScoreDataTable columns={scoreColumns} data={weekly_scores} />
-      <WinningsDataTable columns={winningsColumns} data={weekly_winnings} />
+      <DataTable columns={scoreColumns} data={weekly_scores} header={"Scores by Week"} filterItem="player_name" />
+      <DataTable columns={winningsColumns} data={weekly_winnings} header={"Winnings by Week"} filterItem="player_name" />
     </div>
   );
 }
