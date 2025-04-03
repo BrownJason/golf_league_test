@@ -109,7 +109,9 @@ export async function fetchPlayerScoresByWeek(player_id: number, selectedWeek: s
 export async function fetchPlayerWinnings(player_id: number) {
   try {
     console.log("Fetching Players data...");
-    const data = await sql`SELECT p.player_id, sum(p.skins) skins, sum(p.greens) greens, sum(p.partners) partners, sum(p.best_ball) best_ball, sum(p.low_score) low_score  FROM public.weekly_winnings p
+    const data = await sql`SELECT p.player_id, sum(p.skins) skins, sum(p.greens) greens, sum(p.partners) partners, sum(p.best_ball) best_ball, sum(p.low_score) low_score, 
+    TO_CHAR((sum(p.skins) + sum(p.greens) + sum(p.partners) + sum(p.best_ball) + sum(p.low_score)), 'FM$999,999,999.00') total
+      FROM public.weekly_winnings p
                    WHERE p.player_id = ${player_id}
                    group by p.player_id
                     ORDER BY p.player_id asc`;

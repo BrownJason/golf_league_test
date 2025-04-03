@@ -1,7 +1,6 @@
 import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeks } from "@/app/data/data";
 import { columns } from "./columns";
 import HandleFilter from "./handlefilter";
-import { Fragment } from "react";
 import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
 import PlayerInfo from "@/components/ui/player-info";
@@ -22,17 +21,11 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const player_winnings = await fetchPlayerWinnings(player_id);
 
-  let winnings = 0;
-  player_winnings.map((res) => {
-    winnings = winnings + parseInt(res.skins);
-    winnings = winnings + parseInt(res.greens);
-    winnings = winnings + parseInt(res.partners);
-    winnings = winnings + parseInt(res.best_ball);
-    winnings = winnings + parseInt(res.low_score);
+  const formattedWinnings = player_winnings.map((res) => {
+    return res.total;
   });
 
-  const formattedWinnings = winnings.toLocaleString("en-US", { style: "currency", currency: "USD" });
-
+  console.log(formattedWinnings);
   const avg_score = player_scores.length === 0 ? 0 : player_scores.map((res) => res.score).reduce((acc, val) => acc + val, 0) / player_scores.length;
 
   let weeks_played = 0;
@@ -47,17 +40,24 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       <div className="mx-auto items-center">
         <div className="flex flex-col rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black text-center justify-center items-center text-lg mx-auto w-78"> Player Info</div>
       </div>
-      <div className="flex md:flex-row flex-col mx-auto items-center">
-        <PlayerInfo player={player} formattedWinnings={formattedWinnings} avg_score={avg_score} weeks_played={weeks_played} />
-        {winnings > 0 ? (
+      {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (
+        <div className="flex md:flex-row flex-col mx-auto items-center">
+          <PlayerInfo player={player} formattedWinnings={formattedWinnings} avg_score={avg_score} weeks_played={weeks_played} />
+
           <div className="mx-auto items-center">
             {" "}
             <PieChart values={player_winnings} />{" "}
           </div>
-        ) : (
-          <></>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="flex md:flex-row flex-col mx-auto items-center w-full">
+          <div className="flex mx-auto m-4 items-center justify-center w-full ">
+            <div className="flex flex-col justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black ">
+              <div className="mx-auto m-4 items-center">No current winnings</div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mx-auto items-center">
         <HandleFilter week={distinctWeeks} />
         <DataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} header="" filterItem="week_date" />
