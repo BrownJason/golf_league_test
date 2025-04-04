@@ -3,7 +3,6 @@ import { columns } from "./columns";
 import HandleFilter from "./handlefilter";
 import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
-import PlayerInfo from "@/components/ui/player-info";
 
 export default async function Page({ params, searchParams }: { params: Promise<{ player_id: number }>; searchParams: Promise<{ week: string }> }) {
   const sp = await searchParams;
@@ -21,7 +20,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const player_winnings = await fetchPlayerWinnings(player_id);
 
-  const formattedWinnings = player_winnings.map((res) => {
+  const formattedWinnings: string[] = player_winnings.map((res) => {
     return res.total;
   });
 
@@ -37,31 +36,25 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   return (
     <div className="mx-auto items-center">
-      <div className="mx-auto items-center">
-        <div className="flex flex-col rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black text-center justify-center items-center text-lg mx-auto w-78"> Player Info</div>
-      </div>
+      <div className="flex flex-col mx-auto items-center rounded-lg text-[#9A9540] text-xl p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black justify-centertext-lg w-78"> Player Statistics</div>
       {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (
         <div className="flex md:flex-row flex-col mx-auto items-center">
-          <PlayerInfo player={player} formattedWinnings={formattedWinnings} avg_score={avg_score} weeks_played={weeks_played} />
-
           <div className="mx-auto items-center">
             {" "}
-            <PieChart values={player_winnings} />{" "}
+            <PieChart values={player_winnings} avg_score={avg_score} player={player} weeks_played={weeks_played} formattedWinnings={formattedWinnings} />{" "}
           </div>
         </div>
       ) : (
-        <div className="flex md:flex-row flex-col mx-auto items-center w-full">
-          <div className="flex mx-auto m-4 items-center justify-center w-full ">
-            <div className="flex flex-col justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black ">
-              <div className="mx-auto m-4 items-center">No current winnings</div>
-            </div>
-          </div>
-        </div>
+        <div className="mx-auto justify-center text-center flex md:flex-row flex-col  rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 w-78 border border-[#9A9540] shadow-lg shadow-black">No current winnings</div>
       )}
-      <div className="mx-auto items-center">
-        <HandleFilter week={distinctWeeks} />
-        <DataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} header="" filterItem="week_date" />
-      </div>
+      {weeks_played > 0 ? (
+        <div className="mx-auto items-center">
+          <HandleFilter week={distinctWeeks} />
+          <DataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} header="" filterItem="week_date" />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

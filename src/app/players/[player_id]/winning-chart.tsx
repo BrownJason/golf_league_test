@@ -5,13 +5,14 @@ import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { Chart } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import PlayerInfo from "@/components/ui/player-info";
 
 Chart.register(ChartDataLabels);
 Chart.defaults.set("plugins.datalabels", {
   color: "#000000",
 });
 
-const PieChart = ({ values }: { values: any }) => {
+const PieChart = ({ values, player, weeks_played, avg_score, formattedWinnings }: { values: any; player: any; weeks_played: any; avg_score: any; formattedWinnings: string[] }) => {
   const greens = values.map((res: { greens: number }) => res.greens);
   const skins = values.map((res: { skins: number }) => res.skins);
   const partners = values.map((res: { partners: number }) => res.partners);
@@ -19,7 +20,6 @@ const PieChart = ({ values }: { values: any }) => {
   const low_score = values.map((res: { low_score: number }) => res.low_score);
   const winnings = parseInt(low_score) + parseInt(best_ball) + parseInt(partners) + parseInt(skins) + parseInt(greens);
   console.log(winnings);
-  const formattedWinnings = winnings.toLocaleString("en-US", { style: "currency", currency: "USD" });
   const data = {
     labels: ["Greens", "Skins", "Partners", "Best Ball", "Low Score"],
     datasets: [
@@ -53,12 +53,15 @@ const PieChart = ({ values }: { values: any }) => {
   };
 
   return (
-    <div className="flex flex-col justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black">
-      <h1 className="flex text-center w-full justify-center text-lg">Total Winnings</h1>
-      <Pie data={data} options={options} />
-      <span className="flex text-center w-full justify-center text-lg">
-        <em>Winnings: {formattedWinnings}</em>
-      </span>
+    <div className="flex lg:flex-row flex-col justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] border border-[#9A9540] shadow-lg shadow-black">
+      <PlayerInfo player={player} formattedWinnings={formattedWinnings} avg_score={avg_score} weeks_played={weeks_played} />
+      <div className="flex-col">
+        <h1 className="flex text-center w-full justify-center text-lg">Total Winnings</h1>
+        <Pie data={data} options={options} />
+        <span className="flex text-center w-full justify-center text-lg">
+          <em>Winnings: {formattedWinnings[0]}</em>
+        </span>
+      </div>
     </div>
   );
 };
