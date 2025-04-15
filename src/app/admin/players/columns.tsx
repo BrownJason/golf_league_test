@@ -60,6 +60,7 @@ export const playerColumns: ColumnDef<Player>[] = [
 
 async function handleEditPlayer(_player: Player) {
   // Implementation will be added
+  console.log(_player);
 }
 
 async function handleDeletePlayer(playerId: number) {

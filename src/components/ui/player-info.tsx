@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment } from "react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "./table";
 
 type Player = {
