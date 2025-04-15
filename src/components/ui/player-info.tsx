@@ -2,7 +2,20 @@
 import { Fragment } from "react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "./table";
 
-export default function PlayerInfo({ player, formattedWinnings, avg_score, weeks_played }: { player: any; formattedWinnings: any; avg_score: any; weeks_played: any }) {
+type Player = {
+  player_id: number;
+  player_name: string;
+  handicap: number;
+};
+
+interface PlayerInfoProps {
+  player: Player;  // Changed from any to Player type and it's a single object, not an array
+  formattedWinnings: string[];
+  avg_score: number;
+  weeks_played: number;
+}
+
+export default function PlayerInfo({ player, formattedWinnings, avg_score, weeks_played }: PlayerInfoProps) {
   return (
     <div className="mx-auto m-4 items-center">
       <Table className="flex flex-row w-full text-lg text-center items-center justify-center">
@@ -24,27 +37,21 @@ export default function PlayerInfo({ player, formattedWinnings, avg_score, weeks
           </TableRow>
         </TableHeader>
         <TableBody className="flex flex-col justify-start">
-          {player.map((res: any) => {
-            return (
-              <Fragment key={res.player_id}>
-                <TableRow className="h-12">
-                  <TableCell>{res.player_name}</TableCell>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableCell>{res.handicap}</TableCell>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableCell>{formattedWinnings}</TableCell>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableCell>{avg_score}</TableCell>
-                </TableRow>
-                <TableRow className="h-12">
-                  <TableCell>{weeks_played}</TableCell>
-                </TableRow>
-              </Fragment>
-            );
-          })}
+          <TableRow className="h-12">
+            <TableCell>{player.player_name}</TableCell>
+          </TableRow>
+          <TableRow className="h-12">
+            <TableCell>{player.handicap}</TableCell>
+          </TableRow>
+          <TableRow className="h-12">
+            <TableCell>{formattedWinnings[0]}</TableCell>
+          </TableRow>
+          <TableRow className="h-12">
+            <TableCell>{avg_score.toFixed(2)}</TableCell>
+          </TableRow>
+          <TableRow className="h-12">
+            <TableCell>{weeks_played}</TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </div>

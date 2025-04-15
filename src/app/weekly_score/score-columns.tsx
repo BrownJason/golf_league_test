@@ -73,7 +73,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     cell: ({ row }) => {
       const score = parseInt(row.getValue("score"));
       const par = row.getValue("side") === "front" ? 35 : 46;
-      return <div className={clsx(score < par ? "text-red-500 mx-auto" : score > par ? "text-gray-300 mx-auto" : "text-[#9A9540]")}>{score}</div>;
+      return <div className={clsx(score < par ? "text-red-500 mx-auto text-center" : score > par ? "text-gray-300 mx-auto text-center" : "text-[#9A9540] text-center")}>{score}</div>;
     },
   },
   {
@@ -86,7 +86,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     cell: ({ row }) => {
       const adjusted_score = parseInt(row.getValue("adjusted_score"));
       const par = row.getValue("side") === "front" ? 35 : 46;
-      return <div className={clsx(adjusted_score < par ? "text-red-500 mx-auto" : adjusted_score > par ? "text-gray-300 mx-auto" : "text-[#9A9540]")}>{adjusted_score}</div>;
+      return <div className={clsx(adjusted_score < par ? "text-red-500 mx-auto text-center" : adjusted_score > par ? "text-gray-300 mx-auto text-center" : "text-[#9A9540] text-center")}>{adjusted_score}</div>;
     },
   },
   {
@@ -94,7 +94,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 1",
     cell: ({ row }) => {
       const hole_1 = parseInt(row.getValue("hole_1"));
-      return <div className={clsx(hole_1 < 4 ? "text-red-500 border rounded-full w-6 border-black mx-auto" : hole_1 > 4 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_1}</div>;
+      return <div className={clsx(hole_1 < 4 ? "text-red-500 border rounded-full w-6 border-black mx-auto text-center" : hole_1 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_1}</div>;
     },
   },
   {
@@ -103,7 +103,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     cell: ({ row }) => {
       const hole_2 = parseInt(row.getValue("hole_2"));
       const par = row.getValue("side") === "front" ? 5 : 3;
-      return <div className={clsx(hole_2 < par ? "text-red-500 border rounded-full w-6 border-black mx-auto" : hole_2 > par ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_2}</div>;
+      return <div className={clsx(hole_2 < par ? "text-red-500 border rounded-full w-6 border-black mx-auto text-center" : hole_2 > par ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_2}</div>;
     },
   },
   {
@@ -112,7 +112,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     cell: ({ row }) => {
       const hole_3 = parseInt(row.getValue("hole_3"));
       const par = row.getValue("side") === "front" ? 3 : 4;
-      return <div className={clsx(hole_3 < par ? "text-red-500 border rounded-full w-6 border-black mx-auto" : hole_3 > par ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_3}</div>;
+      return <div className={clsx(hole_3 < par ? "text-red-500 border rounded-full w-6 border-black mx-auto text-center" : hole_3 > par ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_3}</div>;
     },
   },
   {
@@ -120,7 +120,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 4",
     cell: ({ row }) => {
       const hole_4 = parseInt(row.getValue("hole_4"));
-      return <div className={clsx(hole_4 < 4 ? "text-red-500 border rounded-full w-6 border-black mx-auto" : hole_4 > 4 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_4}</div>;
+      return <div className={clsx(hole_4 < 4 ? "text-red-500 border rounded-full w-6 border-black mx-auto text-center" : hole_4 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_4}</div>;
     },
   },
   {
@@ -128,7 +128,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 5",
     cell: ({ row }) => {
       const hole_5 = parseInt(row.getValue("hole_5"));
-      return <div className={clsx(hole_5 < 4 ? "text-red-500 border rounded-full w-6 border-black mx-auto" : hole_5 > 4 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_5}</div>;
+      return <div className={clsx(hole_5 < 4 ? "text-red-500 border rounded-full w-6 border-black mx-auto text-center" : hole_5 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_5}</div>;
     },
   },
   {
@@ -136,7 +136,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 6",
     cell: ({ row }) => {
       const hole_6 = parseInt(row.getValue("hole_6"));
-      return <div className={clsx(hole_6 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto" : hole_6 > 4 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_6}</div>;
+      return <div className={clsx(hole_6 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto text-center" : hole_6 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_6}</div>;
     },
   },
   {
@@ -144,7 +144,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 7",
     cell: ({ row }) => {
       const hole_7 = parseInt(row.getValue("hole_7"));
-      return <div className={clsx(hole_7 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto" : hole_7 > 4 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_7}</div>;
+      return <div className={clsx(hole_7 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto text-center" : hole_7 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_7}</div>;
     },
   },
   {
@@ -152,7 +152,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 8",
     cell: ({ row }) => {
       const hole_8 = parseInt(row.getValue("hole_8"));
-      return <div className={clsx(hole_8 < 5 ? "text-red-500  border rounded-full w-6 border-black mx-auto" : hole_8 > 5 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_8}</div>;
+      return <div className={clsx(hole_8 < 5 ? "text-red-500  border rounded-full w-6 border-black mx-auto text-center" : hole_8 > 5 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#9A9540] text-center")}>{hole_8}</div>;
     },
   },
   {
@@ -160,7 +160,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 9",
     cell: ({ row }) => {
       const hole_9 = parseInt(row.getValue("hole_9"));
-      return <div className={clsx(hole_9 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto" : hole_9 > 4 ? "text-gray-300 border w-6 border-black mx-auto" : "text-[#9A9540]")}>{hole_9}</div>;
+      return <div className={clsx(hole_9 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto text-center" : hole_9 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center " : "text-[#9A9540] text-center")}>{hole_9}</div>;
     },
   },
 ];

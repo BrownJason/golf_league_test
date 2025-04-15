@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table";
@@ -18,15 +19,16 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({ columns, data, header, filterItem }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
@@ -34,32 +36,34 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
   });
 
   return (
-    <div className="flex flex-col m-4 rounded-lg text-[#9A9540]">
-      {header !== "" ? (
-        <div className="flex items-center w-full justify-center text-[#9A9540] ">
-          <div className="border border-[#9A9540] bg-[#1A3E2A] p-4 rounded-lg shadow-lg shadow-black">{header}</div>
+    <div>
+      {filterItem && (
+        <div className="flex items-center mb-4">
+          <Input
+            placeholder="Filter by name..."
+            value={(table.getColumn(filterItem)?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn(filterItem)?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm bg-[#1A3E2A] border-[#9A9540] text-[#9A9540] placeholder:text-[#9A9540]/50"
+          />
         </div>
-      ) : (
-        <></>
       )}
-      {filterItem !== "" && header !== "" ? (
-        <div className="flex items-center py-4 text-[#9A9540] border-[#9A9540] bg-none">
-          <div className="text-[#9A9540] border-[#9A9540] bg-[#1A3E2A] rounded-lg" title="Filter by player name">
-            <Input placeholder="Filter player name..." value={(table.getColumn(filterItem)?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn(filterItem)?.setFilterValue(event.target.value)} className="max-w-sm" />
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-      <div className="rounded-xl border text-[#9A9540] border-[#9A9540] bg-[#1A3E2A] shadow-lg shadow-black lg:max-h-128 overflow-auto">
+      
+      <div className="rounded-md border border-[#9A9540] overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-[#1A3E2A]">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="border-b border-[#9A9540] hover:bg-[#243E2A]">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className={clsx(header.id.includes(filterItem) ? "sticky left-0 text-left text-[#9A9540] bg-[#1A3E2A] z-1000" : "text-center text-[#9A9540]")}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    <TableHead key={header.id} className="text-[#9A9540]">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -69,17 +73,27 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="border-b border-[#9A9540] hover:bg-[#243E2A]"
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className={clsx(cell.id.includes(filterItem) ? "sticky left-0 text-left bg-[#1A3E2A]" : "text-center")}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <TableCell key={cell.id} className="text-[#9A9540]">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-[#9A9540]"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -87,13 +101,28 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-center text-[#9A9540] space-x-2 py-4">
-        <Button variant="default" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()} className="text-[#9A9540] bg-[#1A3E2A]">
-          Previous
-        </Button>
-        <Button variant="default" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} className="text-[#9A9540] bg-[#1A3E2A]">
-          Next
-        </Button>
+
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="border-[#9A9540] text-[#9A9540] hover:bg-[#243E2A]"
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="border-[#9A9540] text-[#9A9540] hover:bg-[#243E2A]"
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );

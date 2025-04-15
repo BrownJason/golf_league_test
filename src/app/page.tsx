@@ -2,28 +2,83 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[5%_1fr_5%] items-center justify-items-center gap-16 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[16px] row-start-2 items-center sm:items-start contianer md:m-0 m-4 ">
-        <h1 className="border border-[#9A9540] rounded-xl shadow-xl p-4 text-center w-full text-[#9A9540] bg-[#1A3E2A]">Welcome to Brown Family Golf</h1>
-        <div className="border border-[#9A9540] rounded-xl shadow-xl p-4 text-wrap md:w-128 text-[#9A9540] bg-[#1A3E2A]">
-          To view the weekly winnings, go to the{" "}
-          <Link href="/weekly_score" className="text-lg italic underline hover:text-black">
-            Weekly Scores
-          </Link>{" "}
-          page.
-          <br />
-          <br />
-          For a list of Players and to also view your weekly scores / winnings, click the Players link in the Navigation bar or{" "}
-          <Link href="/players" className="text-lg italic underline hover:text-black">
-            Players Info
-          </Link>{" "}
-          page.
-          <br />
-          <br />
-          Weekly jackpots are $5 per person. <br />
-          We play every Friday starting @ 6:00 p.m. through-out the summer at Green Oaks.
+    <div className="p-4 md:p-6">
+      <main className="max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-12 md:mb-16">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#9A9540] mb-4">
+            Brown Family Golf
+          </h1>
+          <div className="h-1 w-32 md:w-40 bg-[#9A9540] mx-auto rounded-full mb-6"></div>
+          <p className="text-[#9A9540] text-sm md:text-base max-w-2xl mx-auto">
+            Track scores, monitor progress, and compete with family members
+          </p>
         </div>
-        <div className="flex gap-4 items-center flex-col sm:flex-row"></div>
+
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {/* Players Card */}
+          <Link href="/players" className="group">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:scale-105">
+              <div className="w-12 h-12 rounded-full bg-[#1A3E2A] border-2 border-[#9A9540] flex items-center justify-center mb-4 group-hover:border-white">
+                <svg className="w-6 h-6 text-[#9A9540] group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-[#9A9540] mb-2">Players</h2>
+              <p className="text-sm text-[#9A9540]/80">View player profiles and statistics</p>
+            </div>
+          </Link>
+
+          {/* Weekly Scores Card */}
+          <Link href="/weekly_score" className="group">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:scale-105">
+              <div className="w-12 h-12 rounded-full bg-[#1A3E2A] border-2 border-[#9A9540] flex items-center justify-center mb-4 group-hover:border-white">
+                <svg className="w-6 h-6 text-[#9A9540] group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-[#9A9540] mb-2">Weekly Scores</h2>
+              <p className="text-sm text-[#9A9540]/80">Track weekly performance and scores</p>
+            </div>
+          </Link>
+
+          {/* Winnings Card */}
+          <Link href="/weekly_score" className="group">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:scale-105">
+              <div className="w-12 h-12 rounded-full bg-[#1A3E2A] border-2 border-[#9A9540] flex items-center justify-center mb-4 group-hover:border-white">
+                <svg className="w-6 h-6 text-[#9A9540] group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-[#9A9540] mb-2">Winnings</h2>
+              <p className="text-sm text-[#9A9540]/80">View earnings and prize distributions</p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Quick Stats Section */}
+        {/* <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-6 md:p-8">
+          <h2 className="text-xl md:text-2xl font-semibold text-[#9A9540] mb-6 text-center">Season Overview</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="text-center">
+              <p className="text-sm text-[#9A9540]/80 mb-1">Total Players</p>
+              <p className="text-2xl md:text-3xl font-bold text-[#9A9540]">12</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-[#9A9540]/80 mb-1">Weeks Played</p>
+              <p className="text-2xl md:text-3xl font-bold text-[#9A9540]">24</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-[#9A9540]/80 mb-1">Total Rounds</p>
+              <p className="text-2xl md:text-3xl font-bold text-[#9A9540]">288</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-[#9A9540]/80 mb-1">Season Pot</p>
+              <p className="text-2xl md:text-3xl font-bold text-[#9A9540]">$2,880</p>
+            </div>
+          </div>
+        </div> */}
       </main>
     </div>
   );

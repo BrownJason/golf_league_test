@@ -18,8 +18,6 @@ const PieChart = ({ values, player, weeks_played, avg_score, formattedWinnings }
   const partners = values.map((res: { partners: number }) => res.partners);
   const best_ball = values.map((res: { best_ball: number }) => res.best_ball);
   const low_score = values.map((res: { low_score: number }) => res.low_score);
-  const winnings = parseInt(low_score) + parseInt(best_ball) + parseInt(partners) + parseInt(skins) + parseInt(greens);
-  console.log(winnings);
   const data = {
     labels: ["Greens", "Skins", "Partners", "Best Ball", "Low Score"],
     datasets: [

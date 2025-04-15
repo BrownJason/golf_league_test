@@ -2,47 +2,58 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import moment from "moment";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-export default function HandleFilter(props: { week: any[] }) {
-  const searchParams = useSearchParams();
+interface Week {
+  formatted_date: string;
+  week_date: string;
+}
+
+interface WeekFilterProps {
+  weeks: Week[];
+  selectedWeek: string | null;
+}
+
+export default function WeekFilter({ weeks, selectedWeek }: WeekFilterProps) {
+  const router = useRouter();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const searchParams = useSearchParams();
 
-  const data = props.week.map((val) => {
-    if (val.week_date == null) {
-      return " ";
+  const handleWeekChange = (value: string) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    
+    if (value === "all") {
+      current.delete("week");
     } else {
-      return moment(val.week_date).add(1, "days").format("MM-DD-YYYY");
+      current.set("week", value);
     }
-  });
 
-  function handleOnChange(term: string) {
-    const params = new URLSearchParams(searchParams);
-    params.set("week", term);
-    replace(`${pathname}?${params.toString()}`);
-  }
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+    
+    router.push(`${pathname}${query}`);
+  };
 
   return (
-    <div className="flex justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black">
-      <div className="flex text-center items-center w-36">Filter by week of: </div>
-      <Select onValueChange={(e) => handleOnChange(e)}>
-        <SelectTrigger className="w-[180px] border-[#9A9540] bg-[#1A3E2A] ">
-          <SelectValue placeholder={searchParams.get("week")?.toString()} defaultValue={""} className="border-[#9A9540 bg-[#5f5933]" />
+    <div className="flex items-center justify-center p-2 md:p-4">
+      <Select
+        value={selectedWeek || "all"}
+        onValueChange={handleWeekChange}
+      >
+        <SelectTrigger className="w-full md:w-[180px] bg-[#1A3E2A] text-[#9A9540] border-[#9A9540] text-sm md:text-base">
+          <SelectValue placeholder="Select Week" />
         </SelectTrigger>
-        <SelectContent className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]">
-          {data.map((weeks) => {
-            return weeks === " " ? (
-              <SelectItem value={weeks} key={weeks} className="h-8">
-                {" "}
-              </SelectItem>
-            ) : (
-              <SelectItem value={weeks} key={weeks}>
-                {weeks}
-              </SelectItem>
-            );
-          })}
+        <SelectContent className="bg-[#1A3E2A] text-[#9A9540] border-[#9A9540] text-sm md:text-base">
+          <SelectItem value="all">All Weeks</SelectItem>
+          {weeks.map((week) => (
+            <SelectItem 
+              key={week.week_date} 
+              value={week.formatted_date}
+              className="text-sm md:text-base"
+            >
+              {week.formatted_date}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

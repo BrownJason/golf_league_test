@@ -1,60 +1,209 @@
-import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeks } from "@/app/data/data";
+import { getBaseUrl } from "@/lib/utils";
 import { columns } from "./columns";
-import HandleFilter from "./handlefilter";
+import WeekFilter from "./handlefilter";
 import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
+import { fetchPlayer, fetchPlayerScores } from "@/lib/api";
+import { WeeklyScore } from "@/app/weekly_score/score-columns";
 
-export default async function Page({ params, searchParams }: { params: Promise<{ player_id: number }>; searchParams: Promise<{ week: string }> }) {
-  const sp = await searchParams;
-  const selectedWeek = String(sp?.week) || null;
+export default async function Page({
+  params,
+  searchParams
+}: { 
+  params: { player_id: string };
+  searchParams: { week?: string }
+}) {
+  // Await both params and searchParams
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams
+  ]);
 
-  const distinctWeeks = await fetchWeeks();
+  const baseUrl = getBaseUrl();
+  const selectedWeek = resolvedSearchParams?.week || null;
+  const player_id = resolvedParams.player_id;
 
-  const { player_id } = await params;
-  const player = await fetchPlayer(player_id);
-  const player_scores = await fetchPlayerScores(player_id);
-  let player_scores_by_week = player_scores;
-  if (selectedWeek !== null && selectedWeek !== "undefined" && selectedWeek !== " ") {
-    player_scores_by_week = await fetchPlayerScoresByWeek(player_id, selectedWeek);
-  }
+  try {
+    // Fetch all data in parallel
+    const [player, playerScores, playerWinnings, distinctWeeks] = await Promise.all([
+      fetchPlayer(parseInt(player_id)),
+      fetchPlayerScores(parseInt(player_id)),
+      fetch(`${baseUrl}/api/players/${player_id}/winnings`).then(res => res.json()),
+      fetch(`${baseUrl}/api/weeks`).then(res => res.json())
+    ]);
 
-  const player_winnings = await fetchPlayerWinnings(player_id);
-
-  const formattedWinnings: string[] = player_winnings.map((res) => {
-    return res.total;
-  });
-
-  console.log(formattedWinnings);
-  const avg_score = player_scores.length === 0 ? 0 : player_scores.map((res) => res.score).reduce((acc, val) => acc + val, 0) / player_scores.length;
-
-  let weeks_played = 0;
-  player_scores.forEach((res) => {
-    if (res.week_date) {
-      weeks_played = weeks_played + 1;
+    let playerScoresByWeek = playerScores;
+    if (selectedWeek) {
+      playerScoresByWeek = await fetch(
+        `/api/players/${player_id}/scores?week=${selectedWeek}`
+      ).then(res => {
+        if (!res.ok) throw new Error('Failed to fetch player scores by week');
+        return res.json();
+      });
     }
-  });
 
-  return (
-    <div className="mx-auto items-center">
-      <div className="flex flex-col mx-auto items-center rounded-lg text-[#9A9540] text-xl p-4 m-4 bg-[#1A3E2A] md:w-96 border border-[#9A9540] shadow-lg shadow-black justify-centertext-lg w-78"> Player Statistics</div>
-      {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (
-        <div className="flex md:flex-row flex-col mx-auto items-center">
-          <div className="mx-auto items-center">
-            {" "}
-            <PieChart values={player_winnings} avg_score={avg_score} player={player} weeks_played={weeks_played} formattedWinnings={formattedWinnings} />{" "}
+    const formattedWinnings = playerWinnings.map((res: { total: string }) => res.total);
+    const avgScore = playerScores.length === 0 
+      ? 0 
+      : playerScores.reduce((acc: number, val: WeeklyScore) => acc + val.score, 0) / playerScores.length;
+
+    const weeksPlayed = playerScores.reduce((acc: number, val: WeeklyScore) => 
+      val.week_date ? acc + 1 : acc, 0);
+
+    return (
+      <div className="p-4 md:p-6">
+        {/* Player Header Section - Made more compact on mobile */}
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#9A9540] text-center mb-2 px-2">
+            {player.player_name}
+          </h1>
+          <div className="h-1 w-24 md:w-32 bg-[#9A9540] mx-auto rounded-full"></div>
+        </div>
+
+        {/* Stats Grid - Single column on mobile, three columns on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+          {/* Handicap Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Handicap</h3>
+            <p className="text-2xl md:text-3xl text-white">{player.handicap}</p>
+          </div>
+
+          {/* Average Score Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Average Score</h3>
+            <p className="text-2xl md:text-3xl text-white">{avgScore.toFixed(1)}</p>
+          </div>
+
+          {/* Weeks Played Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Weeks Played</h3>
+            <p className="text-2xl md:text-3xl text-white">{weeksPlayed}</p>
           </div>
         </div>
-      ) : (
-        <div className="mx-auto justify-center text-center flex md:flex-row flex-col  rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] md:w-96 w-78 border border-[#9A9540] shadow-lg shadow-black">No current winnings</div>
-      )}
-      {weeks_played > 0 ? (
-        <div className="mx-auto items-center">
-          <HandleFilter week={distinctWeeks} />
-          <DataTable columns={columns} data={selectedWeek === null ? player_scores : player_scores_by_week} header="" filterItem="week_date" />
-        </div>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
+
+        {/* Winnings Section */}
+        {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (
+          <div className="mb-6 md:mb-8">
+            <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+              <h2 className="text-xl md:text-2xl font-bold text-[#9A9540] mb-4 md:mb-6">Season Winnings</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                {/* Pie Chart - Full width on mobile */}
+                <div className="p-3 md:p-4 rounded-lg order-2 md:order-1">
+                  <PieChart 
+                    values={playerWinnings} 
+                    avg_score={avgScore} 
+                    player={player} 
+                    weeks_played={weeksPlayed} 
+                    formattedWinnings={formattedWinnings} 
+                  />
+                </div>
+                {/* Winnings Breakdown - Above chart on mobile */}
+                <div className="space-y-3 order-1 md:order-2">
+                  {Object.entries(playerWinnings[0]).map(([category, amount]) => {
+                    if (category !== 'player_id' && category !== 'total') {
+                      return (
+                        <div key={category} className="flex justify-between items-center border-b border-[#9A9540] pb-2">
+                          <span className="text-[#9A9540] capitalize text-sm md:text-base">
+                            {category.replace('_', ' ')}
+                          </span>
+                          <span className="text-white text-sm md:text-base">
+                            ${Number(amount).toFixed(2)}
+                          </span>
+                        </div>
+                      );
+                    }
+                  })}
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-[#9A9540] font-bold text-sm md:text-base">Total</span>
+                    <span className="text-white font-bold text-sm md:text-base">{formattedWinnings[0]}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg mb-6 md:mb-8 text-center">
+            <p className="text-[#9A9540]">No winnings recorded yet</p>
+          </div>
+        )}
+
+        {/* Scores Section */}
+        {weeksPlayed > 0 && (
+          <div className="bg-[#243E2A] rounded-xl border border-[#9A9540] shadow-lg overflow-hidden">
+            <div className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-[#9A9540] mb-4">Score History</h2>
+              <div className="mb-4">
+                <WeekFilter weeks={distinctWeeks} selectedWeek={selectedWeek} />
+              </div>
+            </div>
+            {/* Table with horizontal scroll on mobile */}
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-[#9A9540] scrollbar-track-[#1A3E2A] m-4">
+              <div className="min-w-[640px]"> {/* Minimum width to prevent squishing */}
+                <DataTable 
+                  columns={columns} 
+                  data={selectedWeek ? playerScoresByWeek : playerScores} 
+                  header="" 
+                  filterItem="week_date" 
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Performance Trends Section */}
+        {weeksPlayed > 0 && (
+          <div className="mt-6 md:mt-8 bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h2 className="text-xl md:text-2xl font-bold text-[#9A9540] mb-4 md:mb-6">Performance Highlights</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              <div className="text-center bg-[#1A3E2A] p-3 rounded-lg">
+                <h3 className="text-[#9A9540] text-sm md:text-base mb-2">Best Score</h3>
+                <p className="text-xl md:text-2xl text-white">
+                  {Math.min(...playerScores.map(score => score.score))}
+                </p>
+              </div>
+              <div className="text-center bg-[#1A3E2A] p-3 rounded-lg">
+                <h3 className="text-[#9A9540] text-sm md:text-base mb-2">Recent Trend</h3>
+                <p className="text-xl md:text-2xl text-white">
+                  {calculateTrend(playerScores)}
+                </p>
+              </div>
+              {/* <div className="text-center bg-[#1A3E2A] p-3 rounded-lg">
+                <h3 className="text-[#9A9540] text-sm md:text-base mb-2">Consistency</h3>
+                <p className="text-xl md:text-2xl text-white">
+                  {calculateConsistency(playerScores)}%
+                </p>
+              </div> */}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  } catch (error) {
+    console.error('Error:', error);
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#1A3E2A]">
+        <div className="text-[#9A9540]">Error loading player data</div>
+      </div>
+    );
+  }
 }
+
+// Helper functions for performance calculations
+function calculateTrend(scores: { score: number }[]) {
+  if (scores.length < 2) return 'N/A';
+  const recent = scores.slice(0, 3).map(s => s.score);
+  const avg = recent.reduce((a: number, b: number) => a + b, 0) / recent.length;
+  const overall = scores.map(s => s.score).reduce((a: number, b: number) => a + b, 0) / scores.length;
+  return avg < overall ? '↑ Improving' : avg > overall ? '↓ Declining' : '→ Steady';
+}
+
+// function calculateConsistency(scores: { score: number }[]) {
+//   if (scores.length < 2) return 'N/A';
+//   const scoreValues = scores.map(s => s.score);
+//   const mean = scoreValues.reduce((a: number, b: number ) => a + b, 0) / scoreValues.length;
+//   const variance = scoreValues.reduce((a: number, b: number ) => a + Math.pow(b - mean, 2), 0) / scoreValues.length;
+//   const stdDev = Math.sqrt(variance);
+//   // Convert to a percentage where lower variation = higher consistency
+//   const consistency = Math.max(0, 100 - (stdDev * 10));
+//   return Math.round(consistency);
+// } 
