@@ -20,10 +20,12 @@ export default function AdminDashboard() {
           <p className="text-sm text-[#9A9540]">Manage weekly scores</p>
         </div>
         </Link>
+        <Link href="/admin/winnings">
         <div className="p-4 border border-[#9A9540] rounded-lg">
           <h3 className="font-semibold text-[#9A9540]">Weekly Winnings</h3>
           <p className="text-sm text-[#9A9540]">Manage weekly winnings</p>
         </div>
+        </Link>
       </div>
     </div>
   );

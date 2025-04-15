@@ -11,13 +11,15 @@ const publicRoutes = [
   '/api/weekly-winnings',
   '/api/weeks',
   '/login',
-  '/'
+  '/',
+  '/players',
+  '/weekly_score',
 ];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   
-  // Check if the path is public
+  // Check if the path is public or starts with a public route
   if (publicRoutes.some(route => path.startsWith(route))) {
     const response = NextResponse.next();
     
@@ -46,10 +48,12 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Configure which routes to protect
+// Update the matcher configuration to include all routes we want to check
 export const config = {
   matcher: [
     '/admin/:path*',
     '/api/:path*',
+    '/players/:path*',
+    '/weekly_score/:path*'
   ]
 }

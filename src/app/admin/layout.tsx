@@ -13,7 +13,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#1A3E2A]">
+    <div>
       {children}
     </div>
   );
