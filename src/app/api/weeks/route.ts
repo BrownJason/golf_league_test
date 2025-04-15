@@ -3,6 +3,9 @@ import postgres from 'postgres';
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const weeks = await sql`
