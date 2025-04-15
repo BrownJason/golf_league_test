@@ -21,19 +21,20 @@ export async function GET() {
 
     console.log(`Successfully fetched ${players.length} players`);
     
-    return NextResponse.json(players, {
+    return new NextResponse(JSON.stringify(players), {
+      status: 200,
       headers: {
+        'Content-Type': 'application/json',
         'Cache-Control': 'no-store, must-revalidate',
-        'Pragma': 'no-cache',
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type'
       }
     });
   } catch (error) {
     console.error('Database Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch players' },
+    return new NextResponse(
+      JSON.stringify({ error: 'Failed to fetch players' }), 
       { status: 500 }
     );
   }
@@ -41,6 +42,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const sql = getDatabase();
     const { player_name, handicap } = await request.json();
     
     const result = await sql`
