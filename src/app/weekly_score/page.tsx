@@ -5,9 +5,9 @@ import { scoreColumns } from "./score-columns";
 import { winningsColumns } from "./winnings-columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// Add this export to make the page dynamic
+// This is fine for server components
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: 'Weekly Performance | Brown Family Golf',
