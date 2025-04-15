@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Brown Family Golf League 🏌️‍♂️
 
-## Getting Started
+![Brown Family Golf Banner](public/golf_bg_image.jpg)
 
-First, run the development server:
+A modern web application built for managing golf scores, statistics, and winnings for the Brown Family Golf League. Built with Next.js 14, TypeScript, and PostgreSQL.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 📊 Score Tracking
+![Score Tracking](public/screenshots/weekly_scores.png)
+- Weekly score entry and tracking
+- Front/back nine scoring
+- Automatic handicap calculations
+- Historical score viewing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 👥 Player Management
+![Player Management](public/screenshots/players.png)
+- Individual player profiles
+- Performance statistics
+- Handicap tracking
+- Historical performance data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 💰 Winnings Tracker
+![Winnings](public/screenshots/winnings.png)
+- Track weekly winnings
+- Multiple winning categories:
+  - Skins
+  - Greens
+  - Partners
+  - Best Ball
+  - Low Score
 
-## Learn More
+### 🔐 Admin Dashboard
+![Admin Dashboard](public/screenshots/admin.png)
+- Secure admin access
+- Player management
+- Score entry
+- Winnings management
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Technology Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend:**
+  - Next.js 14
+  - TypeScript
+  - Tailwind CSS
+  - Shadcn/ui Components
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Backend:**
+  - Next.js API Routes
+  - PostgreSQL
+  - NextAuth.js
 
-## Deploy on Vercel
+- **Deployment:**
+  - Vercel
+  - Neon PostgreSQL
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📱 Responsive Design
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application is fully responsive and works seamlessly across devices:
+
+| Desktop | Tablet | Mobile |
+|---------|---------|---------|
+| ![Desktop](public/screenshots/desktop.png) | ![Tablet](public/screenshots/tablet.png) | ![Mobile](public/screenshots/mobile.png) |
+
+## 🎨 Color Scheme
+
+| Color | Hex Code | Usage |
+|-------|----------|--------|
+| Dark Green | `#1A3E2A` | Primary Background |
+| Gold | `#9A9540` | Accents & Text |
+| Light Green | `#243E2A` | Secondary Background |
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🙏 Acknowledgments
+
+- Icons by [Icons8](https://icons8.com)
+- UI Components by [Shadcn/ui](https://ui.shadcn.com)
