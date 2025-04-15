@@ -2,9 +2,24 @@ import { Player } from '@/app/admin/players/columns';
 import { WeeklyScore } from '@/app/weekly_score/score-columns';
 import { WeeklyWinnings } from '@/app/weekly_score/winnings-columns';
 
+function getApiUrl(path: string): string {
+  // For client-side requests
+  if (typeof window !== 'undefined') {
+    return path;
+  }
+
+  // For server-side requests
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
+  return `${baseUrl}${path}`;
+}
+
 export async function fetchPlayers(): Promise<Player[]> {
   try {
-    const response = await fetch('/api/players', {
+    const url = getApiUrl('/api/players');
+    const response = await fetch(url, {
       method: 'GET',
       next: { revalidate: 0 },
       cache: 'no-store'
@@ -24,7 +39,8 @@ export async function fetchPlayers(): Promise<Player[]> {
 
 export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
   try {
-    const response = await fetch('/api/weekly-scores', {
+    const url = getApiUrl('/api/weekly-scores');
+    const response = await fetch(url, {
       method: 'GET',
       next: { revalidate: 0 },
       cache: 'no-store'
@@ -54,7 +70,8 @@ export async function fetchWeeklyWinnings(): Promise<WeeklyWinnings[]> {
 }
 
 export async function fetchPlayer(playerId: number): Promise<Player> {
-  const response = await fetch(`/api/players/${playerId}`, {
+  const url = getApiUrl(`/api/players/${playerId}`);
+  const response = await fetch(url, {
     next: { revalidate: 0 },
     cache: 'no-store'
   });
@@ -65,7 +82,8 @@ export async function fetchPlayer(playerId: number): Promise<Player> {
 }
 
 export async function fetchPlayerScores(playerId: number): Promise<WeeklyScore[]> {
-  const response = await fetch(`/api/players/${playerId}/scores`, {
+  const url = getApiUrl(`/api/players/${playerId}/scores`);
+  const response = await fetch(url, {
     next: { revalidate: 0 },
     cache: 'no-store'
   });
@@ -76,7 +94,8 @@ export async function fetchPlayerScores(playerId: number): Promise<WeeklyScore[]
 }
 
 export async function fetchPlayerScoresByWeek(playerId: number, weekDate: string): Promise<WeeklyScore[]> {
-  const response = await fetch(`/api/players/${playerId}/scores?week=${weekDate}`, {
+  const url = getApiUrl(`/api/players/${playerId}/scores?week=${weekDate}`);
+  const response = await fetch(url, {
     next: { revalidate: 0 },
     cache: 'no-store'
   });
