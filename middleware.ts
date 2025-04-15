@@ -3,18 +3,9 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-// Only admin routes need protection
+// Only protect admin routes
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-
-  // Add CORS headers for all API routes
-  const response = NextResponse.next();
-  if (path.startsWith('/api')) {
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    response.headers.set('Cache-Control', 'no-store, must-revalidate');
-  }
 
   // Only check auth for admin routes
   if (path.startsWith('/admin')) {
@@ -24,13 +15,12 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 // Only apply middleware to admin routes
 export const config = {
   matcher: [
-    '/admin/:path*',
-    '/api/:path*'  // Include API routes just for CORS headers
+    '/admin/:path*'  // Only match admin routes
   ]
 }
