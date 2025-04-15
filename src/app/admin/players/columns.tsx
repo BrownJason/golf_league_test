@@ -41,7 +41,7 @@ export const playerColumns: ColumnDef<Player>[] = [
           <DropdownMenuContent align="end" className="bg-[#1A3E2A] border-[#9A9540]">
             <DropdownMenuItem
               className="text-[#9A9540] hover:bg-[#2A4E3A] cursor-pointer"
-              onClick={() => handleEditPlayer(player)}
+              onClick={() => handleEditPlayer(player.id)}
             >
               Edit
             </DropdownMenuItem>
@@ -58,9 +58,24 @@ export const playerColumns: ColumnDef<Player>[] = [
   },
 ];
 
-async function handleEditPlayer(_player: Player) {
-  // Implementation will be added
-  console.log(_player);
+async function handleEditPlayer(playerId: number) {
+  if (confirm('Are you sure you want to update the players handicap?')) {
+    try {
+      const response = await fetch(`/api/players/${playerId}`, {
+        method: 'PUT',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update player');
+      }
+      
+      // Refresh the page or update the table
+      window.location.reload();
+    } catch (error) {
+      console.error('Error update player:', error);
+      alert('Failed to update player. Please try again.');
+    }
+  }
 }
 
 async function handleDeletePlayer(playerId: number) {

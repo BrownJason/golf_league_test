@@ -15,10 +15,6 @@ export function getDatabase() {
       idle_timeout: 20,
       max: 40,
       connect_timeout: 10,
-      onnotice: () => {}, // Ignore notice messages
-      debug: (connection, query, params) => {
-        console.log('DB Query:', query, params);
-      },
     });
   }
   return sql;
