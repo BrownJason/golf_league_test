@@ -1,8 +1,18 @@
+import { Metadata } from 'next';
 import { fetchWeeklyScores, fetchWeeklyWinnings } from "@/lib/api";
 import { DataTable } from "@/components/ui/data-table";
 import { scoreColumns } from "./score-columns";
 import { winningsColumns } from "./winnings-columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+// Add this export to make the page dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: 'Weekly Performance | Brown Family Golf',
+  description: 'Track scores and winnings week by week',
+};
 
 export default async function Page() {
   const weekly_scores = await fetchWeeklyScores();

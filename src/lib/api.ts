@@ -14,7 +14,10 @@ export async function fetchPlayers(): Promise<Player[]> {
 
 export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
   const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/weekly-scores`);
+  const response = await fetch(`${baseUrl}/api/weekly-scores`, {
+    cache: 'no-store',
+    next: { revalidate: 0 }
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch weekly scores');
   }
@@ -23,7 +26,10 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
 
 export async function fetchWeeklyWinnings(): Promise<WeeklyWinnings[]> {
   const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/weekly-winnings`);
+  const response = await fetch(`${baseUrl}/api/weekly-winnings`, {
+    cache: 'no-store',
+    next: { revalidate: 0 }
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch weekly winnings');
   }
