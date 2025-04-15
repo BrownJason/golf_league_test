@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getDatabase, closeDatabase } from '@/lib/db';
+import { getDatabase } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
-export const revalidate = false;
+export const revalidate = 0;
 
 export async function GET() {
   const sql = getDatabase();
@@ -26,6 +25,9 @@ export async function GET() {
       headers: {
         'Cache-Control': 'no-store, must-revalidate',
         'Pragma': 'no-cache',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
       }
     });
   } catch (error) {

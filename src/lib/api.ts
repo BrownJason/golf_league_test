@@ -16,7 +16,11 @@ export async function fetchPlayers(): Promise<Player[]> {
         'Pragma': 'no-cache',
       },
       cache: 'no-store',
-      next: { revalidate: 0 }
+      credentials: 'same-origin',
+      next: { 
+        revalidate: 0,
+        tags: ['players']
+      }
     });
 
     if (!response.ok) {
@@ -38,11 +42,7 @@ export async function fetchPlayers(): Promise<Player[]> {
 }
 
 export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-
-  console.log('Fetching weekly scores from:', `${baseUrl}/api/weekly-scores`);
+  const baseUrl = getBaseUrl();
   
   try {
     const response = await fetch(`${baseUrl}/api/weekly-scores`, {
@@ -52,16 +52,14 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
         'Pragma': 'no-cache',
       },
       cache: 'no-store',
-      next: { revalidate: 0 }
+      credentials: 'same-origin',
+      next: { 
+        revalidate: 0,
+        tags: ['scores']
+      }
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error('API Error Response:', {
-        status: response.status,
-        statusText: response.statusText,
-        errorData
-      });
       throw new Error(`Failed to fetch weekly scores: ${response.statusText}`);
     }
 
