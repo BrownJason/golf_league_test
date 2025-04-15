@@ -10,8 +10,8 @@ export default async function Page({
   params,
   searchParams
 }: { 
-  params: { player_id: string };
-  searchParams: { week?: string }
+  params: Promise<{ player_id: string }>;
+  searchParams: Promise<{ week?: string }>;
 }) {
   // Await both params and searchParams
   const [resolvedParams, resolvedSearchParams] = await Promise.all([
