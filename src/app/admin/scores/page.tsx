@@ -11,9 +11,6 @@ interface Player {
   player_name: string;
 }
 
-export const dynamic = 'force-dynamic';
-export const revalidate = false;
-
 export default function AdminScores() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [isLoading, setIsLoading] = useState(true);
