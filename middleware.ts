@@ -6,21 +6,45 @@ import { getToken } from 'next-auth/jwt';
 
 // Define public routes that don't need authentication
 const publicRoutes = [
+  // API Routes
   '/api/players',
+  '/api/players/', // For nested player routes
   '/api/weekly-scores',
+  '/api/weekly-scores/', // For nested weekly score routes
   '/api/weekly-winnings',
+  '/api/weekly-winnings/', // For nested winnings routes
   '/api/weeks',
+  
+  // Page Routes
   '/login',
   '/',
   '/players',
-  '/weekly_score',
+  '/weekly_score'
 ];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   
-  // Check if the path is public or starts with a public route
-  if (publicRoutes.some(route => path.startsWith(route))) {
+  // Check if the path is public or matches a public route pattern
+  const isPublicPath = publicRoutes.some(route => {
+    // Exact match
+    if (path === route) return true;
+    
+    // Handle nested API routes
+    if (route.startsWith('/api/') && route.endsWith('/')) {
+      const baseRoute = route.slice(0, -1); // Remove trailing slash
+      return path.startsWith(baseRoute);
+    }
+    
+    // Handle page routes with dynamic segments
+    if (route === '/players' && path.startsWith('/players/')) return true;
+    if (route === '/weekly_score' && path.startsWith('/weekly_score/')) return true;
+    
+    // Match other route starts
+    return path.startsWith(route);
+  });
+
+  if (isPublicPath) {
     const response = NextResponse.next();
     
     // Add CORS headers for API routes
@@ -48,11 +72,19 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Update the matcher configuration to include all routes we want to check
+// Update the matcher configuration to be more specific
 export const config = {
   matcher: [
+    // Protected routes
     '/admin/:path*',
-    '/api/:path*',
+    
+    // API routes
+    '/api/players/:path*',
+    '/api/weekly-scores/:path*',
+    '/api/weekly-winnings/:path*',
+    '/api/weeks/:path*',
+    
+    // Public pages with dynamic routes
     '/players/:path*',
     '/weekly_score/:path*'
   ]
