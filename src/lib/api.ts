@@ -59,7 +59,8 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
 }
 
 export async function fetchWeeklyWinnings(): Promise<WeeklyWinnings[]> {
-  const response = await fetch('/api/weekly-winnings', {
+  const url = getApiUrl('/api/weekly-winnings');
+  const response = await fetch(url, {
     cache: 'no-store',
     next: { revalidate: 0 }
   });
