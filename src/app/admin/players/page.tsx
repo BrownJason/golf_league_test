@@ -12,11 +12,13 @@ export default function ManagePlayers() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  
   useEffect(() => {
     const fetchPlayersData = async () => {
       try {
-        const response = await fetch('/api/players');
+        const response = await fetch('/api/players', {
+          cache: 'no-store',
+          next: { revalidate: 0 }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch players');
         }

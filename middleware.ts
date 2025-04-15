@@ -17,14 +17,17 @@ export default withAuth(
 );
 
 export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  
-  // Add cache control headers
-  response.headers.set('Cache-Control', 'no-store, must-revalidate');
-  response.headers.set('Pragma', 'no-cache');
-  response.headers.set('Expires', '0');
-  
-  return response;
+  // Only apply to API routes and admin pages
+  if (request.nextUrl.pathname.startsWith('/api/') || 
+      request.nextUrl.pathname.startsWith('/admin/')) {
+    const response = NextResponse.next();
+    response.headers.set('Cache-Control', 'no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+    return response;
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

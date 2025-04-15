@@ -8,22 +8,22 @@ export const fetchCache = 'force-no-store';
 export const revalidate = false;
 
 export async function GET() {
+  const headers = {
+    'Cache-Control': 'no-store, must-revalidate',
+    'Pragma': 'no-cache',
+  };
+
   try {
     const players = await sql`
-      SELECT 
-        id,
-        player_id,
-        player_name,
-        handicap 
-      FROM players 
+      SELECT * FROM players 
       ORDER BY player_name ASC
     `;
-    return NextResponse.json(players);
+    return NextResponse.json(players, { headers });
   } catch (error) {
     console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch players' },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }
