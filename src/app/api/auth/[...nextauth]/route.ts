@@ -5,6 +5,9 @@ import bcrypt from 'bcryptjs';
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const handler = NextAuth({
   debug: true,
   providers: [

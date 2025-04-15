@@ -14,9 +14,6 @@ export default function AdminLayout({
   const router = useRouter();
 
   useEffect(() => {
-    console.log('Session status:', status);
-    console.log('Session data:', session);
-    
     if (status === 'unauthenticated') {
       console.log('No session found, redirecting to login...');
       router.push('/login');

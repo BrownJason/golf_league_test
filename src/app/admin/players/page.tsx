@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { PlayerForm } from './player-form';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = false;
 
 export default function ManagePlayers() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
