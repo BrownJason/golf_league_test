@@ -1,26 +1,17 @@
 import { Player } from '@/app/admin/players/columns';
 import { WeeklyScore } from '@/app/weekly_score/score-columns';
 import { WeeklyWinnings } from '@/app/weekly_score/winnings-columns';
-import { getBaseUrl } from './utils';
 
 export async function fetchPlayers(): Promise<Player[]> {
-  const baseUrl = getBaseUrl();
-  
-  console.log('Fetching players from:', `${baseUrl}/api/players`);
-  
   try {
-    const response = await fetch(`${baseUrl}/api/players`, {
+    const response = await fetch('/api/players', {
       method: 'GET',
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
       },
       cache: 'no-store',
-      credentials: 'same-origin',
-      next: { 
-        revalidate: 0,
-        tags: ['players']
-      }
+      next: { revalidate: 0 }
     });
 
     if (!response.ok) {
@@ -42,21 +33,15 @@ export async function fetchPlayers(): Promise<Player[]> {
 }
 
 export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
-  const baseUrl = getBaseUrl();
-  
   try {
-    const response = await fetch(`${baseUrl}/api/weekly-scores`, {
+    const response = await fetch('/api/weekly-scores', {
       method: 'GET',
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
       },
       cache: 'no-store',
-      credentials: 'same-origin',
-      next: { 
-        revalidate: 0,
-        tags: ['scores']
-      }
+      next: { revalidate: 0 }
     });
 
     if (!response.ok) {
@@ -72,8 +57,7 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
 }
 
 export async function fetchWeeklyWinnings(): Promise<WeeklyWinnings[]> {
-  const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/weekly-winnings`, {
+  const response = await fetch(`/api/weekly-winnings`, {
     cache: 'no-store',
     next: { revalidate: 0 }
   });
@@ -84,8 +68,10 @@ export async function fetchWeeklyWinnings(): Promise<WeeklyWinnings[]> {
 }
 
 export async function fetchPlayer(playerId: number): Promise<Player> {
-  const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/players/${playerId}`);
+  const response = await fetch(`/api/players/${playerId}`, {
+    cache: 'no-store',
+    next: { revalidate: 0 }
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch player');
   }
@@ -93,8 +79,10 @@ export async function fetchPlayer(playerId: number): Promise<Player> {
 }
 
 export async function fetchPlayerScores(playerId: number): Promise<WeeklyScore[]> {
-  const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/players/${playerId}/scores`);
+  const response = await fetch(`/api/players/${playerId}/scores`, {
+    cache: 'no-store',
+    next: { revalidate: 0 }
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch player scores');
   }
@@ -102,8 +90,10 @@ export async function fetchPlayerScores(playerId: number): Promise<WeeklyScore[]
 }
 
 export async function fetchPlayerScoresByWeek(playerId: number, weekDate: string): Promise<WeeklyScore[]> {
-  const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/players/${playerId}/scores?week=${weekDate}`);
+  const response = await fetch(`/api/players/${playerId}/scores?week=${weekDate}`, {
+    cache: 'no-store',
+    next: { revalidate: 0 }
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch player scores for week');
   }
