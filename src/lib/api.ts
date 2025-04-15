@@ -5,7 +5,10 @@ import { getBaseUrl } from './utils';
 
 export async function fetchPlayers(): Promise<Player[]> {
   const baseUrl = getBaseUrl();
-  const response = await fetch(`${baseUrl}/api/players`);
+  const response = await fetch(`${baseUrl}/api/players`, {
+    cache: 'no-store',
+    next: { revalidate: 0 }
+  });
   if (!response.ok) {
     throw new Error('Failed to fetch players');
   }

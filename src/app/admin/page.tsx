@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function AdminDashboard() {
   return (
     <div className="p-6 bg-[#1A3E2A]">

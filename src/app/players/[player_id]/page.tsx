@@ -6,6 +6,9 @@ import { DataTable } from "@/components/ui/data-table";
 import { fetchPlayer, fetchPlayerScores } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Page({
   params,
   searchParams
