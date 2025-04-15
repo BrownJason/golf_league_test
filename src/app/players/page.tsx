@@ -12,11 +12,11 @@ export default async function Page() {
       return (
         <div className="p-4 md:p-6">
           <main className="max-w-7xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <h1 className="text-2xl md:text-3xl font-bold text-[#9A9540] mb-3">
-                No Players Found
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-bold text-[#9A9540] mb-3">
+                No Players Available
               </h1>
-              <p className="text-[#9A9540] text-sm md:text-base">
+              <p className="text-[#9A9540]/80">
                 There are currently no players in the system.
               </p>
             </div>
@@ -33,7 +33,7 @@ export default async function Page() {
       </div>
     );
   } catch (error) {
-    console.error('Error in players page:', error);
+    console.error('Error loading players:', error);
     throw error; // This will trigger the error boundary
   }
 }

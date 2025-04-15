@@ -1,21 +1,15 @@
 import { NextResponse } from 'next/server';
-import postgres from 'postgres';
-
-// Create a new connection for each request
-const sql = postgres(process.env.DATABASE_URL!, { 
-  ssl: "verify-full",
-  max: 1, // Reduce connection pool size
-  idle_timeout: 20, // Reduce idle timeout
-  connect_timeout: 10, // Add connection timeout
-});
+import { getDatabase, closeDatabase } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 export const revalidate = false;
 
 export async function GET() {
+  const sql = getDatabase();
+  
   try {
-    console.log('Attempting to fetch players...');
+    console.log('Fetching players...');
     
     const players = await sql`
       SELECT 
@@ -36,20 +30,10 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Database Error:', error);
-    // Log more details about the error
-    if (error instanceof Error) {
-      console.error('Error name:', error.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-    }
-    
     return NextResponse.json(
-      { error: 'Failed to fetch players', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Failed to fetch players' },
       { status: 500 }
     );
-  } finally {
-    // Ensure connection is properly ended
-    await sql.end();
   }
 }
 

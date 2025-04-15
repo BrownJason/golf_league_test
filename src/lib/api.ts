@@ -18,6 +18,7 @@ export async function fetchPlayers(): Promise<Player[]> {
         'Pragma': 'no-cache',
       },
       cache: 'no-store',
+      credentials: 'same-origin',
       next: { revalidate: 0 }
     });
 
@@ -32,7 +33,7 @@ export async function fetchPlayers(): Promise<Player[]> {
     }
 
     const data = await response.json();
-    return data;
+    return Array.isArray(data) ? data : [];
   } catch (error) {
     console.error('Fetch Error:', error);
     throw error;

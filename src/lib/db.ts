@@ -4,13 +4,21 @@ let sql: ReturnType<typeof postgres> | null = null;
 
 export function getDatabase() {
   if (!sql) {
-    sql = postgres(process.env.DATABASE_URL!, {
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL is not defined');
+    }
+
+    sql = postgres(process.env.DATABASE_URL, {
       ssl: {
         rejectUnauthorized: true,
       },
       idle_timeout: 20,
       max: 10,
       connect_timeout: 10,
+      onnotice: () => {}, // Ignore notice messages
+      debug: (connection, query, params) => {
+        console.log('DB Query:', query, params);
+      },
     });
   }
   return sql;
@@ -20,5 +28,16 @@ export async function closeDatabase() {
   if (sql) {
     await sql.end();
     sql = null;
+  }
+}
+
+export async function testConnection() {
+  const db = getDatabase();
+  try {
+    await db`SELECT 1`;
+    return true;
+  } catch (error) {
+    console.error('Database connection test failed:', error);
+    return false;
   }
 } 

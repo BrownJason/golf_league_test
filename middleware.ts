@@ -18,28 +18,39 @@ export default withAuth(
 );
 
 export async function middleware(request: NextRequest) {
-  // Check if it's an admin route
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    const token = await getToken({ req: request });
+  // Get the pathname from the request
+  const path = request.nextUrl.pathname;
+
+  // Add CORS headers for API routes
+  if (path.startsWith('/api')) {
+    const response = NextResponse.next();
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Cache-Control', 'no-store, must-revalidate');
     
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+    // Handle public API routes that don't need authentication
+    if (path.startsWith('/api/players') || 
+        path.startsWith('/api/weekly-scores') || 
+        path.startsWith('/api/weekly-winnings')) {
+      return response;
+    }
+
+    // Protected API routes
+    const token = await getToken({ req: request });
+    if (!token && !path.startsWith('/api/auth')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const response = NextResponse.next();
-    response.headers.set('Cache-Control', 'no-store, must-revalidate');
-    response.headers.set('Pragma', 'no-cache');
-    response.headers.set('Expires', '0');
     return response;
   }
 
-  // For API routes
-  if (request.nextUrl.pathname.startsWith('/api')) {
-    const response = NextResponse.next();
-    response.headers.set('Cache-Control', 'no-store, must-revalidate');
-    response.headers.set('Pragma', 'no-cache');
-    response.headers.set('Expires', '0');
-    return response;
+  // Handle admin routes
+  if (path.startsWith('/admin')) {
+    const token = await getToken({ req: request });
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
 
   return NextResponse.next();
@@ -47,7 +58,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/admin/:path*',
     '/api/:path*',
-  ],
+    '/admin/:path*'
+  ]
 };
