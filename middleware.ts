@@ -4,61 +4,52 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-export default withAuth(
-  function middleware(req) {
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => {
-        return !!token;
-      }
-    },
-  }
-);
+// Define public routes that don't need authentication
+const publicRoutes = [
+  '/api/players',
+  '/api/weekly-scores',
+  '/api/weekly-winnings',
+  '/api/weeks',
+  '/login',
+  '/'
+];
 
 export async function middleware(request: NextRequest) {
-  // Get the pathname from the request
   const path = request.nextUrl.pathname;
-
-  // Add CORS headers for API routes
-  if (path.startsWith('/api')) {
+  
+  // Check if the path is public
+  if (publicRoutes.some(route => path.startsWith(route))) {
     const response = NextResponse.next();
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    response.headers.set('Cache-Control', 'no-store, must-revalidate');
     
-    // Handle public API routes that don't need authentication
-    if (path.startsWith('/api/players') || 
-        path.startsWith('/api/weekly-scores') || 
-        path.startsWith('/api/weekly-winnings')) {
-      return response;
-    }
-
-    // Protected API routes
-    const token = await getToken({ req: request });
-    if (!token && !path.startsWith('/api/auth')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Add CORS headers for API routes
+    if (path.startsWith('/api')) {
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      response.headers.set('Cache-Control', 'no-store, must-revalidate');
     }
     
     return response;
   }
 
-  // Handle admin routes
-  if (path.startsWith('/admin')) {
-    const token = await getToken({ req: request });
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+  // For protected routes (like /admin)
+  const token = await getToken({ req: request });
+  
+  // If no token and trying to access protected route
+  if (!token) {
+    if (path.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 }
 
+// Configure which routes to protect
 export const config = {
   matcher: [
+    '/admin/:path*',
     '/api/:path*',
-    '/admin/:path*'
   ]
-};
+}

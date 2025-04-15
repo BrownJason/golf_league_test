@@ -18,7 +18,6 @@ export async function fetchPlayers(): Promise<Player[]> {
         'Pragma': 'no-cache',
       },
       cache: 'no-store',
-      credentials: 'same-origin',
       next: { revalidate: 0 }
     });
 
