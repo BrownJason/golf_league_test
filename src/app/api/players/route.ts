@@ -1,30 +1,55 @@
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
 
-const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
+// Create a new connection for each request
+const sql = postgres(process.env.DATABASE_URL!, { 
+  ssl: "verify-full",
+  max: 1, // Reduce connection pool size
+  idle_timeout: 20, // Reduce idle timeout
+  connect_timeout: 10, // Add connection timeout
+});
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 export const revalidate = false;
 
 export async function GET() {
-  const headers = {
-    'Cache-Control': 'no-store, must-revalidate',
-    'Pragma': 'no-cache',
-  };
-
   try {
+    console.log('Attempting to fetch players...');
+    
     const players = await sql`
-      SELECT * FROM players 
+      SELECT 
+        player_id,
+        player_name,
+        handicap 
+      FROM players 
       ORDER BY player_name ASC
     `;
-    return NextResponse.json(players, { headers });
+
+    console.log(`Successfully fetched ${players.length} players`);
+    
+    return NextResponse.json(players, {
+      headers: {
+        'Cache-Control': 'no-store, must-revalidate',
+        'Pragma': 'no-cache',
+      }
+    });
   } catch (error) {
     console.error('Database Error:', error);
+    // Log more details about the error
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to fetch players' },
-      { status: 500, headers }
+      { error: 'Failed to fetch players', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
     );
+  } finally {
+    // Ensure connection is properly ended
+    await sql.end();
   }
 }
 
