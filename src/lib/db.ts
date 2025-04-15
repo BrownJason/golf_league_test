@@ -13,7 +13,7 @@ export function getDatabase() {
         rejectUnauthorized: true,
       },
       idle_timeout: 20,
-      max: 10,
+      max: 40,
       connect_timeout: 10,
       onnotice: () => {}, // Ignore notice messages
       debug: (connection, query, params) => {
