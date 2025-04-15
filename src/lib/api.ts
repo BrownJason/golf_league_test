@@ -4,10 +4,8 @@ import { WeeklyWinnings } from '@/app/weekly_score/winnings-columns';
 import { getBaseUrl } from './utils';
 
 export async function fetchPlayers(): Promise<Player[]> {
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-
+  const baseUrl = getBaseUrl();
+  
   console.log('Fetching players from:', `${baseUrl}/api/players`);
   
   try {

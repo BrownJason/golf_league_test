@@ -16,11 +16,6 @@ export function getBaseUrl() {
     return `https://${process.env.VERCEL_URL}`;
   }
 
-  if (process.env.NEXT_PUBLIC_BASE_URL) {
-    // Use environment variable
-    return process.env.NEXT_PUBLIC_BASE_URL;
-  }
-
-  // Assume localhost
-  return `http://localhost:${process.env.PORT ?? 3000}`;
+  // Use environment variable or default to localhost
+  return process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
 }
