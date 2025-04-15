@@ -7,9 +7,6 @@ import { Player, playerColumns } from "./columns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { PlayerForm } from './player-form';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = false;
-
 export default function ManagePlayers() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);

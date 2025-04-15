@@ -4,6 +4,7 @@ import postgres from 'postgres';
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 export const revalidate = false;
 
 export async function GET() {

@@ -17,18 +17,19 @@ export default withAuth(
 );
 
 export function middleware(request: NextRequest) {
-  // Add cache-control headers to prevent caching
   const response = NextResponse.next();
-  response.headers.set('Cache-Control', 'no-store, max-age=0');
+  
+  // Add cache control headers
+  response.headers.set('Cache-Control', 'no-store, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+  
   return response;
 }
 
 export const config = {
   matcher: [
-    '/api/:path*',
-    '/weekly_score',
-    '/players/:path*',
     '/admin/:path*',
-    '/login'
+    '/api/:path*',
   ],
 };
