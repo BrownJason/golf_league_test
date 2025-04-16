@@ -1,12 +1,16 @@
+import { getDatabase } from '@/lib/db';
 import { NextResponse } from 'next/server';
-import postgres from 'postgres';
 
-const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(
   request: Request,
   context: { params: Promise<{ player_id: string }> }
 ) {
+  const sql = getDatabase();
+
   try {
     // Await the params
   const { player_id } = await context.params;
@@ -27,7 +31,16 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(player[0]);
+    return new NextResponse(JSON.stringify(player[0]), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, must-revalidate',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
   } catch (error) {
     console.error('Database Error:', error);
     return NextResponse.json(
@@ -41,6 +54,8 @@ export async function PUT(
   request: Request,
   context: { params: Promise<{ player_id: string }> }
 ) {
+  const sql = getDatabase();
+
   try {
     // Await the params
     const { player_id } = await context.params;
@@ -60,7 +75,16 @@ export async function PUT(
       );
     }
     
-    return NextResponse.json(result[0]);
+    return new NextResponse(JSON.stringify(result[0]), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, must-revalidate',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
   } catch (error) {
     console.error('Database Error:', error);
     return NextResponse.json(
@@ -74,6 +98,8 @@ export async function DELETE(
   request: Request,
   context: { params: Promise<{ player_id: string }> }
 ) {
+  const sql = getDatabase();
+  
   try {
     // Await the params
   const { player_id } = await context.params;

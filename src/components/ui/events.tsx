@@ -22,8 +22,6 @@ function getTime(inDate: any): string {
 export default function Events({ espn_event, eventStartDate, eventEndDate }: { espn_event: any; eventStartDate: string; eventEndDate: string }) {
   const [isReverse, setIsReverse] = useState(false);
 
-  console.log(espn_event);
-
   return (
     <>
       <div className="flex items-center w-full">

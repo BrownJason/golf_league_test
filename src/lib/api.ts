@@ -134,3 +134,31 @@ export async function fetchESPNGolfScores(): Promise<any> {
   }
   return response.json();
 }
+
+export async function fetchPlayerWinnings(playerId: number): Promise<any> {
+  const url = getApiUrl(`/api/players/${playerId}/winnings`);
+  const response = await fetch(url, {
+    next: {revalidate: 0},
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch player winnings');
+  }
+  return response.json();
+
+}
+
+export async function fetchWeeks(): Promise<any> {
+  const url = getApiUrl(`/api/weeks`);
+  const response = await fetch(url, {
+    next: {revalidate: 0},
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch weeks');
+  }
+  return response.json();
+
+}

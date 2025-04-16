@@ -1,9 +1,8 @@
-import { getBaseUrl } from "@/lib/utils";
 import { columns } from "./columns";
 import WeekFilter from "./handlefilter";
 import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
-import { fetchPlayer, fetchPlayerScores } from "@/lib/api";
+import { fetchPlayer, fetchPlayerScores, fetchPlayerWinnings, fetchWeeks } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +21,6 @@ export default async function Page({
     searchParams
   ]);
 
-  const baseUrl = getBaseUrl();
   const selectedWeek = resolvedSearchParams?.week || null;
   const player_id = resolvedParams.player_id;
 
@@ -31,8 +29,8 @@ export default async function Page({
     const [player, playerScores, playerWinnings, distinctWeeks] = await Promise.all([
       fetchPlayer(parseInt(player_id)),
       fetchPlayerScores(parseInt(player_id)),
-      fetch(`${baseUrl}/api/players/${player_id}/winnings`).then(res => res.json()),
-      fetch(`${baseUrl}/api/weeks`).then(res => res.json())
+      fetchPlayerWinnings(parseInt(player_id)),
+      fetchWeeks()
     ]);
 
     let playerScoresByWeek = playerScores;

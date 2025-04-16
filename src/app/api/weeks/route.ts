@@ -1,12 +1,12 @@
+import { getDatabase } from '@/lib/db';
 import { NextResponse } from 'next/server';
-import postgres from 'postgres';
-
-const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
 export const dynamic = 'force-dynamic';
 export const revalidate = false;
 
 export async function GET() {
+  const sql = getDatabase();
+  
   try {
     const weeks = await sql`
       SELECT DISTINCT 
@@ -16,7 +16,17 @@ export async function GET() {
       ORDER BY week_date DESC
     `;
 
-    return NextResponse.json(weeks);
+    
+    return new NextResponse(JSON.stringify(weeks), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, must-revalidate',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
   } catch (error) {
     console.error('Database Error:', error);
     return NextResponse.json(
