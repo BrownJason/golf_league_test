@@ -21,11 +21,18 @@ function getTime(inDate: any): string {
 
 export default function Events({ espn_event, eventStartDate, eventEndDate }: { espn_event: any; eventStartDate: string; eventEndDate: string }) {
   const [isReverse, setIsReverse] = useState(false);
+
+  console.log(espn_event);
+
   return (
     <>
       <div className="flex items-center w-full">
         <div className="flex flex-col items-center mx-auto bg-[#243E2A] border border-[#9A9540] rounded-xl shadow shadow-black shadow-lg p-6 my-8 text-center">
-          <div className="flex text-3xl">{espn_event.name}</div>
+          <div className="flex text-3xl hover:text-4xl ">
+            <a href={`https://www.espn.com/golf/leaderboard?tournamentId=${espn_event.id}`} target="_blank">
+                {espn_event.name}
+            </a>
+          </div>
           <div className="flex flex-col mx-auto items-center my-2">
             <div className="flex text-wrap text-xl">
               <em>When to watch:</em>

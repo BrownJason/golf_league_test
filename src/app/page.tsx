@@ -99,7 +99,10 @@ export default async function Home() {
             </div>
           </div>
         </main>
-          <div>
+          <div className="flex flex-col">
+            <div className="flex mx-auto bg-[#243E2A] border border-[#9A9540] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg mt-8">
+              <div className="text-3xl">PGA Events for the week:</div>
+            </div>
             <Events espn_event={espn_golf_data.events[0]} eventStartDate={startDateEventOne} eventEndDate={endDateEventOne} />  
             <Events espn_event={espn_golf_data.events[1]} eventStartDate={startDateEventTwo} eventEndDate={endDateEventTwo} />  
           </div>
