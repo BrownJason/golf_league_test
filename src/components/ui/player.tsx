@@ -15,14 +15,14 @@ export default async function Player() {
             Select a player to view their detailed statistics
           </p>
         </div>
-
+        
         {/* Players Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 ">
           {players.map((player) => (
             <Link
               key={player.player_id.toString()}
               href={`/players/${player.player_id}`}
-              className="group relative bg-[#243E2A] border border-[#9A9540] rounded-xl overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+              className="group relative bg-[#243E2A] border border-[#9A9540] rounded-xl overflow-hidden shadow shadow-black shadow-lg transition-transform duration-300 hover:shadow-xl hover:scale-105 hover:shadow-2xl"
             >
               {/* Player Card Content */}
               <div className="p-4 md:p-6">

@@ -68,25 +68,25 @@ export default async function Page() {
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-[#9A9540] text-sm font-medium mb-2">Total Rounds</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 {totalRounds}
               </p>
             </div>
-            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-[#9A9540] text-sm font-medium mb-2">Average Score</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 {averageScore}
               </p>
             </div>
-            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-[#9A9540] text-sm font-medium mb-2">Total Winnings</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 ${totalWinnings}
               </p>
             </div>
-            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-[#9A9540] text-sm font-medium mb-2">Unique Players</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 {uniquePlayers}
@@ -95,7 +95,7 @@ export default async function Page() {
           </div>
 
           {/* Tabs for Scores and Winnings */}
-          <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl overflow-hidden">
+          <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl overflow-hidden shadow shadow-black shadow-lg">
             <Tabs defaultValue="scores" className="w-full">
               <div className="px-4 pt-4 md:px-6 md:pt-6">
                 <TabsList className="grid w-full grid-cols-2 bg-[#1A3E2A] border border-[#9A9540] rounded-lg overflow-hidden">
@@ -148,7 +148,7 @@ export default async function Page() {
 
           {/* Best Performances Section */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-xl font-semibold text-[#9A9540] mb-4">Best Rounds</h3>
               <div className="space-y-3">
                 {weekly_scores
@@ -166,7 +166,7 @@ export default async function Page() {
               </div>
             </div>
 
-            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6">
+            <div className="bg-[#243E2A] border border-[#9A9540] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-xl font-semibold text-[#9A9540] mb-4">Top Earners</h3>
               <div className="space-y-3">
                 {Object.entries(

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Player } from '@/app/admin/players/columns';
 import { WeeklyScore } from '@/app/weekly_score/score-columns';
 import { WeeklyWinnings } from '@/app/weekly_score/winnings-columns';
@@ -105,3 +106,31 @@ export async function fetchPlayerScoresByWeek(playerId: number, weekDate: string
   }
   return response.json();
 } 
+
+export async function fetchSeasonOverviewData(): Promise<any>{
+
+  const url = getApiUrl(`/api/season`);
+  const response = await fetch(url, {
+    next: {revalidate: 0},
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch season data');
+  }
+  return response.json();
+}
+
+export async function fetchESPNGolfScores(): Promise<any> {
+  
+  const url = 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard';
+  const response = await fetch(url, {
+    next: {revalidate: 0},
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch espn golf data');
+  }
+  return response.json();
+}
