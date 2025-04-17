@@ -40,10 +40,10 @@ export default function WeekFilter({ weeks, selectedWeek }: WeekFilterProps) {
         value={selectedWeek || "all"}
         onValueChange={handleWeekChange}
       >
-        <SelectTrigger className="w-full md:w-[180px] bg-[#1A3E2A] text-[#9A9540] border-[#9A9540] text-sm md:text-base">
+        <SelectTrigger className="w-full md:w-[180px] bg-[#FFFFFF] text-[#333333] border-[#CCCCCC] text-sm md:text-base">
           <SelectValue placeholder="Select Week" />
         </SelectTrigger>
-        <SelectContent className="bg-[#1A3E2A] text-[#9A9540] border-[#9A9540] text-sm md:text-base">
+        <SelectContent className="bg-[#FFFFFF] text-[#333333] border-[#CCCCCC] text-sm md:text-base">
           <SelectItem value="all">All Weeks</SelectItem>
           {weeks.map((week) => (
             <SelectItem 

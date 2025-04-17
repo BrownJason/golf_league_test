@@ -15,9 +15,9 @@ export default async function Home() {
     const espn_event_one = espn_golf_data.events[0];
     const espn_event_two = espn_golf_data.events[1];
 
-    const startDateEventOne = espn_event_one.competitions[0].competitors[0].linescores[0].teeTime;
+    const startDateEventOne = espn_event_one.date;
     const endDateEventOne = espn_event_one.endDate;
-    const startDateEventTwo = espn_event_two.competitions[0].competitors[0].linescores[0].teeTime;
+    const startDateEventTwo = espn_event_two.date;
     const endDateEventTwo = espn_event_two.endDate;
 
     return (

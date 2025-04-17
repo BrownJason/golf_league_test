@@ -8,7 +8,6 @@ export default function NavBar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <nav className="w-full bg-[#1A3E2A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">

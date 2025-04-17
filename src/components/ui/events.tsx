@@ -9,14 +9,7 @@ function getDate(inDate: any): string {
   const dateParts = inDate.split(/[-T:.Z]/);
   const date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2], dateParts[3], dateParts[4], dateParts[5]));
 
-  return date.toLocaleDateString("en-US") + " at " + date.toLocaleTimeString();
-}
-
-function getTime(inDate: any): string {
-  const dateParts = inDate.split(/[-T:.Z]/);
-  const date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2], dateParts[3], dateParts[4], dateParts[5]));
-
-  return date.toLocaleTimeString();
+  return date.toLocaleDateString("en-US");
 }
 
 export default function Events({ espn_event, eventStartDate, eventEndDate }: { espn_event: any; eventStartDate: string; eventEndDate: string }) {
@@ -55,7 +48,6 @@ export default function Events({ espn_event, eventStartDate, eventEndDate }: { e
                 <div className="flex flex-col mx-auto">
                   <div className="text-xl text-wrap mr-4 2-48">{res.athlete.fullName}</div>
                   <div>Current score: {res.score}</div>
-                  <div className="flex">Tee Time: {getTime(res.linescores[0].teeTime)}</div>
                 </div>
                 <div className="flex items-center p-0 ml-4">
                   <Image src={`${res.athlete.flag.href}`} alt={res.athlete.flag.alt} width={128} height={128} />
