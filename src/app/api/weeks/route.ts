@@ -1,22 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getDatabase } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = false;
 
-export async function GET() {
+export async function GET(request: Request, context: { params: Promise<{ player_id: string }> }) {
   const sql = getDatabase();
+  const { player_id } = await context.params;
   
   try {
     const weeks = await sql`
       SELECT DISTINCT 
-        TO_CHAR(week_date, 'MM/DD/YYYY') as formatted_date,
+        TO_CHAR(week_date, 'MMDDYYYY') as formatted_date,
         week_date
       FROM weekly_score
+      WHERE player_id = ${player_id}
       ORDER BY week_date DESC
     `;
 
-    
     return new NextResponse(JSON.stringify(weeks), {
       status: 200,
       headers: {

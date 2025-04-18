@@ -28,7 +28,7 @@ export default function WeekFilter({ weeks, selectedWeek }: WeekFilterProps) {
       current.set("week", value);
     }
 
-    const search = current.toString();
+    const search = current.toString().replaceAll('/','')
     const query = search ? `?${search}` : "";
     
     router.push(`${pathname}${query}`);
@@ -40,16 +40,16 @@ export default function WeekFilter({ weeks, selectedWeek }: WeekFilterProps) {
         value={selectedWeek || "all"}
         onValueChange={handleWeekChange}
       >
-        <SelectTrigger className="w-full md:w-[180px] bg-[#FFFFFF] text-[#333333] border-[#CCCCCC] text-sm md:text-base">
+        <SelectTrigger className="w-full md:w-[180px] bg-[#243E2A] text-[#9A9540] border-[#9A9540] text-sm md:text-base">
           <SelectValue placeholder="Select Week" />
         </SelectTrigger>
-        <SelectContent className="bg-[#FFFFFF] text-[#333333] border-[#CCCCCC] text-sm md:text-base">
-          <SelectItem value="all">All Weeks</SelectItem>
+        <SelectContent className="bg-[#243E2A] border-[#9A9540] text-sm md:text-base">
+          <SelectItem value="all" className="bg-[#243E2A] text-[#9A9540] hover:text-[#243E2A] hover:cursor-pointer">All Weeks</SelectItem>
           {weeks.map((week) => (
             <SelectItem 
               key={week.week_date} 
               value={week.formatted_date}
-              className="text-sm md:text-base"
+              className="bg-[#243E2A] text-[#9A9540] hover:text-[#243E2A] hover:cursor-pointer"
             >
               {week.formatted_date}
             </SelectItem>

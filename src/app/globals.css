@@ -62,22 +62,6 @@
 }
 
 :root {
-  --foreground: #1F2937;
-  --background: #F9FAFB;
-  --primary: #3B82F6;
-  --primary-hover: #60A5FA;
-  --secondary: #E5E7EB;
-  --accent: #10B981;
-  --border: #E5E7EB;
-  --card: #FFFFFF;
-  --card-foreground: #1F2937;
-  --popover: #FFFFFF;
-  --popover-foreground: #1F2937;
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --ring: #3B82F6;
   --radius: 0.5rem;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

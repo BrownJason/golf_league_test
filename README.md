@@ -66,9 +66,9 @@ The application is fully responsive and works seamlessly across devices:
 
 | Color | Hex Code | Usage |
 |-------|----------|--------|
-| Dark Green | `#FFFFFF` | Primary Background |
-| Gold | `#333333` | Accents & Text |
-| Light Green | `#007BFF` | Secondary Background |
+| Dark Green | `#FFFFFF ` | Primary Background |
+| Gold | `#9A9540` | Accents & Text |
+| Light Green | `#243E2A` | Secondary Background |
 
 ## 📝 License
 

@@ -8,10 +8,11 @@ export async function GET(
   const sql = getDatabase();
 
   try {
+            
     const { player_id } = await context.params;
     const { searchParams } = new URL(request.url);
-    const week = searchParams.get('week');
-
+    const week = searchParams.get('week');  
+    
     let query;
     if (week) {
       // If week parameter is provided, fetch scores for that specific week
@@ -23,7 +24,7 @@ export async function GET(
         FROM weekly_score ws
         JOIN players p ON p.player_id = ws.player_id
         WHERE p.player_id = ${player_id}
-        AND ws.week_date = TO_DATE(${week}, 'MM/DD/YYYY')
+        AND ws.week_date = TO_DATE(${week}, 'MMDDYYYY')
         ORDER BY ws.week_date DESC
       `;
     } else {

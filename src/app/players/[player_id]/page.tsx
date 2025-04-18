@@ -2,7 +2,7 @@ import { columns } from "./columns";
 import WeekFilter from "./handlefilter";
 import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
-import { fetchPlayer, fetchPlayerScores, fetchPlayerWinnings, fetchWeeks } from "@/lib/api";
+import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
 
 export const dynamic = 'force-dynamic';
@@ -28,19 +28,14 @@ export default async function Page({
     // Fetch all data in parallel
     const [player, playerScores, playerWinnings, distinctWeeks] = await Promise.all([
       fetchPlayer(parseInt(player_id)),
-      fetchPlayerScores(parseInt(player_id)),
+      selectedWeek ? fetchPlayerScoresByWeek(parseInt(player_id), selectedWeek.replaceAll('/','')) : fetchPlayerScores(parseInt(player_id)),
       fetchPlayerWinnings(parseInt(player_id)),
-      fetchWeeks()
+      fetchWeeksByPlayer(parseInt(player_id))
     ]);
 
     let playerScoresByWeek = playerScores;
     if (selectedWeek) {
-      playerScoresByWeek = await fetch(
-        `/api/players/${player_id}/scores?week=${selectedWeek}`
-      ).then(res => {
-        if (!res.ok) throw new Error('Failed to fetch player scores by week');
-        return res.json();
-      });
+      playerScoresByWeek = playerScores;
     }
 
     const formattedWinnings = playerWinnings.map((res: { total: string }) => res.total);
