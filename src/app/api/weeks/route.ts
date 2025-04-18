@@ -7,9 +7,11 @@ export const revalidate = false;
 
 export async function GET(request: Request, context: { params: Promise<{ player_id: string }> }) {
   const sql = getDatabase();
-  const { player_id } = await context.params;
   
   try {
+    const { searchParams } = new URL(request.url);
+    const player_id = searchParams.get('player_id');
+
     const weeks = await sql`
       SELECT DISTINCT 
         TO_CHAR(week_date, 'MMDDYYYY') as formatted_date,
