@@ -14,7 +14,7 @@ export default async function Home() {
         <main className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12 md:mb-16">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#9A9540] mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#9A9540] mb-4 text-shadow-lg text-shadow-black">
               Brown Family Golf
             </h1>
             <div className="h-1 w-32 md:w-40 bg-[#9A9540] mx-auto rounded-full mb-6"></div>

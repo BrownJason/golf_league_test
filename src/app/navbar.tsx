@@ -112,12 +112,6 @@ export default function NavBar() {
           >
             Weekly Score
           </Link>
-          <Link
-            href="/pga_events"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#9A9540] hover:text-[#9A9540]/80 hover:bg-[#243E2A] transition-colors"
-          >
-            PGA Events
-          </Link>
         </div>
       </div>
     </nav>
