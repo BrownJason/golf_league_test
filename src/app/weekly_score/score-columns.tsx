@@ -72,7 +72,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Score",
     cell: ({ row }) => {
       const score = parseInt(row.getValue("score"));
-      const par = row.getValue("side") === "front" ? 35 : 46;
+      const par = row.getValue("side") === "front" ? 36 : 35;
       return <div className={clsx(score < par ? "text-red-500 mx-auto text-center" : score > par ? "text-gray-300 mx-auto text-center" : "text-[#9A9540] text-center")}>{score}</div>;
     },
   },
@@ -85,7 +85,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Adjusted Score",
     cell: ({ row }) => {
       const adjusted_score = parseInt(row.getValue("adjusted_score"));
-      const par = row.getValue("side") === "front" ? 35 : 46;
+      const par = row.getValue("side") === "front" ? 36 : 35;
       return <div className={clsx(adjusted_score < par ? "text-red-500 mx-auto text-center" : adjusted_score > par ? "text-gray-300 mx-auto text-center" : "text-[#9A9540] text-center")}>{adjusted_score}</div>;
     },
   },

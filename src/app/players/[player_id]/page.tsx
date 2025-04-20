@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { columns } from "./columns";
 import WeekFilter from "./handlefilter";
 import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
-import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer } from "@/lib/api";
+import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer, fetchScorecard, fetchPeers } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
+import PlayerStats from "@/components/player_stats/player_stats";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -26,11 +28,13 @@ export default async function Page({
 
   try {
     // Fetch all data in parallel
-    const [player, playerScores, playerWinnings, distinctWeeks] = await Promise.all([
+    const [player, playerScores, playerWinnings, distinctWeeks, scorecard, peers] = await Promise.all([
       fetchPlayer(parseInt(player_id)),
       selectedWeek ? fetchPlayerScoresByWeek(parseInt(player_id), selectedWeek.replaceAll('/','')) : fetchPlayerScores(parseInt(player_id)),
       fetchPlayerWinnings(parseInt(player_id)),
-      fetchWeeksByPlayer(parseInt(player_id))
+      fetchWeeksByPlayer(parseInt(player_id)),
+      fetchScorecard(),
+      fetchPeers()
     ]);
 
     let playerScoresByWeek = playerScores;
@@ -45,6 +49,38 @@ export default async function Page({
 
     const weeksPlayed = playerScores.reduce((acc: number, val: WeeklyScore) => 
       val.week_date ? acc + 1 : acc, 0);
+
+
+    const scorecardData = scorecard;
+
+    let par3 = 0;
+    let par4 = 0;
+    let par5 = 0;
+
+    for (const score of playerScores) {
+      scorecardData.map((res: any) => {
+        const isFront = res.side === 'front';
+        const isBack = res.side === 'back';
+
+        // Check if the current score belongs to the front or back side
+        if (isFront || isBack) {
+          // Loop through holes 1 to 9
+          for (let hole = 1; hole <= 9; hole++) {
+            const scoreHole = score[`hole_${hole}` as keyof typeof score];
+            const resHole = res[`hole_${hole}` as keyof typeof res];
+
+            // Increment counters based on hole type
+            if (hole === 1 || hole === 4 || hole === 5 || hole === 7 || hole === 9 || (isBack && hole === 3) ) {
+              par4 += resHole <= scoreHole ? 1 : 0; // Par 4 holes
+            } else if ((isFront && hole === 2) || hole === 8) {
+              par5 += resHole <= scoreHole ? 1 : 0; // Par 5 holes
+            } else if ( hole === 6 || (isFront && hole === 3) || (isBack && hole === 2)) {
+              par3 += resHole <= scoreHole ? 1 : 0; // Par 3 holes
+            }
+          }
+        }
+      });
+    }
 
     return (
       <div className="p-4 md:p-6">
@@ -148,29 +184,7 @@ export default async function Page({
 
         {/* Performance Trends Section */}
         {weeksPlayed > 0 && (
-          <div className="mt-6 md:mt-8 bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
-            <h2 className="text-xl md:text-2xl font-bold text-[#9A9540] mb-4 md:mb-6">Performance Highlights</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              <div className="text-center bg-[#1A3E2A] p-3 rounded-lg">
-                <h3 className="text-[#9A9540] text-sm md:text-base mb-2">Best Score</h3>
-                <p className="text-xl md:text-2xl text-white">
-                  {Math.min(...playerScores.map(score => score.score))}
-                </p>
-              </div>
-              <div className="text-center bg-[#1A3E2A] p-3 rounded-lg">
-                <h3 className="text-[#9A9540] text-sm md:text-base mb-2">Recent Trend</h3>
-                <p className="text-xl md:text-2xl text-white">
-                  {calculateTrend(playerScores)}
-                </p>
-              </div>
-              {/* <div className="text-center bg-[#1A3E2A] p-3 rounded-lg">
-                <h3 className="text-[#9A9540] text-sm md:text-base mb-2">Consistency</h3>
-                <p className="text-xl md:text-2xl text-white">
-                  {calculateConsistency(playerScores)}%
-                </p>
-              </div> */}
-            </div>
-          </div>
+          <PlayerStats playerScores={playerScores} par3={par3} par4={par4} par5={par5} peers={peers} player_name={player.player_name} />
         )}
       </div>
     );
@@ -184,22 +198,4 @@ export default async function Page({
   }
 }
 
-// Helper functions for performance calculations
-function calculateTrend(scores: { score: number }[]) {
-  if (scores.length < 2) return 'N/A';
-  const recent = scores.slice(0, 3).map(s => s.score);
-  const avg = recent.reduce((a: number, b: number) => a + b, 0) / recent.length;
-  const overall = scores.map(s => s.score).reduce((a: number, b: number) => a + b, 0) / scores.length;
-  return avg < overall ? '↑ Improving' : avg > overall ? '↓ Declining' : '→ Steady';
-}
 
-// function calculateConsistency(scores: { score: number }[]) {
-//   if (scores.length < 2) return 'N/A';
-//   const scoreValues = scores.map(s => s.score);
-//   const mean = scoreValues.reduce((a: number, b: number ) => a + b, 0) / scoreValues.length;
-//   const variance = scoreValues.reduce((a: number, b: number ) => a + Math.pow(b - mean, 2), 0) / scoreValues.length;
-//   const stdDev = Math.sqrt(variance);
-//   // Convert to a percentage where lower variation = higher consistency
-//   const consistency = Math.max(0, 100 - (stdDev * 10));
-//   return Math.round(consistency);
-// } 

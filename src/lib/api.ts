@@ -169,3 +169,32 @@ export async function fetchWeeksByPlayer(playerId: number): Promise<any> {
   const data = await response.json();
   return data;
 }
+
+export async function fetchScorecard(): Promise<any> {
+  const url = getApiUrl('/api/scorecard');
+  const response = await fetch(url, {
+    next: { revalidate: 0 },
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch scorecard');
+  }
+  const data = await response.json();
+  return data;
+}
+
+export async function fetchPeers(): Promise<any> {
+  const url = getApiUrl('/api/peers');
+  const response = await fetch(url, {
+    next: { revalidate: 0 },
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch peers');
+  }
+  const data = await response.json();
+  return data;
+}
+
