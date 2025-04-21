@@ -59,8 +59,14 @@ export default async function Page({
 
     for (const score of playerScores) {
       scorecardData.map((res: any) => {
-        const isFront = res.side === 'front';
-        const isBack = res.side === 'back';
+        let isFront = false;
+        let isBack = false;
+        if(score.side === 'front'){
+           isFront = res.side === 'front';
+        }
+        if(score.side === 'back'){
+          isBack = res.side === 'back';
+        }
 
         // Check if the current score belongs to the front or back side
         if (isFront || isBack) {
@@ -71,11 +77,11 @@ export default async function Page({
 
             // Increment counters based on hole type
             if (hole === 1 || hole === 4 || hole === 5 || hole === 7 || hole === 9 || (isBack && hole === 3) ) {
-              par4 += resHole <= scoreHole ? 1 : 0; // Par 4 holes
+              par4 += scoreHole <= resHole ? 1 : 0; // Par 4 holes
             } else if ((isFront && hole === 2) || hole === 8) {
-              par5 += resHole <= scoreHole ? 1 : 0; // Par 5 holes
+              par5 += scoreHole <= resHole ? 1 : 0; // Par 5 holes
             } else if ( hole === 6 || (isFront && hole === 3) || (isBack && hole === 2)) {
-              par3 += resHole <= scoreHole ? 1 : 0; // Par 3 holes
+              par3 += scoreHole <= resHole ? 1 : 0; // Par 3 holes
             }
           }
         }

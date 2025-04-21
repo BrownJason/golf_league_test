@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 p-8 bg-[#FFFFFF ] rounded-lg shadow-lg shadow-black border border-[#9A9540]">
+      <div className="max-w-md w-full space-y-8 p-8 bg-[#243E2A] rounded-lg shadow-lg shadow-black border border-[#9A9540]">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-[#9A9540]">
             Admin Login
