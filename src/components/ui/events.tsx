@@ -43,7 +43,10 @@ export default function Events({ espn_event, eventStartDate, eventEndDate }: { e
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
         <Marquee pauseOnHover className={`[--duration:300s]`} onClick={() => setIsReverse(!isReverse)} reverse={isReverse}>
           {espn_event.competitions[0].competitors.map((res: any) => {
-            return (
+
+            console.log(res.linescores[0])
+
+            {return (res.athlete !== undefined ? 
               <div key={res.athlete.fullName} className="bg-[#243E2A] border border-[#9A9540] grid grid-cols-2 p-2 rounded-lg h-32 mr-6 shadow shadow-black shadow-lg">
                 <div className="flex flex-col mx-auto">
                   <div className="text-xl text-wrap mr-4 2-48">{res.athlete.fullName}</div>
@@ -53,7 +56,16 @@ export default function Events({ espn_event, eventStartDate, eventEndDate }: { e
                   <Image src={`${res.athlete.flag.href}`} alt={res.athlete.flag.alt} width={128} height={128} />
                 </div>
               </div>
-            );
+             :
+             <div key={res.team.id} className="bg-[#243E2A] border border-[#9A9540] p-2 rounded-lg h-32 mr-6 shadow shadow-black shadow-lg">
+             <div className="flex flex-col mx-auto">
+               <div className="text-xl text-wrap mr-4 2-48">{res.team.name}</div>
+               <div>Current score: {res.score}</div>
+             </div>
+           </div>);
+            }
+
+            
           })}
         </Marquee>
       </div>
