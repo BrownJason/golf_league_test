@@ -45,6 +45,13 @@ export default function NavBar() {
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#9A9540] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
+              href="/gallery" 
+              className="text-[#9A9540] hover:text-[#9A9540]/80 px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
+            >
+              <span>Gallery</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#9A9540] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+            </Link>
+            <Link 
               href="/pga_events" 
               className="text-[#9A9540] hover:text-[#9A9540]/80 px-3 py-2 rounded-md text-sm font-medium transition-colors relative group"
             >
@@ -111,6 +118,12 @@ export default function NavBar() {
             className="block px-3 py-2 rounded-md text-base font-medium text-[#9A9540] hover:text-[#9A9540]/80 hover:bg-[#243E2A] transition-colors"
           >
             Weekly Score
+          </Link>
+          <Link
+            href="/gallery"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#9A9540] hover:text-[#9A9540]/80 hover:bg-[#243E2A] transition-colors"
+          >
+            Gallery
           </Link>
           <Link
             href="/pga_events"

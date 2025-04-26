@@ -29,12 +29,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col relative`}>
         <Providers>
-          <div className="flex flex-col min-h-dvh text-[#9A9540] border-[#9A9540] bg-[url(/golf_bg_image.jpg)] bg-cover bg-center bg-fixed">
+          <div className="flex flex-col min-h-dvh text-[#9A9540] border-[#9A9540] ">
             <header className="sticky top-0 z-50 w-full border-b border-[#9A9540] bg-[#1A3E2A]/95 backdrop-blur supports-[backdrop-filter]:bg-[#1A3E2A]/80">
               <NavBar />
             </header>
             
-            <main className="flex-grow dark border-[#9A9540]">
+            <main className="flex-grow dark border-[#9A9540] bg-[url(/uploads/golf_bg_image.jpg)] bg-cover bg-center bg-fixed">
               {children}
             </main>
 
