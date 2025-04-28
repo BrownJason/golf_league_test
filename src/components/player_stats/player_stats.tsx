@@ -1,11 +1,13 @@
 "use client";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import PieChart from "../../app/players/[player_id]/winning-chart";
 
 Chart.register(...registerables);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export default function PlayerStats({ playerScores, par3, par4, par5, peers, player_name }: { playerScores: any[]; par3: number; par4: number; par5: number; peers: any[]; player_name: string }) {
+export default function PlayerStats({ playerScores, par3, par4, par5, peers, player_name, playerWinnings, avgScore, player, weeksPlayed, formattedWinnings }: 
+  { playerScores: any[]; par3: number; par4: number; par5: number; peers: any[]; player_name: string,  playerWinnings: any, avgScore: number, player: any, weeksPlayed: number, formattedWinnings: string[] }) {
   const trendData = {
     labels: playerScores.map((score) => score.week_date.split("T")[0]),
     datasets: [
@@ -125,6 +127,16 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
         <div className="text-center bg-[#1A3E2A] p-3 rounded-lg border border-[#9A9540] shadow shadow-lg shadow-black">
           <h3 className="text-[#9A9540] text-sm md:text-base mb-2 text-center">Peer Comparison</h3>
           <Bar data={comparisonData} options={bar_options} />
+        </div>
+        <div className="text-center bg-[#1A3E2A] p-3 rounded-lg border border-[#9A9540] shadow shadow-lg shadow-black">
+          <h3 className="text-[#9A9540] text-sm md:text-base mb-2 text-center">Winnings Breakdown</h3>
+          <PieChart 
+                    values={playerWinnings} 
+                    avg_score={avgScore} 
+                    player={player} 
+                    weeks_played={weeksPlayed} 
+                    formattedWinnings={formattedWinnings} 
+                  />
         </div>
       </div>
     </div>

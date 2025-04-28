@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { columns } from "./columns";
 import WeekFilter from "./handlefilter";
-import PieChart from "./winning-chart";
 import { DataTable } from "@/components/ui/data-table";
 import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer, fetchScorecard, fetchPeers } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
@@ -98,45 +97,14 @@ export default async function Page({
           <div className="h-1 w-24 md:w-32 bg-[#9A9540] mx-auto rounded-full"></div>
         </div>
 
-        {/* Stats Grid - Single column on mobile, three columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-          {/* Handicap Card */}
-          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
-            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Handicap</h3>
-            <p className="text-2xl md:text-3xl text-white">{player.handicap}</p>
-          </div>
-
-          {/* Average Score Card */}
-          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
-            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Average Score</h3>
-            <p className="text-2xl md:text-3xl text-white">{avgScore.toFixed(1)}</p>
-          </div>
-
-          {/* Weeks Played Card */}
-          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
-            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Weeks Played</h3>
-            <p className="text-2xl md:text-3xl text-white">{weeksPlayed}</p>
-          </div>
-        </div>
-
         {/* Winnings Section */}
         {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (
-          <div className="mb-6 md:mb-8">
-            <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+          <div className="mb-6 md:mb-8 max-w-4xl mx-auto">
+            <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg mx-auto">
               <h2 className="text-xl md:text-2xl font-bold text-[#9A9540] mb-4 md:mb-6">Season Winnings</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                {/* Pie Chart - Full width on mobile */}
-                <div className="p-3 md:p-4 rounded-lg order-2 md:order-1">
-                  <PieChart 
-                    values={playerWinnings} 
-                    avg_score={avgScore} 
-                    player={player} 
-                    weeks_played={weeksPlayed} 
-                    formattedWinnings={formattedWinnings} 
-                  />
-                </div>
+              <div className="grid grid-cols-1 gap-4 md:gap-6">
                 {/* Winnings Breakdown - Above chart on mobile */}
-                <div className="space-y-3 order-1 md:order-2">
+                <div className="space-y-3 order-1">
                   {Object.entries(playerWinnings[0]).map(([category, amount]) => {
                     if (category !== 'player_id' && category !== 'total') {
                       return (
@@ -165,6 +133,33 @@ export default async function Page({
           </div>
         )}
 
+        {/* Stats Grid - Single column on mobile, three columns on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+          {/* Handicap Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Handicap</h3>
+            <p className="text-2xl md:text-3xl text-white">{player.handicap}</p>
+          </div>
+
+          {/* Average Score Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Average Score</h3>
+            <p className="text-2xl md:text-3xl text-white">{avgScore.toFixed(1)}</p>
+          </div>
+
+          {/* Weeks Played Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Weeks Played</h3>
+            <p className="text-2xl md:text-3xl text-white">{weeksPlayed}</p>
+          </div>
+
+          {/* Current Winnings Card */}
+          <div className="bg-[#243E2A] p-4 md:p-6 rounded-xl border border-[#9A9540] shadow-lg">
+            <h3 className="text-[#9A9540] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Winnings</h3>
+            <p className="text-2xl md:text-3xl text-white">{formattedWinnings}</p>
+          </div>
+        </div>
+
         {/* Scores Section */}
         {weeksPlayed > 0 && (
           <div className="bg-[#243E2A] rounded-xl border border-[#9A9540] shadow-lg overflow-hidden">
@@ -190,7 +185,13 @@ export default async function Page({
 
         {/* Performance Trends Section */}
         {weeksPlayed > 0 && (
-          <PlayerStats playerScores={playerScores} par3={par3} par4={par4} par5={par5} peers={peers} player_name={player.player_name} />
+          <PlayerStats playerScores={playerScores} par3={par3} par4={par4} par5={par5} peers={peers} player_name={player.player_name} 
+            playerWinnings={playerWinnings} 
+            avgScore={avgScore} 
+            player={player} 
+            weeksPlayed={weeksPlayed} 
+            formattedWinnings={formattedWinnings} 
+          />
         )}
       </div>
     );

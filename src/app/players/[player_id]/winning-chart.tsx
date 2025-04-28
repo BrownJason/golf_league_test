@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Pie } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { Chart } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import PlayerInfo from "@/components/ui/player-info";
 
 Chart.register(ChartDataLabels);
 Chart.defaults.set("plugins.datalabels", {
   color: "#000000",
 });
 
-const PieChart = ({ values, player, weeks_played, avg_score, formattedWinnings }: { values: any; player: any; weeks_played: any; avg_score: any; formattedWinnings: string[] }) => {
+const PieChart = ({ values, formattedWinnings }: { values: any; player: any; weeks_played: any; avg_score: any; formattedWinnings: string[] }) => {
   const greens = values.map((res: { greens: number }) => res.greens);
   const skins = values.map((res: { skins: number }) => res.skins);
   const partners = values.map((res: { partners: number }) => res.partners);
@@ -40,26 +39,33 @@ const PieChart = ({ values, player, weeks_played, avg_score, formattedWinnings }
   const options = {
     plugins: {
       legend: {
-        labels: {
-          color: "#9A9540",
-        },
+        display: false
       },
       datalabels: {
-        color: "#36A2EB",
+        color: "#000000",
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "#9A9540", // Change this to your desired color for the X-axis labels
+        },
+      },
+      y: {
+        ticks: {
+          color: "#9A9540", // Change this to your desired color for the Y-axis labels,
+        },
+        beginAtZero: true, // Ensure the Y-axis starts at 0
       },
     },
   };
 
   return (
-    <div className="flex lg:flex-row flex-col justify-start rounded-lg text-[#9A9540] p-4 m-4 bg-[#1A3E2A] border border-[#9A9540] shadow-lg shadow-black">
-      <PlayerInfo player={player} formattedWinnings={formattedWinnings} avg_score={avg_score} weeks_played={weeks_played} />
-      <div className="flex-col">
-        <h1 className="flex text-center w-full justify-center text-lg">Total Winnings</h1>
-        <Pie data={data} options={options} />
-        <span className="flex text-center w-full justify-center text-lg">
-          <em>Winnings: {formattedWinnings[0]}</em>
-        </span>
-      </div>
+    <div className="flex-col">
+      <Bar data={data} options={options} />
+      <span className="flex text-center w-full justify-center text-lg">
+        <em>Winnings: {formattedWinnings[0]}</em>
+      </span>
     </div>
   );
 };
