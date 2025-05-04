@@ -2,6 +2,7 @@
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import PieChart from "../../app/players/[player_id]/winning-chart";
+import { WeeklyScore } from "@/app/weekly_score/score-columns";
 
 Chart.register(...registerables);
 
@@ -9,7 +10,7 @@ Chart.register(...registerables);
 export default function PlayerStats({ playerScores, par3, par4, par5, peers, player_name, playerWinnings, avgScore, player, weeksPlayed, formattedWinnings }: 
   { playerScores: any[]; par3: number; par4: number; par5: number; peers: any[]; player_name: string,  playerWinnings: any, avgScore: number, player: any, weeksPlayed: number, formattedWinnings: string[] }) {
   const trendData = {
-    labels: playerScores.map((score) => score.week_date.split("T")[0]),
+    labels: playerScores.map((score) => score.week_date.split("T")[0]).sort(),
     datasets: [
       {
         label: "Scores",
@@ -43,7 +44,6 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
 
   const peerNames = peers.map((peer) => (peer.player_name !== player_name ? peer.player_name : null)).filter(Boolean);
   const peerScores = peers.map((peer) => (peer.player_name !== player_name ? peer.average_score : null)).filter(Boolean);
-
   const comparisonData = {
     labels: peerNames,
     datasets: [
@@ -54,7 +54,8 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
       },
       {
         label: "Your Score",
-        data: peers.map(() => playerScores.map((score) => score.score)),
+        data: peers.map(() => playerScores.map((score) => score).reduce((acc: any, val: WeeklyScore) => 
+          acc + val.score, 0) / playerScores.length),
         backgroundColor: "#E74C3C",
       },
     ],

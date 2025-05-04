@@ -12,11 +12,21 @@ Chart.defaults.set("plugins.datalabels", {
 });
 
 const PieChart = ({ values, formattedWinnings }: { values: any; player: any; weeks_played: any; avg_score: any; formattedWinnings: string[] }) => {
-  const greens = values.map((res: { greens: number }) => res.greens);
-  const skins = values.map((res: { skins: number }) => res.skins);
-  const partners = values.map((res: { partners: number }) => res.partners);
-  const best_ball = values.map((res: { best_ball: number }) => res.best_ball);
-  const low_score = values.map((res: { low_score: number }) => res.low_score);
+  const greens = values.map((res: { greens: number }) => res.greens).reduce((res: any, value: number) => {
+    return res + value
+  }, 0);
+  const skins = values.map((res: { skins: number }) => res.skins).reduce((res: any, value: number) => {
+    return res + value
+  }, 0);
+  const partners = values.map((res: { partners: number }) => res.partners).reduce((res: any, value: number) => {
+    return res + value
+  }, 0);
+  const best_ball = values.map((res: { best_ball: number }) => res.best_ball).reduce((res: any, value: number) => {
+    return res + value
+  }, 0);
+  const low_score = values.map((res: { low_score: number }) => res.low_score).reduce((res: any, value: number) => {
+    return res + value
+  }, 0);
   const data = {
     labels: ["Greens", "Skins", "Partners", "Best Ball", "Low Score"],
     datasets: [

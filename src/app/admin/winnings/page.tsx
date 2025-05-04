@@ -75,7 +75,6 @@ export default function AdminScores() {
         low_score: '',
       });
 
-      alert('Score added successfully!');
       router.refresh();
     } catch (error) {
       console.error('Error adding score:', error);

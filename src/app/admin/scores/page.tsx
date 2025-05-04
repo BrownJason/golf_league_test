@@ -84,7 +84,6 @@ export default function AdminScores() {
         hole_9: '',
       });
 
-      alert('Score added successfully!');
       router.refresh();
     } catch (error) {
       console.error('Error adding score:', error);
