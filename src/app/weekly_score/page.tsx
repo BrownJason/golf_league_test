@@ -30,10 +30,10 @@ export default async function Page() {
         <div className="p-4 md:p-6">
           <main className="max-w-7xl mx-auto">
             <div className="text-center mb-8 md:mb-12">
-              <h1 className="text-2xl md:text-3xl font-bold text-text mb-3">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3">
                 No Scores Available
               </h1>
-              <p className="text-text text-sm md:text-base">
+              <p className="text-[#EDE6D6] text-sm md:text-base">
                 There are currently no weekly scores recorded.
               </p>
             </div>
@@ -57,37 +57,37 @@ export default async function Page() {
         <main className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-2xl md:text-3xl font-bold text-text mb-3">
+            <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3">
               Weekly Performance
             </h1>
             <div className="h-1 w-24 md:w-32 bg-text mx-auto rounded-full mb-4"></div>
-            <p className="text-text text-sm md:text-base">
+            <p className="text-[#EDE6D6] text-sm md:text-base">
               Track scores and winnings week by week
             </p>
           </div>
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-            <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-              <h3 className="text-text text-sm font-medium mb-2">Total Rounds</h3>
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
+              <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Total Rounds</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 {totalRounds}
               </p>
             </div>
-            <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-              <h3 className="text-text text-sm font-medium mb-2">Average Score</h3>
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
+              <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Average Score</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 {averageScore}
               </p>
             </div>
-            <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-              <h3 className="text-text text-sm font-medium mb-2">Total Winnings</h3>
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
+              <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Total Winnings</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 ${totalWinnings}
               </p>
             </div>
-            <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-              <h3 className="text-text text-sm font-medium mb-2">Unique Players</h3>
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
+              <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Unique Players</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
                 {uniquePlayers}
               </p>
@@ -95,19 +95,19 @@ export default async function Page() {
           </div>
 
           {/* Tabs for Scores and Winnings */}
-          <div className="bg-card border border-border rounded-xl overflow-hidden shadow shadow-black shadow-lg">
+          <div className="bg-[#292929] border border-[#B2825E] rounded-xl overflow-hidden shadow shadow-black shadow-lg">
             <Tabs defaultValue="scores" className="w-full">
               <div className="px-4 pt-4 md:px-6 md:pt-6">
-                <TabsList className="grid w-full grid-cols-2 bg-card border border-border rounded-lg overflow-hidden">
+                <TabsList className="grid w-full grid-cols-2 bg-[#292929] border border-[#B2825E] rounded-lg overflow-hidden">
                   <TabsTrigger 
                     value="scores" 
-                    className="py-3 text-text data-[state=active]:bg-card-foreground data-[state=active]:text-text border data-[state=active]:border-black"
+                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-card-foreground data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
                   >
                     Scores
                   </TabsTrigger>
                   <TabsTrigger 
                     value="winnings"
-                    className="py-3 text-text data-[state=active]:bg-card-foreground data-[state=active]:text-text border data-[state=active]:border-black"
+                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-card-foreground data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
                   >
                     Winnings
                   </TabsTrigger>
@@ -148,8 +148,8 @@ export default async function Page() {
 
           {/* Best Performances Section */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-              <h3 className="text-xl font-semibold text-text mb-4">Best Rounds</h3>
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
+              <h3 className="text-xl font-semibold text-[#EDE6D6] mb-4">Best Rounds</h3>
               <div className="space-y-3">
                 {weekly_scores
                   .sort((a, b) => a.score - b.score)
@@ -157,17 +157,17 @@ export default async function Page() {
                   .map((score, index) => (
                     <div key={score.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-text text-sm">{index + 1}.</span>
+                        <span className="text-[#EDE6D6] text-sm">{index + 1}.</span>
                         <span className="text-white">{score.player_name}</span>
                       </div>
-                      <span className="text-text font-semibold">{score.score}</span>
+                      <span className="text-[#EDE6D6] font-semibold">{score.score}</span>
                     </div>
                   ))}
               </div>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-              <h3 className="text-xl font-semibold text-text mb-4">Top Earners</h3>
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
+              <h3 className="text-xl font-semibold text-[#EDE6D6] mb-4">Top Earners</h3>
               <div className="space-y-3">
                 {Object.entries(
                   weekly_winnings.reduce((acc, win) => {
@@ -181,10 +181,10 @@ export default async function Page() {
                   .map(([name, amount], index) => (
                     <div key={name} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-text text-sm">{index + 1}.</span>
+                        <span className="text-[#EDE6D6] text-sm">{index + 1}.</span>
                         <span className="text-white">{name}</span>
                       </div>
-                      <span className="text-text font-semibold">${amount.toFixed(2)}</span>
+                      <span className="text-[#EDE6D6] font-semibold">${amount.toFixed(2)}</span>
                     </div>
                   ))}
               </div>

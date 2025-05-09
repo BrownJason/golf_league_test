@@ -40,10 +40,10 @@ export default function Page() {
       <main className="mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
-          <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#292929] border border-[#B2825E] border-4">
+          <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#292929] border border-[#B2825E] border-4 rounded-xl">
             <Carousel  
                 plugins={[plugin.current]}
-                className="flex bg-[#292929]"
+                className="flex bg-[#292929] rounded-xl"
                 onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
                 setApi={setApi}>
@@ -56,7 +56,7 @@ export default function Page() {
                             <DialogTrigger asChild>
                                 <Image src={img.src} alt="bg img" fill unoptimized className="flex aspect-square items-center justify-center p-6" />  
                             </DialogTrigger>
-                            <DialogContent className="flex flex-col !max-w-5/6">
+                            <DialogContent className="flex flex-col !max-w-5/6 bg-[#292929] border border-[#B2825E]">
                                 <DialogHeader>
                                     <DialogTitle className="text-[#EDE6D6]">{img.title}</DialogTitle>
                                     <DialogDescription className="text-[#EDE6D6]">
