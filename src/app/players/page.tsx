@@ -13,10 +13,10 @@ export default async function Page() {
         <div className="p-4 md:p-6">
           <main className="max-w-7xl mx-auto">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-[#9A9540] mb-3">
+              <h1 className="text-2xl font-bold text-[var(--text)] mb-3">
                 No Players Available
               </h1>
-              <p className="text-[#9A9540]/80">
+              <p className="text-[var(--text)]/80">
                 There are currently no players in the system.
               </p>
             </div>

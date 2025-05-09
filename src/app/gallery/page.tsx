@@ -3,11 +3,12 @@
 
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useRef, useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import React from "react";
 import { GetImages } from "@/lib/getImages";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function Page() {
   // Replace below with api call of images saved to a database once we have it setup for use
@@ -38,28 +39,42 @@ export default function Page() {
     <div className="p-4 md:p-6">
       <main className="mx-auto">
         <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#9A9540] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
-          <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#243E2A] border border-[#9A9540] border-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--text)] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
+          <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[var(--card)] border border-[var(--border)] border-4">
             <Carousel  
                 plugins={[plugin.current]}
-                className="flex bg-[#243E2A]"
+                className="flex bg-[var(--card)]"
                 onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
                 setApi={setApi}>
                 <CarouselContent>
                 {images.map((img: any) => {
-                    console.log(img)
                     return (
-                    <CarouselItem key={img} className="w-[1960px]">
+                    <CarouselItem key={img.src} className="w-[1960px]">
                         <AspectRatio ratio={16/9}>
-                            <Image src={img} alt="bg img" fill unoptimized className="flex aspect-square items-center justify-center p-6" />  
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Image src={img.src} alt="bg img" fill unoptimized className="flex aspect-square items-center justify-center p-6" />  
+                            </DialogTrigger>
+                            <DialogContent className="flex flex-col !max-w-5/6">
+                                <DialogHeader>
+                                    <DialogTitle className="text-[var(--text)]">{img.title}</DialogTitle>
+                                    <DialogDescription className="text-[var(--text)]">
+                                        {img.description}
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <Image src={img.src} alt="bg img"  />  
+                            </DialogContent>
+                        </Dialog>
                         </AspectRatio>
                     </CarouselItem>
                     );
                 })}
                 </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
             </Carousel> 
-            <div className="py-2 text-center text-lg text-[#9A9540]">
+            <div className="py-2 text-center text-lg text-[var(--text)]">
                 Slide {current} of {count}
             </div>
           </div>

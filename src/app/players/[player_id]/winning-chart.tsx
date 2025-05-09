@@ -35,13 +35,10 @@ const PieChart = ({ values, formattedWinnings }: { values: any; player: any; wee
         data: [greens, skins, partners, best_ball, low_score],
         backgroundColor: ["#1a1c3e", "#3e1a2e", "#3e3c1a", "#3d060f", "#645b48"],
         datalabels: {
-          color: "#9A9540",
+          color: "#EDE6D6",
           font: {
             size: 24,
-          },
-          textStrokeWidth: 0,
-          textShadowBlur: 20,
-          textShadowColor: "#000000",
+          }
         },
       },
     ],
@@ -58,12 +55,12 @@ const PieChart = ({ values, formattedWinnings }: { values: any; player: any; wee
     scales: {
       x: {
         ticks: {
-          color: "#9A9540", // Change this to your desired color for the X-axis labels
+          color: "#EDE6D6", // Change this to your desired color for the X-axis labels
         },
       },
       y: {
         ticks: {
-          color: "#9A9540", // Change this to your desired color for the Y-axis labels,
+          color: "#EDE6D6", // Change this to your desired color for the Y-axis labels,
         },
         beginAtZero: true, // Ensure the Y-axis starts at 0
       },

@@ -9,9 +9,9 @@ export default async function Player() {
       <main className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#9A9540] mb-3">Players Directory</h1>
-          <div className="h-1 w-24 md:w-32 bg-[#9A9540] mx-auto rounded-full"></div>
-          <p className="text-[#9A9540] mt-4 text-sm md:text-base">
+          <h1 className="text-2xl md:text-3xl font-bold text-[var(--text)] mb-3">Players Directory</h1>
+          <div className="h-1 w-24 md:w-32 bg-[var(--text)] mx-auto rounded-full"></div>
+          <p className="text-[var(--text)] mt-4 text-sm md:text-base">
             Select a player to view their detailed statistics
           </p>
         </div>
@@ -22,30 +22,30 @@ export default async function Player() {
             <Link
               key={player.player_id.toString()}
               href={`/players/${player.player_id}`}
-              className="group relative bg-[#243E2A] border border-[#9A9540] rounded-xl overflow-hidden shadow shadow-black shadow-lg transition-transform duration-300 hover:shadow-xl hover:scale-105 hover:shadow-2xl"
+              className="group relative bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden shadow shadow-black shadow-lg transition-transform duration-300 hover:shadow-xl hover:scale-105 hover:shadow-2xl"
             >
               {/* Player Card Content */}
               <div className="p-4 md:p-6">
                 {/* Player Initial Circle */}
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#1A3E2A] border-2 border-[#9A9540] flex items-center justify-center mb-3 mx-auto group-hover:border-white transition-colors">
-                  <span className="text-xl md:text-2xl font-bold text-[#9A9540] group-hover:text-white">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[var(--card-foreground)] border-2 border-[var(--border)] flex items-center justify-center mb-3 mx-auto group-hover:border-white transitions">
+                  <span className="text-xl md:text-2xl font-bold text-[var(--text)] ">
                     {player.player_name.charAt(0)}
                   </span>
                 </div>
                 
                 {/* Player Name */}
                 <div className="text-center">
-                  <h2 className="text-[#9A9540] font-semibold text-sm md:text-base mb-1">
+                  <h2 className="text-[var(--text)] font-semibold text-sm md:text-base mb-1">
                     {player.player_name}
                   </h2>
-                  <p className="text-xs md:text-sm text-[#9A9540]/80">
+                  <p className="text-xs md:text-sm text-[var(--text)]/80">
                     Handicap: {player.handicap}
                   </p>
                 </div>
               </div>
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-[#1A3E2A]/0 group-hover:bg-[#1A3E2A]/20 transition-all duration-300"></div>
+              <div className="absolute inset-0 transition-all duration-300"></div>
             </Link>
           ))}
         </div>

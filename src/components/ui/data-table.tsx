@@ -45,19 +45,19 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
             onChange={(event) =>
               table.getColumn(filterItem)?.setFilterValue(event.target.value)
             }
-            className="max-w-sm bg-[#1A3E2A] border-[#9A9540] text-[#9A9540] placeholder:text-[#9A9540]/50"
+            className="max-w-sm bg-[var(--card)] border-[var(--border)] text-[var(--text)] placeholder:text-[var(--text)]/50"
           />
         </div>
       )}
       
-      <div className="rounded-md border border-[#9A9540] overflow-hidden">
+      <div className="rounded-md border border-[var(--border)] overflow-hidden">
         <Table>
-          <TableHeader className="bg-[#1A3E2A]">
+          <TableHeader className="bg-[var(--card-foreground)]">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b border-[#9A9540] hover:bg-[#243E2A]">
+              <TableRow key={headerGroup.id} className="border-b border-[var(--border)] hover:bg-[var(--card-foreground)]">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-[#9A9540] text-center">
+                    <TableHead key={header.id} className="text-[var(--text)] text-center">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -76,10 +76,10 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b border-[#9A9540] hover:bg-[#243E2A]"
+                  className="bg-[var(--card-foreground)] border-b border-[var(--border)] hover:bg-[var(--foreground)]"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-[#9A9540]">
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-[#9A9540]"
+                  className="h-24 text-center text-[var(--text)]"
                 >
                   No results.
                 </TableCell>
@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="border-[#9A9540] text-[#9A9540] hover:bg-[#243E2A]"
+            className="border-[var(--border)] text-[var(--text)] hover:bg-[var(--card-foreground)]"
           >
             Previous
           </Button>
@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="border-[#9A9540] text-[#9A9540] hover:bg-[#243E2A]"
+            className="border-[var(--border)] text-[var(--text)] hover:bg-[var(--card-foreground)]"
           >
             Next
           </Button>
