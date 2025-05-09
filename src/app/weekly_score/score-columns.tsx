@@ -64,7 +64,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     },
     cell: ({ row }) => {
       const week_date: string = moment(row.getValue("week_date")).add(1, "days").format("MM/DD/YYYY");
-      return <div>{week_date}</div>;
+      return <div className="text-center">{week_date}</div>;
     },
   },
   {
@@ -79,6 +79,9 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
   {
     accessorKey: "handicap",
     header: "Handicap",
+    cell: ({row}) => {
+      return <div className="text-center">{row.getValue("handicap")}</div>
+    }
   },
   {
     accessorKey: "adjusted_score",

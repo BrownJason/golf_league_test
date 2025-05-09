@@ -22,12 +22,12 @@ export default async function Player() {
             <Link
               key={player.player_id.toString()}
               href={`/players/${player.player_id}`}
-              className="group relative bg-[#292929] border border-[#B2825E] rounded-xl overflow-hidden shadow shadow-black shadow-lg transition-transform duration-300 hover:shadow-xl hover:scale-105 hover:shadow-2xl"
+              className="group relative bg-[#292929] hover:bg-[#305D3C]/60 border border-[#B2825E] rounded-xl overflow-hidden shadow shadow-black shadow-lg transition-transform duration-300 hover:shadow-xl hover:scale-105 hover:shadow-2xl"
             >
               {/* Player Card Content */}
               <div className="p-4 md:p-6">
                 {/* Player Initial Circle */}
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#305D3C] border-2 border-[#B2825E] flex items-center justify-center mb-3 mx-auto group-hover:border-white transitions">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#305D3C] border-2 border-[#B2825E] flex items-center justify-center mb-3 mx-auto transitions">
                   <span className="text-xl md:text-2xl font-bold text-[#EDE6D6] ">
                     {player.player_name.charAt(0)}
                   </span>

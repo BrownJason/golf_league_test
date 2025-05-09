@@ -11,7 +11,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="w-full bg-[#292929]">
+    <nav className="w-full bg-[#0F3826]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}

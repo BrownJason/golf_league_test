@@ -37,7 +37,7 @@ export default function RootLayout({
               {children}
             </main>
 
-            <footer className="bg-[#292929] border-t border-[#EDE6D6]">
+            <footer className="bg-[#0F3826] border-t border-[#EDE6D6]">
               <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {/* Brand Section */}

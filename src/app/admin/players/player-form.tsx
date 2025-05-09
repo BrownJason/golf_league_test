@@ -8,7 +8,7 @@ import { Player } from "./columns";
 
 interface PlayerFormProps {
   onSubmit: (data: Player) => void;
-  initialData?: Omit<Player, 'player_id'>;
+  initialData?: Player;
 }
 
 export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
@@ -20,13 +20,27 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/players', {
-        method: initialData ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      console.log(initialData);
+
+      let response = null;
+
+      if (initialData) {
+        response = await fetch(`/api/players/${initialData.player_id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+      } else {
+        response = await fetch('/api/players', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+      }
 
       if (!response.ok) {
         throw new Error('Failed to save player');
