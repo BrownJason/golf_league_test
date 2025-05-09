@@ -45,9 +45,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 p-8 bg-card rounded-lg shadow-lg shadow-black border border-border">
+      <div className="max-w-md w-full space-y-8 p-8 bg-card rounded-lg shadow-lg shadow-black border border-[#B2825E]">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-text">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-[#EDE6D6]">
             Admin Login
           </h2>
         </div>
@@ -67,7 +67,7 @@ export default function LoginPage() {
                 name="username"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-gray-500 text-text rounded-t-md focus:outline-none focus:ring-ring focus:border-border focus:z-10 sm:text-sm bg-card-foreground"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-[#B2825E] placeholder-gray-500 text-[#EDE6D6] rounded-t-md focus:outline-none focus:ring-ring focus:border-[#B2825E] focus:z-10 sm:text-sm bg-[#305D3C]"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -82,7 +82,7 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-gray-500 text-text rounded-b-md focus:outline-none focus:ring-ring focus:border-border focus:z-10 sm:text-sm bg-card-foreground"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-[#B2825E] placeholder-gray-500 text-[#EDE6D6] rounded-b-md focus:outline-none focus:ring-ring focus:border-[#B2825E] focus:z-10 sm:text-sm bg-[#305D3C]"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -93,7 +93,7 @@ export default function LoginPage() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-text bg-card-foreground border-border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring hover:scale-105"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-[#EDE6D6] bg-[#305D3C] border-[#B2825E] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring hover:scale-105"
             >
               Sign in
             </button>
