@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { fetchSeasonOverviewData } from "@/lib/api";
+import { fetchSeasonOverviewData, fetchWeeklyGlance } from "@/lib/api";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -8,7 +8,47 @@ export const revalidate = 0;
 export default async function Home() {
  try {
     const season_info = await fetchSeasonOverviewData();
+    const weekly_glance = await fetchWeeklyGlance();
 
+    let partners = 'N/A';
+    let low_score = 'N/A';
+    let greens = 'N/A';
+    let skins = 'N/A';
+    let best_ball = 'N/A';
+
+    if (weekly_glance !== null || weekly_glance !== undefined) {
+      partners = weekly_glance.map((res: any) => {
+        if (res.partners > 0) {
+          return res.player_name;
+        };
+      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => acc + ' / ' + val)
+  
+      low_score = weekly_glance.map((res: any) => {
+        if (res.low_score > 0) {
+          return res.player_name;
+        };
+      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+  
+      greens = weekly_glance.map((res: any) => {
+        if (res.greens > 0) {
+          return res.player_name;
+        };
+      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+  
+      skins = weekly_glance.map((res: any) => {
+        if (res.skins > 0) {
+          return res.player_name;
+        };
+      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+  
+      best_ball = weekly_glance.map((res: any) => {
+        if (res.best_ball > 0) {
+          return res.player_name;
+        };
+      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+    }
+
+   
     return (
       <div className="p-4 md:p-6">
         <main className="max-w-7xl mx-auto">
@@ -66,7 +106,7 @@ export default async function Home() {
           </div>
 
           {/* Quick Stats Section */}
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg">
+          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 mb-12 shadow shadow-black shadow-lg">
             <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Season Overview</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
@@ -87,6 +127,37 @@ export default async function Home() {
               </div>
             </div>
           </div>
+
+          
+          <Link href="/weekly_score" className="group">
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg">
+              <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Week At A Glance</h2>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+                <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
+                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Partners:</p>
+                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">
+                    {partners}
+                  </p>
+                </div>
+                <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
+                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Low Score:</p>
+                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{low_score}</p>
+                </div>
+                <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
+                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Greens:</p>
+                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{greens}</p>
+                </div>
+                <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
+                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Skins:</p>
+                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{skins}</p>
+                </div>
+                <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
+                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Best Ball:</p>
+                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{best_ball}</p>
+                </div>
+              </div>
+            </div>
+          </Link>
         </main>
     </div>
   );

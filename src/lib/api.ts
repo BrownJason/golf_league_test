@@ -127,6 +127,21 @@ export async function fetchSeasonOverviewData(): Promise<any>{
   return data;
 }
 
+export async function fetchWeeklyGlance(): Promise<any>{
+
+  const url = getApiUrl(`/api/weekly-glance`);
+  const response = await fetch(url, {
+    next: {revalidate: 0},
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch season data');
+  }
+  const data = await response.json();
+  return data;
+}
+
 export async function fetchESPNGolfScores(): Promise<any> {
   
   const url = 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard';

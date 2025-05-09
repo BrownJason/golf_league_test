@@ -101,13 +101,13 @@ export default async function Page() {
                 <TabsList className="grid w-full grid-cols-2 bg-[#292929] border border-[#B2825E] rounded-lg overflow-hidden">
                   <TabsTrigger 
                     value="scores" 
-                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-card-foreground data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
+                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
                   >
                     Scores
                   </TabsTrigger>
                   <TabsTrigger 
                     value="winnings"
-                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-card-foreground data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
+                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
                   >
                     Winnings
                   </TabsTrigger>

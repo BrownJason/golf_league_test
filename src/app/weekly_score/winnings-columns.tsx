@@ -48,7 +48,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     },
     cell: ({ row }) => {
       const week_date: string = moment(row.getValue("week_date")).add(1, "days").format("MM/DD/YYYY");
-      return <div>{week_date}</div>;
+      return <div className="text-center">{week_date}</div>;
     },
   },
   {
@@ -56,7 +56,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     header: "Skins",
     cell: ({ row }) => {
       const skins: string = parseInt(row.getValue("skins")).toLocaleString("en-US", { style: "currency", currency: "USD" });
-      return <div>{skins}</div>;
+      return <div className="text-center">{skins}</div>;
     },
   },
   {
@@ -64,7 +64,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     header: "Greens",
     cell: ({ row }) => {
       const greens: string = parseInt(row.getValue("greens")).toLocaleString("en-US", { style: "currency", currency: "USD" });
-      return <div>{greens}</div>;
+      return <div className="text-center">{greens}</div>;
     },
   },
   {
@@ -72,7 +72,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     header: "Partners",
     cell: ({ row }) => {
       const partners: string = parseInt(row.getValue("partners")).toLocaleString("en-US", { style: "currency", currency: "USD" });
-      return <div>{partners}</div>;
+      return <div className="text-center">{partners}</div>;
     },
   },
   {
@@ -80,7 +80,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     header: "Best Ball",
     cell: ({ row }) => {
       const best_ball: string = parseInt(row.getValue("best_ball")).toLocaleString("en-US", { style: "currency", currency: "USD" });
-      return <div>{best_ball}</div>;
+      return <div className="text-center">{best_ball}</div>;
     },
   },
   {
@@ -88,7 +88,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
     header: "Low Score",
     cell: ({ row }) => {
       const low_score: string = parseInt(row.getValue("low_score")).toLocaleString("en-US", { style: "currency", currency: "USD" });
-      return <div>{low_score}</div>;
+      return <div className="text-center">{low_score}</div>;
     },
   },
   {
@@ -101,7 +101,7 @@ export const winningsColumns: ColumnDef<WeeklyWinnings>[] = [
       const low_score: number = parseInt(row.getValue("low_score"));
       const best_ball: number = parseInt(row.getValue("best_ball"));
       const totals = (partners + greens + skins + low_score + best_ball).toLocaleString("en-US", { style: "currency", currency: "USD" });
-      return <div>{totals}</div>;
+      return <div className="text-center">{totals}</div>;
     },
   },
 ];
