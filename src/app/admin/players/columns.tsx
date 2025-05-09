@@ -23,47 +23,56 @@ export const playerColumns: ColumnDef<Player>[] = [
   {
     accessorKey: "player_name",
     header: "Player Name",
+    cell: ({row}) => {
+      return <div className="text-center text-lg">{row.getValue("player_name")}</div>
+    }
   },
   {
     accessorKey: "handicap",
     header: "Handicap",
+    cell: ({row}) => {
+      return <div className="text-center text-lg">{row.getValue("handicap")}</div>
+    }
   },
   {
     id: "actions",
+    header: "Edit/Delete",
     cell: ({ row }) => {
       const player = row.original;
 
       return (
-        <Dialog>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <MoreHorizontal className="h-4 w-4 text-[#9A9540]" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-[#1A3E2A] border-[#9A9540]">
-                <DialogTrigger asChild>
-                  <DropdownMenuItem
-                    className="text-[#9A9540] hover:bg-[#2A4E3A] cursor-pointer"
-                  >
-                    Edit
-                  </DropdownMenuItem>
-                </DialogTrigger>
-              <DropdownMenuItem
-                className="text-red-500 hover:bg-[#2A4E3A] cursor-pointer"
-                onClick={() => handleDeletePlayer(player.id)}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        <DialogContent className="bg-[#1A3E2A] border-[#9A9540]">
-          <DialogHeader>
-            <DialogTitle className="text-[#9A9540]">Update Player</DialogTitle>
-          </DialogHeader>
-          <PlayerForm onSubmit={() => handleEditPlayer(player.player_name)} initialData={player} />
-        </DialogContent>
-      </Dialog>
+        <div className="text-center">
+          <Dialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <MoreHorizontal className="h-4 w-4 text-[#EDE6D6]" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-[#1A3E2A] border-[#9A9540]">
+                  <DialogTrigger asChild>
+                    <DropdownMenuItem
+                      className="text-[#EDE6D6] hover:bg-[#2A4E3A] cursor-pointer"
+                    >
+                      Edit
+                    </DropdownMenuItem>
+                  </DialogTrigger>
+                <DropdownMenuItem
+                  className="text-red-500 hover:bg-[#2A4E3A] cursor-pointer"
+                  onClick={() => handleDeletePlayer(player.id)}
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DialogContent className="bg-[#1A3E2A] border-[#9A9540]">
+              <DialogHeader>
+                <DialogTitle className="text-[#EDE6D6]">Update Player</DialogTitle>
+              </DialogHeader>
+              <PlayerForm onSubmit={() => handleEditPlayer(player.player_name)} initialData={player} />
+            </DialogContent>
+          </Dialog>
+        </div>
       );
     },
   },

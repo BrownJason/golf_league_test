@@ -57,19 +57,19 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="player_name" className="block text-[#9A9540] mb-2">
+        <label htmlFor="player_name" className="block text-[#EDE6D6] mb-2">
           Player Name
         </label>
         <Input
           id="player_name"
           value={formData.player_name}
           onChange={(e) => setFormData({ ...formData, player_name: e.target.value })}
-          className="bg-[#2A4E3A] text-[#9A9540] border-[#9A9540]"
+          className="bg-[#2A4E3A] text-[#EDE6D6] border-[#9A9540]"
           required
         />
       </div>
       <div>
-        <label htmlFor="handicap" className="block text-[#9A9540] mb-2">
+        <label htmlFor="handicap" className="block text-[#EDE6D6] mb-2">
           Handicap
         </label>
         <Input
@@ -77,7 +77,7 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
           type="number"
           value={formData.handicap}
           onChange={(e) => setFormData({ ...formData, handicap: Number(e.target.value) })}
-          className="bg-[#2A4E3A] text-[#9A9540] border-[#9A9540]"
+          className="bg-[#2A4E3A] text-[#EDE6D6] border-[#9A9540]"
           required
         />
       </div>
