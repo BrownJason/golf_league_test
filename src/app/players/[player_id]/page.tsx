@@ -91,28 +91,28 @@ export default async function Page({
       <div className="p-4 md:p-6">
         {/* Player Header Section - Made more compact on mobile */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-[var(--text)] text-center mb-2 px-2">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] text-center mb-2 px-2">
             {player.player_name}
           </h1>
-          <div className="h-1 w-24 md:w-32 bg-[var(--text)] mx-auto rounded-full"></div>
+          <div className="h-1 w-24 md:w-32 bg-[#EDE6D6] mx-auto rounded-full"></div>
         </div>
 
         {/* Winnings Section */}
         {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (
           <div className="mb-6 md:mb-8 max-w-4xl mx-auto">
-            <div className="bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)] shadow-lg mx-auto">
-              <h2 className="text-xl md:text-2xl font-bold text-[var(--text)] mb-4 md:mb-6">Season Winnings</h2>
+            <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg mx-auto">
+              <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-4 md:mb-6">Season Winnings</h2>
               <div className="grid grid-cols-1 gap-4 md:gap-6">
                 {/* Winnings Breakdown - Above chart on mobile */}
                 <div className="space-y-3 order-1">
                   {Object.entries(playerWinnings[0]).map(([category, amount]) => {
                     if (category !== 'player_id' && category !== 'total') {
                       return (
-                        <div key={category} className="flex justify-between items-center border-b border-[var(--text)] pb-2">
-                          <span className="text-[var(--text)] capitalize text-sm md:text-base">
+                        <div key={category} className="flex justify-between items-center border-b border-[#EDE6D6] pb-2">
+                          <span className="text-[#EDE6D6] capitalize text-sm md:text-base">
                             {category.replace('_', ' ')}
                           </span>
-                          <span className="text-[var(--text)] text-sm md:text-base">
+                          <span className="text-[#EDE6D6] text-sm md:text-base">
                             ${Number(amount).toFixed(2)}
                           </span>
                         </div>
@@ -120,57 +120,57 @@ export default async function Page({
                     }
                   })}
                   <div className="flex justify-between items-center pt-2">
-                    <span className="text-[var(--text)] font-bold text-sm md:text-base">Total</span>
-                    <span className="text-[var(--text)] font-bold text-sm md:text-base">{formattedWinnings[0]}</span>
+                    <span className="text-[#EDE6D6] font-bold text-sm md:text-base">Total</span>
+                    <span className="text-[#EDE6D6] font-bold text-sm md:text-base">{formattedWinnings[0]}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)] shadow-lg mb-6 md:mb-8 text-center">
-            <p className="text-[var(--text)]">No winnings recorded yet</p>
+          <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg mb-6 md:mb-8 text-center">
+            <p className="text-[#EDE6D6]">No winnings recorded yet</p>
           </div>
         )}
 
         {/* Stats Grid - Single column on mobile, three columns on desktop */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
           {/* Handicap Card */}
-          <div className="bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)] shadow-lg">
-            <h3 className="text-[var(--text)] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Handicap</h3>
-            <p className="text-2xl md:text-3xl text-[var(--text)]">{player.handicap}</p>
+          <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
+            <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Handicap</h3>
+            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{player.handicap}</p>
           </div>
 
           {/* Average Score Card */}
-          <div className="bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)] shadow-lg">
-            <h3 className="text-[var(--text)] text-base md:text-lg font-semibold mb-1 md:mb-2">Average Score</h3>
-            <p className="text-2xl md:text-3xl text-[var(--text)]">{avgScore.toFixed(1)}</p>
+          <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
+            <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Average Score</h3>
+            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{avgScore.toFixed(1)}</p>
           </div>
 
           {/* Weeks Played Card */}
-          <div className="bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)] shadow-lg">
-            <h3 className="text-[var(--text)] text-base md:text-lg font-semibold mb-1 md:mb-2">Weeks Played</h3>
-            <p className="text-2xl md:text-3xl text-[var(--text)]">{weeksPlayed}</p>
+          <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
+            <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Weeks Played</h3>
+            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{weeksPlayed}</p>
           </div>
 
           {/* Current Winnings Card */}
-          <div className="bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)] shadow-lg">
-            <h3 className="text-[var(--text)] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Winnings</h3>
-            <p className="text-2xl md:text-3xl text-[var(--text)]">{formattedWinnings}</p>
+          <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
+            <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Winnings</h3>
+            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{formattedWinnings}</p>
           </div>
         </div>
 
         {/* Scores Section */}
         {weeksPlayed > 0 && (
-          <div className="bg-[var(--card)] rounded-xl border border-[var(--text)] shadow-lg overflow-hidden">
+          <div className="bg-[#292929] rounded-xl border border-[#EDE6D6] shadow-lg overflow-hidden">
             <div className="p-4 md:p-6">
-              <h2 className="text-xl md:text-2xl font-bold text-[var(--text)] mb-4">Score History</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-4">Score History</h2>
               <div className="mb-4">
                 <WeekFilter weeks={distinctWeeks} selectedWeek={selectedWeek} />
               </div>
             </div>
             {/* Table with horizontal scroll on mobile */}
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-[var(--text)] scrollbar-track-[var(--background)] m-4">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-[#EDE6D6] scrollbar-track-[#1A1A1A] m-4">
               <div className="min-w-[640px]"> {/* Minimum width to prevent squishing */}
                 <DataTable 
                   columns={columns} 
@@ -198,8 +198,8 @@ export default async function Page({
   } catch (error) {
     console.error('Error:', error);
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-        <div className="text-[var(--text)]">Error loading player data</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#1A1A1A]">
+        <div className="text-[#EDE6D6]">Error loading player data</div>
       </div>
     );
   }

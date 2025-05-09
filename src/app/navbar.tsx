@@ -11,13 +11,13 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="w-full bg-[var(--card)]">
+    <nav className="w-full bg-[#292929]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <span className="text-xl font-bold text-[var(--text)] hover:text-[var(--text)]/80 transitions">
+              <span className="text-xl font-bold text-[#EDE6D6] hover:text-[#EDE6D6]/80 transitions">
                 Brown Family Golf
               </span>
             </Link>
@@ -27,38 +27,38 @@ export default function NavBar() {
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Link 
               href="/" 
-              className="text-[var(--text)] hover:text-[var(--text)]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
             >
               <span>Home</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[var(--text)] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
               href="/players" 
-              className="text-[var(--text)] hover:text-[var(--text)]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
             >
               <span>Players</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[var(--text)] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
               href="/weekly_score" 
-              className="text-[var(--text)] hover:text-[var(--text)]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
             >
               <span>Weekly Score</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[var(--text)] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
               href="/gallery" 
-              className="text-[var(--text)] hover:text-[var(--text)]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
             >
               <span>Gallery</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[var(--text)] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
               href="/pga_events" 
-              className="text-[var(--text)] hover:text-[var(--text)]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
             >
               <span>PGA Events</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[var(--text)] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
           </div>
 
@@ -67,7 +67,7 @@ export default function NavBar() {
           <div className="lg:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-[var(--text)] hover:text-[var(--text)]/80 hover:bg-[#243E2A] transitions focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions focus:outline-none"
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -102,35 +102,35 @@ export default function NavBar() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`${isOpen ? 'block' : 'hidden'} lg:hidden border-t border-[var(--text)]/20`}>
+      <div className={`${isOpen ? 'block' : 'hidden'} lg:hidden border-t border-[#EDE6D6]/20`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
             href="/"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[var(--text)] hover:text-[var(--text)]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
           >
             Home
           </Link>
           <Link
             href="/players"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[var(--text)] hover:text-[var(--text)]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
           >
             Players
           </Link>
           <Link
             href="/weekly_score"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[var(--text)] hover:text-[var(--text)]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
           >
             Weekly Score
           </Link>
           <Link
             href="/gallery"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[var(--text)] hover:text-[var(--text)]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
           >
             Gallery
           </Link>
           <Link
             href="/pga_events"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[var(--text)] hover:text-[var(--text)]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
           >
             PGA Events
           </Link>

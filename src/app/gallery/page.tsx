@@ -39,11 +39,11 @@ export default function Page() {
     <div className="p-4 md:p-6">
       <main className="mx-auto">
         <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--text)] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
-          <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[var(--card)] border border-[var(--border)] border-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
+          <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#292929] border border-[#B2825E] border-4">
             <Carousel  
                 plugins={[plugin.current]}
-                className="flex bg-[var(--card)]"
+                className="flex bg-[#292929]"
                 onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
                 setApi={setApi}>
@@ -58,8 +58,8 @@ export default function Page() {
                             </DialogTrigger>
                             <DialogContent className="flex flex-col !max-w-5/6">
                                 <DialogHeader>
-                                    <DialogTitle className="text-[var(--text)]">{img.title}</DialogTitle>
-                                    <DialogDescription className="text-[var(--text)]">
+                                    <DialogTitle className="text-[#EDE6D6]">{img.title}</DialogTitle>
+                                    <DialogDescription className="text-[#EDE6D6]">
                                         {img.description}
                                     </DialogDescription>
                                 </DialogHeader>
@@ -74,7 +74,7 @@ export default function Page() {
                 <CarouselPrevious />
                 <CarouselNext />
             </Carousel> 
-            <div className="py-2 text-center text-lg text-[var(--text)]">
+            <div className="py-2 text-center text-lg text-[#EDE6D6]">
                 Slide {current} of {count}
             </div>
           </div>

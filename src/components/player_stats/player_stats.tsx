@@ -90,30 +90,30 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
   };
 
   return (
-    <div className="mt-6 md:mt-8 bg-[var(--card)] p-4 md:p-6 rounded-xl border border-[var(--text)]">
-      <h2 className="text-xl md:text-2xl font-bold text-[var(--text)] mb-6">Performance Highlights</h2>
+    <div className="mt-6 md:mt-8 bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6]">
+      <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-6">Performance Highlights</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2">Best Score</h3>
-          <p className="text-xl md:text-2xl text-[var(--text)]">{Math.min(...playerScores.map((score) => score.score))}</p>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Best Score</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6]">{Math.min(...playerScores.map((score) => score.score))}</p>
         </div>
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2">Worst Score</h3>
-          <p className="text-xl md:text-2xl text-[var(--text)]">{Math.max(...playerScores.map((score) => score.score))}</p>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Worst Score</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6]">{Math.max(...playerScores.map((score) => score.score))}</p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2">Recent Trend</h3>
-          <p className="text-xl md:text-2xl text-[var(--text)]">{calculateTrend(playerScores)}</p>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Recent Trend</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6]">{calculateTrend(playerScores)}</p>
         </div>
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2">Consistency</h3>
-          <p className="text-xl md:text-2xl text-[var(--text)]">{calculateConsistency(playerScores)}%</p>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Consistency</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6]">{calculateConsistency(playerScores)}%</p>
         </div>
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2">Performance by Hole Type</h3>
-          <p className="text-xl md:text-2xl text-[var(--text)] flex flex-col gap-2">
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Performance by Hole Type</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6] flex flex-col gap-2">
             <span>Par 3: {par3}</span>
             <span>Par 4: {par4}</span>
             <span>Par 5: {par5}</span>
@@ -121,16 +121,16 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2 text-center">Score History</h3>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2 text-center">Score History</h3>
           <Line data={trendData} options={options} />
         </div>
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2 text-center">Peer Comparison</h3>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2 text-center">Peer Comparison</h3>
           <Bar data={comparisonData} options={bar_options} />
         </div>
-        <div className="text-center bg-[var(--card-foreground)] p-3 rounded-lg border border-[var(--text)] shadow shadow-lg shadow-black">
-          <h3 className="text-[var(--text)] text-sm md:text-base mb-2 text-center">Winnings Breakdown</h3>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2 text-center">Winnings Breakdown</h3>
           <PieChart 
                     values={playerWinnings} 
                     avg_score={avgScore} 

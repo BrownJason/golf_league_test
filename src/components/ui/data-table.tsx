@@ -45,19 +45,19 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
             onChange={(event) =>
               table.getColumn(filterItem)?.setFilterValue(event.target.value)
             }
-            className="max-w-sm bg-[var(--card)] border-[var(--border)] text-[var(--text)] placeholder:text-[var(--text)]/50"
+            className="max-w-sm bg-[#292929] border-[#B2825E] text-[#EDE6D6] placeholder:text-[#EDE6D6]/50"
           />
         </div>
       )}
       
-      <div className="rounded-md border border-[var(--border)] overflow-hidden">
+      <div className="rounded-md border border-[#B2825E] overflow-hidden">
         <Table>
-          <TableHeader className="bg-[var(--card-foreground)]">
+          <TableHeader className="bg-[#305D3C]">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b border-[var(--border)] hover:bg-[var(--card-foreground)]">
+              <TableRow key={headerGroup.id} className="border-b border-[#B2825E] hover:bg-[#305D3C]">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-[var(--text)] text-center">
+                    <TableHead key={header.id} className="text-[#EDE6D6] text-center">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="bg-[var(--card-foreground)] border-b border-[var(--border)] hover:bg-[var(--foreground)]"
+                  className="bg-[#305D3C] border-b border-[#B2825E] hover:bg-[#292929]"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-[var(--text)]"
+                  className="h-24 text-center text-[#EDE6D6]"
                 >
                   No results.
                 </TableCell>
@@ -109,7 +109,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="border-[var(--border)] text-[var(--text)] hover:bg-[var(--card-foreground)]"
+            className="border-[#B2825E] text-[#EDE6D6] hover:bg-[#305D3C]"
           >
             Previous
           </Button>
@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({ columns, data, header, filterItem }: 
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="border-[var(--border)] text-[var(--text)] hover:bg-[var(--card-foreground)]"
+            className="border-[#B2825E] text-[#EDE6D6] hover:bg-[#305D3C]"
           >
             Next
           </Button>

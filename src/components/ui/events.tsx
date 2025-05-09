@@ -18,7 +18,7 @@ export default function Events({ espn_event, eventStartDate, eventEndDate }: { e
   return (
     <>
       <div className="flex items-center w-full">
-        <div className="flex flex-col items-center mx-auto bg-[var(--card)] border border-[var(--border)] rounded-xl shadow shadow-black shadow-lg p-6 my-8 text-center text-[var(--text)]">
+        <div className="flex flex-col items-center mx-auto bg-[#292929] border border-[#B2825E] rounded-xl shadow shadow-black shadow-lg p-6 my-8 text-center text-[#EDE6D6]">
           <div className="flex text-3xl hover:text-4xl ">
             <a href={`https://www.espn.com/golf/leaderboard?tournamentId=${espn_event.id}`} target="_blank">
                 {espn_event.name}
@@ -44,7 +44,7 @@ export default function Events({ espn_event, eventStartDate, eventEndDate }: { e
         <Marquee pauseOnHover className={`[--duration:300s]`} onClick={() => setIsReverse(!isReverse)} reverse={isReverse}>
           {espn_event.competitions[0].competitors.map((res: any) => {
             {return (res.athlete !== undefined ? 
-              <div key={res.athlete.fullName} className="bg-[var(--card)] border border-[var(--border)] grid grid-cols-2 p-2 rounded-lg h-32 mr-6 shadow shadow-black shadow-lg text-[var(--text)]">
+              <div key={res.athlete.fullName} className="bg-[#292929] border border-[#B2825E] grid grid-cols-2 p-2 rounded-lg h-32 mr-6 shadow shadow-black shadow-lg text-[#EDE6D6]">
                 <div className="flex flex-col mx-auto">
                   <div className="text-xl text-wrap mr-4 2-48">{res.athlete.fullName}</div>
                   <div>Current score: {res.score}</div>
@@ -54,7 +54,7 @@ export default function Events({ espn_event, eventStartDate, eventEndDate }: { e
                 </div>
               </div>
              :
-             <div key={res.team.id} className="bg-[var(--card)] border border-[var(--border)] p-2 rounded-lg h-32 mr-6 shadow shadow-black shadow-lg">
+             <div key={res.team.id} className="bg-[#292929] border border-[#B2825E] p-2 rounded-lg h-32 mr-6 shadow shadow-black shadow-lg">
              <div className="flex flex-col mx-auto">
                <div className="text-xl text-wrap mr-4 2-48">{res.team.name}</div>
                <div>Current score: {res.score}</div>
