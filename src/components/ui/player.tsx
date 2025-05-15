@@ -41,6 +41,12 @@ export default async function Player() {
                   <p className="text-xs md:text-sm text-[#EDE6D6]/80">
                     Handicap: {player.handicap}
                   </p>
+                  <p className="text-xs md:text-sm text-[#EDE6D6]/80">
+                    Starting Average: {player.avg !== null ? player.avg : 0}
+                  </p>
+                  <p className="text-xs md:text-sm text-[#EDE6D6]/80">
+                   Weeks Played: {player.weeks_played}
+                  </p>
                 </div>
               </div>
 

@@ -18,6 +18,7 @@ export type Player = {
   player_name: string;
   handicap: number;
   avg: number;
+  weeks_played: number;
 };
 
 export const playerColumns: ColumnDef<Player>[] = [
@@ -94,9 +95,6 @@ async function handleEditPlayer(playerName: string) {
 async function handleDeletePlayer(playerId: number) {
   if (confirm('Are you sure you want to delete this player? This action cannot be undone.')) {
     try {
-
-      console.log(playerId)
-
       const response = await fetch(`/api/players/${playerId}`, {
         method: 'DELETE',
         body: JSON.stringify(playerId)

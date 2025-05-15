@@ -15,7 +15,10 @@ export async function GET() {
         player_id,
         player_name,
         handicap,
-        avg
+        avg,
+        (select distinct count(week_date) from weekly_score ws
+          where ws.player_id = players.player_id
+          and TO_CHAR(week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')) weeks_played
       FROM players 
       ORDER BY player_name ASC
     `;
