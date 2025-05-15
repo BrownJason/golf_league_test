@@ -17,6 +17,7 @@ export type Player = {
   player_id: number;
   player_name: string;
   handicap: number;
+  avg: number;
 };
 
 export const playerColumns: ColumnDef<Player>[] = [
@@ -32,6 +33,13 @@ export const playerColumns: ColumnDef<Player>[] = [
     header: "Handicap",
     cell: ({row}) => {
       return <div className="text-center text-lg">{row.getValue("handicap")}</div>
+    }
+  },
+  {
+    accessorKey: "avg",
+    header: "Average",
+    cell: ({row}) => {
+      return <div className="text-center text-lg">{row.getValue("avg")}</div>
     }
   },
   {
@@ -59,7 +67,7 @@ export const playerColumns: ColumnDef<Player>[] = [
                   </DialogTrigger>
                 <DropdownMenuItem
                   className="text-red-500 hover:bg-[#2A4E3A] cursor-pointer"
-                  onClick={() => handleDeletePlayer(player.id)}
+                  onClick={() => handleDeletePlayer(player.player_id)}
                 >
                   Delete
                 </DropdownMenuItem>
@@ -86,8 +94,12 @@ async function handleEditPlayer(playerName: string) {
 async function handleDeletePlayer(playerId: number) {
   if (confirm('Are you sure you want to delete this player? This action cannot be undone.')) {
     try {
+
+      console.log(playerId)
+
       const response = await fetch(`/api/players/${playerId}`, {
         method: 'DELETE',
+        body: JSON.stringify(playerId)
       });
       
       if (!response.ok) {

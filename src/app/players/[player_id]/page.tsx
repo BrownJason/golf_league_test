@@ -36,6 +36,8 @@ export default async function Page({
       fetchPeers()
     ]);
 
+    console.log(player)
+
     let playerScoresByWeek = playerScores;
     if (selectedWeek) {
       playerScoresByWeek = playerScores;
@@ -134,11 +136,17 @@ export default async function Page({
         )}
 
         {/* Stats Grid - Single column on mobile, three columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 mb-6 md:mb-8">
           {/* Handicap Card */}
           <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
             <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Current Handicap</h3>
             <p className="text-2xl md:text-3xl text-[#EDE6D6]">{player.handicap}</p>
+          </div>
+
+          {/* Starting Average Card */}
+          <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
+            <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Starting Average</h3>
+            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{player.avg.toFixed(1)}</p>
           </div>
 
           {/* Average Score Card */}

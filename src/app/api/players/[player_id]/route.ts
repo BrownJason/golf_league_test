@@ -19,7 +19,8 @@ export async function GET(
       SELECT 
         player_id,
         player_name,
-        handicap 
+        handicap,
+        avg
       FROM players 
       WHERE player_id = ${player_id}
     `;
@@ -59,11 +60,11 @@ export async function PUT(
   try {
     // Await the params
     const { player_id } = await context.params;
-    const { player_name, handicap } = await request.json();
+    const { player_name, handicap, avg } = await request.json();
     
     const result = await sql`
       UPDATE players 
-      SET player_name = ${player_name}, handicap = ${handicap}
+      SET player_name = ${player_name}, handicap = ${handicap}, avg = ${avg}
       WHERE player_id = ${player_id}
       RETURNING player_id, player_name, handicap
     `;
@@ -102,7 +103,8 @@ export async function DELETE(
   
   try {
     // Await the params
-  const { player_id } = await context.params;
+    const { player_id } = await context.params;
+
     const result = await sql`
       DELETE FROM players 
       WHERE player_id = ${player_id}

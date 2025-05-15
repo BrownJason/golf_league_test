@@ -14,7 +14,8 @@ export async function GET() {
       SELECT 
         player_id,
         player_name,
-        handicap 
+        handicap,
+        avg
       FROM players 
       ORDER BY player_name ASC
     `;
@@ -43,11 +44,11 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const sql = getDatabase();
-    const { player_name, handicap } = await request.json();
+    const { player_name, handicap, avg } = await request.json();
     
     const result = await sql`
-      INSERT INTO players (player_name, handicap)
-      VALUES (${player_name}, ${handicap})
+      INSERT INTO players (player_name, handicap, avg)
+      VALUES (${player_name}, ${handicap}, ${avg})
       RETURNING player_id, player_name, handicap
     `;
     

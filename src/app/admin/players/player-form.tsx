@@ -15,6 +15,7 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
   const [formData, setFormData] = useState({
     player_name: initialData?.player_name || '',
     handicap: initialData?.handicap || 0,
+    avg: initialData?.avg || 0,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,6 +78,19 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
           type="number"
           value={formData.handicap}
           onChange={(e) => setFormData({ ...formData, handicap: Number(e.target.value) })}
+          className="bg-[#2A4E3A] text-[#EDE6D6] border-[#9A9540]"
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="avg" className="block text-[#EDE6D6] mb-2">
+          Average
+        </label>
+        <Input
+          id="avg"
+          type="number"
+          value={formData.avg}
+          onChange={(e) => setFormData({ ...formData, avg: Number(e.target.value) })}
           className="bg-[#2A4E3A] text-[#EDE6D6] border-[#9A9540]"
           required
         />
