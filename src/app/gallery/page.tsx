@@ -37,7 +37,7 @@ export default function Page() {
 
   return (
     <div className="p-4 md:p-6">
-      <main className="mx-auto">
+      <main className="max-w-full mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
           <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#292929] border border-[#B2825E] border-4 rounded-xl">

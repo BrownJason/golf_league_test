@@ -28,7 +28,7 @@ export default async function Page() {
     if (!weekly_scores || weekly_scores.length === 0) {
       return (
         <div className="p-4 md:p-6">
-          <main className="max-w-7xl mx-auto">
+          <main className="max-w-full mx-auto">
             <div className="text-center mb-8 md:mb-12">
               <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3">
                 No Scores Available
@@ -54,7 +54,7 @@ export default async function Page() {
 
     return (
       <div className="p-4 md:p-6">
-        <main className="max-w-7xl mx-auto">
+        <main className="max-w mx-auto">
           {/* Header Section */}
           <div className="text-center mb-8 md:mb-12">
             <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3">

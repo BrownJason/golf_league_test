@@ -51,7 +51,7 @@ export default async function Home() {
    
     return (
       <div className="p-4 md:p-6">
-        <main className="max-w-7xl mx-auto">
+        <main className="max-w-full mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-12 md:mb-16">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">
