@@ -16,10 +16,11 @@ export default function NavBar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <span className="text-xl font-bold text-[#EDE6D6] hover:text-[#EDE6D6]/80 transitions">
+            <Link href="/" className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group">
+              <span className="text-xl">
                 Brown Family Golf
               </span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
           </div>
 

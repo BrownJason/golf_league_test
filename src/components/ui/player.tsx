@@ -35,16 +35,16 @@ export default async function Player() {
                 
                 {/* Player Name */}
                 <div className="text-center">
-                  <h2 className="text-[#EDE6D6] font-semibold text-sm md:text-base mb-1">
+                  <h2 className="text-[#EDE6D6] font-semibold text-xl md:text-2xl mb-1 underline">
                     {player.player_name}
                   </h2>
-                  <p className="text-xs md:text-sm text-[#EDE6D6]/80">
+                  <p className="text-md md:text-xl text-[#EDE6D6]/80 ">
                     Handicap: {player.handicap}
                   </p>
-                  <p className="text-xs md:text-sm text-[#EDE6D6]/80">
+                  <p className="text-md md:text-xl text-[#EDE6D6]/80">
                     Starting Average: {player.avg !== null ? player.avg : 0}
                   </p>
-                  <p className="text-xs md:text-sm text-[#EDE6D6]/80">
+                  <p className="text-md md:text-xl text-[#EDE6D6]/80">
                    Weeks Played: {player.weeks_played}
                   </p>
                 </div>
