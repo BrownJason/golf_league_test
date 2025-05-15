@@ -146,7 +146,7 @@ export default async function Page({
           {/* Starting Average Card */}
           <div className="bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6] shadow-lg">
             <h3 className="text-[#EDE6D6] text-base md:text-lg font-semibold mb-1 md:mb-2">Starting Average</h3>
-            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{player.avg.toFixed(1)}</p>
+            <p className="text-2xl md:text-3xl text-[#EDE6D6]">{player.avg !== null ? player.avg.toFixed(1) : 0}</p>
           </div>
 
           {/* Average Score Card */}
