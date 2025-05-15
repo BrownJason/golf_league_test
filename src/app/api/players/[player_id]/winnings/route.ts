@@ -21,6 +21,7 @@ export async function GET(
              TO_CHAR((sum(p.skins) + sum(p.greens) + sum(p.partners) + sum(p.best_ball) + sum(p.low_score)), 'FM$999,999,999.00') total
       FROM public.weekly_winnings p
       WHERE p.player_id = ${player_id}
+      AND TO_CHAR(p.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
       GROUP BY p.player_id
       ORDER BY p.player_id ASC
     `;

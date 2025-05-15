@@ -18,6 +18,7 @@ export async function GET(request: Request, context: { params: Promise<{ player_
         week_date
       FROM weekly_score
       WHERE player_id = ${player_id}
+      and TO_CHAR(week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
       ORDER BY week_date DESC
     `;
 

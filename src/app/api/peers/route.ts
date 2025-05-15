@@ -12,6 +12,7 @@ export async function GET() {
       SELECT p.player_name, DIV(SUM(ws.score), COUNT(ws.score)) average_score
         FROM players p, weekly_score ws
         WHERE p.player_id = ws.player_id
+        and TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
         GROUP by p.player_name
         ORDER BY average_score DESC
     `;

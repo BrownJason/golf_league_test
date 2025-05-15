@@ -15,6 +15,7 @@ export async function GET() {
       JOIN players p ON p.player_id = ws.player_id
       WHERE (ws.skins + 
       ws.greens + ws.partners + ws.best_ball + ws.low_score) > 0
+      and TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
       ORDER BY ws.week_date desc, p.player_id asc
     `;
     

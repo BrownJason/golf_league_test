@@ -36,6 +36,7 @@ export async function GET() {
         ws.side 
       FROM weekly_score ws
       JOIN players p ON p.player_id = ws.player_id
+      WHERE TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
       ORDER BY ws.week_date DESC, p.player_id ASC
     `;
 

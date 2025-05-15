@@ -25,6 +25,7 @@ export async function GET(
         JOIN players p ON p.player_id = ws.player_id
         WHERE p.player_id = ${player_id}
         AND ws.week_date = TO_DATE(${week}, 'MMDDYYYY')
+        AND TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
         ORDER BY ws.week_date DESC
       `;
     } else {
@@ -37,6 +38,7 @@ export async function GET(
         FROM weekly_score ws
         JOIN players p ON p.player_id = ws.player_id
         WHERE p.player_id = ${player_id}
+        AND TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
         ORDER BY ws.week_date DESC
       `;
     }
