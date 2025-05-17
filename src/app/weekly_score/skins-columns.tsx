@@ -13,7 +13,6 @@ export type WeeklySkins = {
   player_name: string;
   score: number;
   handicap: number;
-  adjusted_score: number;
   hole_1: number;
   hole_1_win: boolean;
   hole_2: number;
@@ -154,15 +153,6 @@ export const skinsColumns: ColumnDef<WeeklySkins>[] = [
     cell: ({row}) => {
       return <div className="text-center">{row.getValue("handicap")}</div>
     }
-  },
-  {
-    accessorKey: "adjusted_score",
-    header: "Adjusted Score",
-    cell: ({ row }) => {
-      const adjusted_score = parseInt(row.getValue("adjusted_score"));
-      const par = row.getValue("side") === "front" ? 36 : 35;
-      return <div className={clsx(adjusted_score < par ? "text-red-500 mx-auto text-center" : adjusted_score > par ? "text-gray-300 mx-auto text-center" : "text-[#EDE6D6] text-center")}>{adjusted_score}</div>;
-    },
   },
   {
     accessorKey: "hole_1",
