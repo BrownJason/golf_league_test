@@ -22,7 +22,6 @@ export async function GET() {
         p.player_name, 
         ws.score, 
         ws.handicap, 
-        ws.adjusted_score, 
         ws.hole_1,
         ws.hole_1_win,
         ws.hole_2,

@@ -24,9 +24,6 @@ export async function POST(request: Request) {
       WHERE player_id = ${data.player_id}
     `;
 
-    // Calculate adjusted score (you may want to adjust this calculation based on your rules)
-    const adjusted_score = score - player.handicap;
-
     const result = await sql`
       INSERT INTO skins_Score (
         player_id,
@@ -34,7 +31,6 @@ export async function POST(request: Request) {
         side,
         score,
         handicap,
-        adjusted_score,
         hole_1,
         hole_1_win,
         hole_2,
@@ -59,7 +55,6 @@ export async function POST(request: Request) {
         ${data.side},
         ${score},
         ${player.handicap},
-        ${adjusted_score},
         ${data.hole_1},
         ${data.hole_1_win},
         ${data.hole_2},
