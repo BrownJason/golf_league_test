@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
-import { fetchWeeklyScores, fetchWeeklyWinnings } from "@/lib/api";
+import { fetchWeeklyScores, fetchWeeklySkins, fetchWeeklyWinnings } from "@/lib/api";
 import { DataTable } from "@/components/ui/data-table";
 import { scoreColumns } from "./score-columns";
 import { winningsColumns } from "./winnings-columns";
+import { skinsColumns } from "./skins-columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // This is fine for server components
@@ -16,13 +17,16 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   try {
-    const [weekly_scores, weekly_winnings] = await Promise.all([
+    const [weekly_scores, weekly_skins, weekly_winnings] = await Promise.all([
       fetchWeeklyScores(),
+      fetchWeeklySkins(),
       fetchWeeklyWinnings().catch(error => {
         console.error('Error fetching winnings:', error);
         return [];
       })
     ]);
+
+    console.log(weekly_skins)
 
     // Handle empty states
     if (!weekly_scores || weekly_scores.length === 0) {
@@ -98,7 +102,7 @@ export default async function Page() {
           <div className="bg-[#292929] border border-[#B2825E] rounded-xl overflow-hidden shadow shadow-black shadow-lg">
             <Tabs defaultValue="scores" className="w-full">
               <div className="px-4 pt-4 md:px-6 md:pt-6">
-                <TabsList className="grid w-full grid-cols-2 bg-[#292929] border border-[#B2825E] rounded-lg overflow-hidden">
+                <TabsList className="grid w-full grid-cols-3 bg-[#292929] border border-[#B2825E] rounded-lg overflow-hidden">
                   <TabsTrigger 
                     value="scores" 
                     className="py-3 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
@@ -110,6 +114,12 @@ export default async function Page() {
                     className="py-3 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
                   >
                     Winnings
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="skins"
+                    className="py-3 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
+                  >
+                    Skins
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -136,6 +146,21 @@ export default async function Page() {
                       <DataTable 
                         columns={winningsColumns} 
                         data={weekly_winnings} 
+                        header="" 
+                        filterItem="player_name"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="skins" className="mt-4">
+                <div className="overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <div className="min-w-[800px] p-4 md:p-6">
+                      <DataTable 
+                        columns={skinsColumns} 
+                        data={weekly_skins} 
                         header="" 
                         filterItem="player_name"
                       />

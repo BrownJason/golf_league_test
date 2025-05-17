@@ -22,6 +22,8 @@ export default function LoginPage() {
         redirect: false,
       });
 
+      console.log(result)
+
       if (result?.error) {
         console.error('Login error:', result.error);
         // Map the error to a user-friendly message

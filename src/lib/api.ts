@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Player } from '@/app/admin/players/columns';
 import { WeeklyScore } from '@/app/weekly_score/score-columns';
+import { WeeklySkins } from '@/app/weekly_score/skins-columns';
 import { WeeklyWinnings } from '@/app/weekly_score/winnings-columns';
 
 function getApiUrl(path: string): string {
@@ -9,10 +10,14 @@ function getApiUrl(path: string): string {
     return path;
   }
 
+  console.log(path)
+
   // For server-side requests
   const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
+  console.log(baseUrl)
 
   return `${baseUrl}${path}`;
 }
@@ -49,6 +54,27 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
 
     if (!response.ok) {
       throw new Error(`Failed to fetch weekly scores: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Fetch Error:', error);
+    throw error;
+  }
+}
+
+export async function fetchWeeklySkins(): Promise<WeeklySkins[]> {
+  try {
+    const url = getApiUrl('/api/weekly-skins');
+    const response = await fetch(url, {
+      method: 'GET',
+      next: { revalidate: 0 },
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch weekly skins: ${response.statusText}`);
     }
 
     const data = await response.json();

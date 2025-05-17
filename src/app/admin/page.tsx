@@ -26,6 +26,12 @@ export default function AdminDashboard() {
             <p className="text-sm text-[#D4CB6A]">Manage weekly winnings</p>
           </div>
         </Link>
+        <Link href="/admin/skins">
+          <div className="p-4 border border-[#B5AA4C] rounded-lg hover:bg-[#1A4A2E] cursor-pointer transition-colors">
+            <h3 className="font-semibold text-[#B5AA4C]">Skins Score</h3>
+            <p className="text-sm text-[#D4CB6A]">Manage skins score</p>
+          </div>
+        </Link>
       </div>
     </div>
   );

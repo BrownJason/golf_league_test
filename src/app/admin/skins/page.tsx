@@ -19,14 +19,23 @@ export default function AdminScores() {
     week_date: new Date().toISOString().split('T')[0], // Today's date
     side: 'front',
     hole_1: '',
+    hole_1_win: false,
     hole_2: '',
+    hole_2_win: false,
     hole_3: '',
+    hole_3_win: false,
     hole_4: '',
+    hole_4_win: false,
     hole_5: '',
+    hole_5_win: false,
     hole_6: '',
+    hole_6_win: false,
     hole_7: '',
+    hole_7_win: false,
     hole_8: '',
+    hole_8_win: false,
     hole_9: '',
+    hole_9_win: false,
   });
   const router = useRouter();
 
@@ -56,7 +65,7 @@ export default function AdminScores() {
         .filter(([key]) => key.startsWith('hole_'))
         .reduce((sum, [, value]) => sum + Number(value), 0);
 
-      const response = await fetch('/api/scores', {
+      const response = await fetch('/api/skins', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,14 +83,23 @@ export default function AdminScores() {
         ...formData,
         player_id: '',
         hole_1: '',
+        hole_1_win: false,
         hole_2: '',
+        hole_2_win: false,
         hole_3: '',
+        hole_3_win: false,
         hole_4: '',
+        hole_4_win: false,
         hole_5: '',
+        hole_5_win: false,
         hole_6: '',
+        hole_6_win: false,
         hole_7: '',
+        hole_7_win: false,
         hole_8: '',
+        hole_8_win: false,
         hole_9: '',
+        hole_9_win: false,
       });
 
       router.refresh();
@@ -99,21 +117,17 @@ export default function AdminScores() {
     );
   }
 
-  const score = Object.entries(formData)
-        .filter(([key]) => key.startsWith('hole_'))
-        .reduce((sum, [, value]) => sum + Number(value), 0);
-  
-  console.log(score);
+  console.log(formData)
 
   return (
     <div className="p-4 md:p-6">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#9A9540] mb-2">Add Weekly Score</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#9A9540] mb-2">Add Skins Score</h1>
           <div className="h-1 w-24 md:w-32 bg-[#9A9540] mx-auto rounded-full mb-4"></div>
           <p className="text-[#9A9540]/80 text-sm md:text-base">
-            Enter new scores for the week
+            Enter new skins for the week
           </p>
         </div>
 
@@ -195,17 +209,23 @@ export default function AdminScores() {
                     type="number"
                     min="1"
                     max="12"
-                    value={formData[`hole_${hole}` as keyof typeof formData]}
+                    value={formData[`hole_${hole}` as keyof typeof formData] ? Number(formData[`hole_${hole}` as keyof typeof formData]) : ''}
                     onChange={(e) => setFormData({ ...formData, [`hole_${hole}`]: e.target.value })}
                     className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
                     required
                   />
+                  <label className="block text-[#9A9540] text-xs mb-1">
+                    Hole {hole} Won
+                  </label>
+                  <Input
+                    type="checkbox"
+                    checked={formData[`hole_${hole}_win` as keyof typeof formData] ? true : false}
+                    onChange={(e) => setFormData({ ...formData, [`hole_${hole}_win`]: e.target.checked})}
+                    className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                  />
                 </div>
               ))}
             </div>
-            <label className="block text-[#9A9540] text-sm font-medium mb-4 mt-4">
-              Score : {score}
-            </label>
           </div>
 
           {/* Submit Button */}
@@ -213,7 +233,7 @@ export default function AdminScores() {
             type="submit"
             className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
           >
-            Add Score
+            Add Skins Score
           </Button>
         </form>
       </div>

@@ -40,6 +40,12 @@ export default function AdminNav() {
           >
             Winnings
           </Link>
+          <Link 
+            href="/admin/skins" 
+            className="text-[#9A9540] hover:text-[#9A9540]/80"
+          >
+            Skins
+          </Link>
         </div>
         <button
           onClick={handleLogout}

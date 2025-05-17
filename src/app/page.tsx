@@ -88,21 +88,21 @@ export default async function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-semibold text-[#EDE6D6] mb-2">Weekly Scores</h2>
-                <p className="text-sm text-[#EDE6D6]/80">Track weekly performance and scores</p>
+                <h2 className="text-xl font-semibold text-[#EDE6D6] mb-2">Weekly Scores / Winnings</h2>
+                <p className="text-sm text-[#EDE6D6]/80">Track weekly performance / scores and View earnings / prize distributions</p>
               </div>
             </Link>
 
-            {/* Winnings Card */}
-            <Link href="/weekly_score" className="group">
+            {/* Gallery Card */}
+            <Link href="/gallery" className="group">
               <div className="bg-[#292929] hover:bg-[#305D3C]/60 border border-[#B2825E] rounded-xl p-6 shadow shadow-black shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 hover:shadow-xl">
                 <div className="w-12 h-12 rounded-full bg-[#305D3C] border-2 border-[#B2825E] flex items-center justify-center mb-4">
                   <svg className="w-6 h-6 text-[#305D3C]" fill="none" stroke="#EDE6D6" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-semibold text-[#EDE6D6] mb-2">Winnings</h2>
-                <p className="text-sm text-[#EDE6D6]/80">View earnings and prize distributions</p>
+                <h2 className="text-xl font-semibold text-[#EDE6D6] mb-2">Gallery</h2>
+                <p className="text-sm text-[#EDE6D6]/80">View some images of the golf course</p>
               </div>
             </Link>
           </div>
