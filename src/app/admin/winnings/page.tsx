@@ -160,6 +160,7 @@ export default function AdminScores() {
                   <Input
                     type="number"
                     min="0"
+                    step="0.01"
                     value={formData[`${jackpots}` as keyof typeof formData]}
                     onChange={(e) => setFormData({ ...formData, [`${jackpots}`]: e.target.value })}
                     className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"

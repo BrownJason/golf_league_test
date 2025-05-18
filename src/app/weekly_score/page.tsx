@@ -50,10 +50,11 @@ export default async function Page() {
     const totalRounds = weekly_scores.length;
     const averageScore = totalRounds > 0 
       ? (weekly_scores.reduce((acc, score) => acc + score.score, 0) / totalRounds).toFixed(1)
-      : '0.0';
+      : 0.0;
     const totalWinnings = (weekly_winnings || []).reduce((acc, win) => 
-      acc + (win.skins + win.greens + win.partners + win.best_ball + win.low_score), 0
-    ).toFixed(2);
+      acc + (parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score)), 0
+    );
+    console.log(weekly_winnings)
     const uniquePlayers = new Set(weekly_scores.map(score => score.player_id)).size;
 
     return (
@@ -196,7 +197,7 @@ export default async function Page() {
               <div className="space-y-3">
                 {Object.entries(
                   weekly_winnings.reduce((acc, win) => {
-                    const total = win.skins + win.greens + win.partners + win.best_ball + win.low_score;
+                    const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
                     acc[win.player_name] = (acc[win.player_name] || 0) + total;
                     return acc;
                   }, {} as Record<string, number>)
@@ -209,7 +210,7 @@ export default async function Page() {
                         <span className="text-[#EDE6D6] text-sm">{index + 1}.</span>
                         <span className="text-white">{name}</span>
                       </div>
-                      <span className="text-[#EDE6D6] font-semibold">${amount.toFixed(2)}</span>
+                      <span className="text-[#EDE6D6] font-semibold">${amount}</span>
                     </div>
                   ))}
               </div>
