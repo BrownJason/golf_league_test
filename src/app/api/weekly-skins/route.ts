@@ -20,8 +20,6 @@ export async function GET() {
         ws.id, 
         p.player_id, 
         p.player_name, 
-        ws.score, 
-        ws.handicap, 
         ws.hole_1,
         ws.hole_1_win,
         ws.hole_2,

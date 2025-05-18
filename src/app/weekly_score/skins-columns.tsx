@@ -11,8 +11,6 @@ export type WeeklySkins = {
   id: number;
   player_id: number;
   player_name: string;
-  score: number;
-  handicap: number;
   hole_1: number;
   hole_1_win: boolean;
   hole_2: number;
@@ -139,101 +137,85 @@ export const skinsColumns: ColumnDef<WeeklySkins>[] = [
     },
   },
   {
-    accessorKey: "score",
-    header: "Score",
-    cell: ({ row }) => {
-      const score = parseInt(row.getValue("score"));
-      const par = row.getValue("side") === "front" ? 36 : 35;
-      return <div className={clsx(score < par ? "text-red-500 mx-auto text-center" : score > par ? "text-gray-300 mx-auto text-center" : "text-[#EDE6D6] text-center")}>{score}</div>;
-    },
-  },
-  {
-    accessorKey: "handicap",
-    header: "Handicap",
-    cell: ({row}) => {
-      return <div className="text-center">{row.getValue("handicap")}</div>
-    }
-  },
-  {
     accessorKey: "hole_1",
     header: "Hole: 1",
     cell: ({ row }) => {
-      const hole_1 = parseInt(row.getValue("hole_1"));
+      const hole_1 = parseFloat(row.getValue("hole_1"));
       const hole_1_win = row.getValue("hole_1_win");
-      return <div className={clsx(hole_1_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_1}</div>;
+      return <div className={clsx(hole_1_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_1 === 0 ? '' : hole_1}</div>;
     },
   },
   {
     accessorKey: "hole_2",
     header: "Hole: 2",
     cell: ({ row }) => {
-      const hole_2 = parseInt(row.getValue("hole_2"));
+      const hole_2 = parseFloat(row.getValue("hole_2"));
       const hole_2_win = row.getValue("hole_2_win");
       console.log(hole_2_win)
-      return <div className={clsx(hole_2_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_2}</div>;
+      return <div className={clsx(hole_2_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_2 === 0 ? '' : hole_2}</div>;
     },
   },
   {
     accessorKey: "hole_3",
     header: "Hole: 3",
     cell: ({ row }) => {
-      const hole_3 = parseInt(row.getValue("hole_3"));
+      const hole_3 = parseFloat(row.getValue("hole_3"));
       const hole_3_win = row.getValue("hole_3_win");
-      return <div className={clsx(hole_3_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_3}</div>;
+      return <div className={clsx(hole_3_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_3 === 0 ? '' : hole_3}</div>;
     },
   },
   {
     accessorKey: "hole_4",
     header: "Hole: 4",
     cell: ({ row }) => {
-      const hole_4 = parseInt(row.getValue("hole_4"));
+      const hole_4 = parseFloat(row.getValue("hole_4"));
       const hole_4_win = row.getValue("hole_4_win");
-      return <div className={clsx(hole_4_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_4}</div>;
+      return <div className={clsx(hole_4_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_4 === 0 ? '' : hole_4}</div>;
     },
   },
   {
     accessorKey: "hole_5",
     header: "Hole: 5",
     cell: ({ row }) => {
-      const hole_5 = parseInt(row.getValue("hole_5"));
+      const hole_5 = parseFloat(row.getValue("hole_5"));
       const hole_5_win = row.getValue("hole_5_win");
-      return <div className={clsx(hole_5_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_5}</div>;
+      return <div className={clsx(hole_5_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_5 === 0 ? '' : hole_5}</div>;
     },
   },
   {
     accessorKey: "hole_6",
     header: "Hole: 6",
     cell: ({ row }) => {
-      const hole_6 = parseInt(row.getValue("hole_6"));
+      const hole_6 = parseFloat(row.getValue("hole_6"));
       const hole_6_win = row.getValue("hole_6_win");
-      return <div className={clsx(hole_6_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_6}</div>;
+      return <div className={clsx(hole_6_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_6 === 0 ? '' : hole_6}</div>;
     },
   },
   {
     accessorKey: "hole_7",
     header: "Hole: 7",
     cell: ({ row }) => {
-      const hole_7 = parseInt(row.getValue("hole_7"));
+      const hole_7 = parseFloat(row.getValue("hole_7"));
       const hole_7_win = row.getValue("hole_7_win");
-      return <div className={clsx(hole_7_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_7}</div>;
+      return <div className={clsx(hole_7_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_7 === 0 ? '' : hole_7}</div>;
     },
   },
   {
     accessorKey: "hole_8",
     header: "Hole: 8",
     cell: ({ row }) => {
-      const hole_8 = parseInt(row.getValue("hole_8"));
+      const hole_8 = parseFloat(row.getValue("hole_8"));
       const hole_8_win = row.getValue("hole_8_win");
-      return <div className={clsx(hole_8_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_8}</div>;
+      return <div className={clsx(hole_8_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_8 === 0 ? '' : hole_8}</div>;
     },
   },
   {
     accessorKey: "hole_9",
     header: "Hole: 9",
     cell: ({ row }) => {
-      const hole_9 = parseInt(row.getValue("hole_9"));
+      const hole_9 = parseFloat(row.getValue("hole_9"));
       const hole_9_win = row.getValue("hole_9_win");
-      return <div className={clsx(hole_9_win ? "border rounded-full w-6 border-black mx-auto text-center text-red-500" : "text-center")}>{hole_9}</div>;
+      return <div className={clsx(hole_9_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_9 === 0 ? '' : hole_9}</div>;
     },
   },
 ];

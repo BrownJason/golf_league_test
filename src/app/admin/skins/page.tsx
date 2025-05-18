@@ -61,10 +61,6 @@ export default function AdminScores() {
     
     try {
       // Calculate total score
-      const score = Object.entries(formData)
-        .filter(([key]) => key.startsWith('hole_'))
-        .reduce((sum, [, value]) => sum + Number(value), 0);
-
       const response = await fetch('/api/skins', {
         method: 'POST',
         headers: {
@@ -72,7 +68,6 @@ export default function AdminScores() {
         },
         body: JSON.stringify({
           ...formData,
-          score,
         }),
       });
 
@@ -207,12 +202,11 @@ export default function AdminScores() {
                   </label>
                   <Input
                     type="number"
-                    min="1"
-                    max="12"
-                    value={formData[`hole_${hole}` as keyof typeof formData] ? Number(formData[`hole_${hole}` as keyof typeof formData]) : ''}
-                    onChange={(e) => setFormData({ ...formData, [`hole_${hole}`]: e.target.value })}
+                    min="0"
+                    step="0.01"
+                    value={formData[`hole_${hole}` as keyof typeof formData] ? Number(formData[`hole_${hole}` as keyof typeof formData]) : 0}
+                    onChange={(e) => setFormData({ ...formData, [`hole_${hole}`]: parseFloat(e.target.value) })}
                     className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-                    required
                   />
                   <label className="block text-[#9A9540] text-xs mb-1">
                     Hole {hole} Won

@@ -53,7 +53,7 @@ export default async function Page() {
       : 0.0;
     const totalWinnings = (weekly_winnings || []).reduce((acc, win) => 
       acc + (parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score)), 0
-    );
+    ).toPrecision(2);
     console.log(weekly_winnings)
     const uniquePlayers = new Set(weekly_scores.map(score => score.player_id)).size;
 

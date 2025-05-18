@@ -9,28 +9,14 @@ export const revalidate = false;
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    
-    // Calculate total score
-    const score = Object.entries(data)
-      .filter(([key]) => key.startsWith('hole_'))
-      .reduce((sum, [, value]) => sum + Number(value), 0);
 
     console.log(data)
-
-    // Get player's current handicap
-    const [player] = await sql`
-      SELECT handicap 
-      FROM players 
-      WHERE player_id = ${data.player_id}
-    `;
 
     const result = await sql`
       INSERT INTO skins_Score (
         player_id,
         week_date,
         side,
-        score,
-        handicap,
         hole_1,
         hole_1_win,
         hole_2,
@@ -53,25 +39,23 @@ export async function POST(request: Request) {
         ${data.player_id},
         ${data.week_date},
         ${data.side},
-        ${score},
-        ${player.handicap},
-        ${data.hole_1},
+        ${data.hole_1 === '' ? 0 : data.hole_1},
         ${data.hole_1_win},
-        ${data.hole_2},
+        ${data.hole_2  === '' ? 0 : data.hole_2},
         ${data.hole_2_win},
-        ${data.hole_3},
+        ${data.hole_3 === '' ? 0 : data.hole_3},
         ${data.hole_3_win},
-        ${data.hole_4},
+        ${data.hole_4 === '' ? 0 : data.hole_4},
         ${data.hole_4_win},
-        ${data.hole_5},
+        ${data.hole_5 === '' ? 0 : data.hole_5},
         ${data.hole_5_win},
-        ${data.hole_6},
+        ${data.hole_6 === '' ? 0 : data.hole_6},
         ${data.hole_6_win},
-        ${data.hole_7},
+        ${data.hole_7 === '' ? 0 : data.hole_7},
         ${data.hole_7_win},
-        ${data.hole_8},
+        ${data.hole_8 === '' ? 0 : data.hole_8},
         ${data.hole_8_win},
-        ${data.hole_9},
+        ${data.hole_9 === '' ? 0 : data.hole_9},
         ${data.hole_9_win}
       )
       RETURNING *

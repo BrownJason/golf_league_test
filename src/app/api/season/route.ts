@@ -20,6 +20,7 @@ export async function GET() {
             left join weekly_winnings ww
             on ww.player_id = p.player_id
             WHERE TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
+            AND ww.week_date = ws.week_date
             GROUP BY ws.week_date
             ) season_info
 
