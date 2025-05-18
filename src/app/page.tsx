@@ -16,9 +16,8 @@ export default async function Home() {
     let skins = 'N/A';
     let best_ball = 'N/A';
 
-    console.log(weekly_glance)
 
-    if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 0) {
+    if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 1) {
       partners = weekly_glance.map((res: any) => {
         if (res.partners > 0) {
           return res.player_name;
@@ -113,19 +112,19 @@ export default async function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
                 <p className="text-sm text-[#EDE6D6]/80 mb-1">Total Players</p>
-                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.lenght > 0 ? season_info[0].total_players : 'N/A'}</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].total_players : 'N/A'}</p>
               </div>
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
                 <p className="text-sm text-[#EDE6D6]/80 mb-1">Weeks Played</p>
-                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.lenght > 0 ? season_info[0].weeks_played : 'N/A'}</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].weeks_played : 'N/A'}</p>
               </div>
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
                 <p className="text-sm text-[#EDE6D6]/80 mb-1">Total Rounds</p>
-                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.lenght > 0 ? season_info[0].rounds_played : 'N/A'}</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].rounds_played : 'N/A'}</p>
               </div>
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
                 <p className="text-sm text-[#EDE6D6]/80 mb-1">Season Pot</p>
-                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.lenght > 0 ? season_info[0].season_pot : 'N/A'}</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].season_pot : 'N/A'}</p>
               </div>
             </div>
           </div>
