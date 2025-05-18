@@ -51,7 +51,7 @@ export default async function Page() {
       : 0.0;
     const totalWinnings = (weekly_winnings || []).reduce((acc, win) => 
       acc + (parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score)), 0
-    ).toPrecision(2);
+    ).toLocaleString("en-US", { style: "currency", currency: "USD" });
     const uniquePlayers = new Set(weekly_scores.map(score => score.player_id)).size;
 
     return (
@@ -85,7 +85,7 @@ export default async function Page() {
             <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
               <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Total Winnings</h3>
               <p className="text-2xl md:text-3xl text-white font-bold">
-                ${totalWinnings}
+                {totalWinnings}
               </p>
             </div>
             <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">

@@ -20,31 +20,31 @@ export default async function Home() {
     if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 1) {
       partners = weekly_glance.map((res: any) => {
         if (res.partners > 0) {
-          return res.player_name + ' (' + res.partners + ')';
+          return res.player_name + ' (' + parseFloat(res.partners).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => acc + ' / ' + val)
   
       low_score = weekly_glance.map((res: any) => {
         if (res.low_score > 0) {
-          return res.player_name + ' (' + res.low_score + ')';
+          return res.player_name + ' (' + parseFloat(res.low_score).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
   
       greens = weekly_glance.map((res: any) => {
         if (res.greens > 0) {
-          return res.player_name + ' (' + res.greens + ')';
+          return res.player_name + ' (' + parseFloat(res.greens).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
   
       skins = weekly_glance.map((res: any) => {
         if (res.skins > 0) {
-          return res.player_name + ' (' + res.skins + ')';
+          return res.player_name + ' (' + parseFloat(res.skins).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
   
       best_ball = weekly_glance.map((res: any) => {
         if (res.best_ball > 0) {
-          return res.player_name + ' (' + res.best_ball + ')';
+          return res.player_name + ' (' + parseFloat(res.best_ball).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
     }
@@ -111,19 +111,19 @@ export default async function Home() {
             <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Season Overview</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                <p className="text-sm text-[#EDE6D6]/80 mb-1">Total Players</p>
+                <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline mb-2">Total Players</p>
                 <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].total_players : 'N/A'}</p>
               </div>
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                <p className="text-sm text-[#EDE6D6]/80 mb-1">Weeks Played</p>
+                <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline mb-2">Weeks Played</p>
                 <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].weeks_played : 'N/A'}</p>
               </div>
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                <p className="text-sm text-[#EDE6D6]/80 mb-1">Total Rounds</p>
+                <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline mb-2">Total Rounds</p>
                 <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].rounds_played : 'N/A'}</p>
               </div>
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                <p className="text-sm text-[#EDE6D6]/80 mb-1">Season Pot</p>
+                <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline mb-2">Season Pot</p>
                 <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{season_info.length > 0 ? season_info[0].season_pot : 'N/A'}</p>
               </div>
             </div>
@@ -135,26 +135,26 @@ export default async function Home() {
               <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Week At A Glance</h2>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Partners:</p>
-                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">
+                  <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline mb-2">Partners</p>
+                  <p className="text-2xl md:text-2xl font-bold text-[#EDE6D6]">
                     {partners}
                   </p>
                 </div>
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Low Score:</p>
-                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{low_score}</p>
+                  <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline  mb-2">Low Score</p>
+                  <p className="text-2xl md:text-2xl font-bold text-[#EDE6D6]">{low_score}</p>
                 </div>
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Greens:</p>
-                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{greens}</p>
+                  <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline  mb-2">Greens</p>
+                  <p className="text-2xl md:text-2xl font-bold text-[#EDE6D6]">{greens}</p>
                 </div>
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Skins:</p>
-                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{skins}</p>
+                  <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline  mb-2">Skins</p>
+                  <p className="text-2xl md:text-2xl font-bold text-[#EDE6D6]">{skins}</p>
                 </div>
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
-                  <p className="text-sm text-[#EDE6D6]/80 mb-1">Best Ball:</p>
-                  <p className="text-2xl md:text-3xl font-bold text-[#EDE6D6]">{best_ball}</p>
+                  <p className="text-3xl text-[#EDE6D6]/80 mb-1 font-bold underline  mb-2">Best Ball</p>
+                  <p className="text-2xl md:text-2xl font-bold text-[#EDE6D6]">{best_ball}</p>
                 </div>
               </div>
             </div>

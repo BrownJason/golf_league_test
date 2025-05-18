@@ -13,6 +13,7 @@ interface Player {
 
 export default function AdminScores() {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     player_id: '',
@@ -94,7 +95,7 @@ export default function AdminScores() {
         } catch (error) {
           console.error('Error fetching players:', error);
         } finally {
-          setIsLoading(false);
+          setDisabled(false);
         }
       }
 
@@ -144,6 +145,7 @@ export default function AdminScores() {
       });
 
       router.refresh();
+      setDisabled(true);
     } catch (error) {
       console.error('Error adding score:', error);
       alert('Failed to add score. Please try again.');
@@ -335,6 +337,7 @@ export default function AdminScores() {
             type="button"
             onClick={editInfo}
             value="edit"
+            disabled={disabled}
             className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
           >
             Edit Skins

@@ -15,6 +15,7 @@ interface Player {
 
 export default function AdminScores() {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     player_id: '',
@@ -51,21 +52,21 @@ export default function AdminScores() {
         if (player_id !== '') {
           try {
             const resp = await fetchPlayerWinningsByWeek(parseInt(player_id), convertDateFormat(week_date));
-  
-            setFormData({
-              player_id: player_id,
-              week_date: week_date,
-              skins: resp[0].skins.toString(),
-              greens: resp[0].greens.toString(),
-              partners: resp[0].partners.toString(),
-              best_ball: resp[0].best_ball.toString(),
-              low_score: resp[0].low_score.toString()
-            })
+            if (resp.length > 0){
+              setFormData({
+                player_id: player_id,
+                week_date: week_date,
+                skins: resp[0].skins.toString(),
+                greens: resp[0].greens.toString(),
+                partners: resp[0].partners.toString(),
+                best_ball: resp[0].best_ball.toString(),
+                low_score: resp[0].low_score.toString()
+              })
+              setDisabled(false);
+            }
           } catch (error) {
             console.error('Error fetching players:', error);
-          } finally {
-            setIsLoading(false);
-          }
+          } 
         }
       }
   
@@ -101,6 +102,7 @@ export default function AdminScores() {
       });
 
       router.refresh();
+      setDisabled(true);
     } catch (error) {
       console.error('Error adding score:', error);
       alert('Failed to add score. Please try again.');
@@ -243,6 +245,7 @@ export default function AdminScores() {
             type="button"
             onClick={editInfo}
             value="edit"
+            disabled={disabled}
             className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
           >
             Edit Winnings

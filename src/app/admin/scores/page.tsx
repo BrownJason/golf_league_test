@@ -16,6 +16,7 @@ interface Player {
 
 export default function AdminScores() {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     player_id: '',
@@ -57,24 +58,25 @@ export default function AdminScores() {
         try {
           const resp = await fetchPlayerScoresByWeek(parseInt(player_id), convertDateFormat(week_date));
 
-          setFormData({
-            player_id: player_id,
-            week_date: week_date,
-            side: resp[0].side.toString(),
-            hole_1: resp[0].hole_1.toString(),
-            hole_2: resp[0].hole_2.toString(),
-            hole_3: resp[0].hole_3.toString(),
-            hole_4: resp[0].hole_4.toString(),
-            hole_5: resp[0].hole_5.toString(),
-            hole_6: resp[0].hole_6.toString(),
-            hole_7: resp[0].hole_7.toString(),
-            hole_8: resp[0].hole_8.toString(),
-            hole_9: resp[0].hole_9.toString()
-          })
+          if (resp.length > 0) {
+            setFormData({
+              player_id: player_id,
+              week_date: week_date,
+              side: resp[0].side === undefined ? 'front' : 'back',
+              hole_1: resp[0].hole_1.toString(),
+              hole_2: resp[0].hole_2.toString(),
+              hole_3: resp[0].hole_3.toString(),
+              hole_4: resp[0].hole_4.toString(),
+              hole_5: resp[0].hole_5.toString(),
+              hole_6: resp[0].hole_6.toString(),
+              hole_7: resp[0].hole_7.toString(),
+              hole_8: resp[0].hole_8.toString(),
+              hole_9: resp[0].hole_9.toString()
+            })
+            setDisabled(false);
+          }
         } catch (error) {
           console.error('Error fetching players:', error);
-        } finally {
-          setIsLoading(false);
         }
       }
     }
@@ -113,6 +115,7 @@ export default function AdminScores() {
       });
 
       router.refresh();
+      setDisabled(true);
     } catch (error) {
       console.error('Error adding score:', error);
       alert('Failed to add score. Please try again.');
@@ -291,6 +294,7 @@ export default function AdminScores() {
             type="button"
             onClick={editInfo}
             value="edit"
+            disabled={disabled}
             className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
           >
             Edit Score
