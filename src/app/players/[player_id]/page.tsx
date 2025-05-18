@@ -36,8 +36,6 @@ export default async function Page({
       fetchPeers()
     ]);
 
-    console.log(player)
-
     let playerScoresByWeek = playerScores;
     if (selectedWeek) {
       playerScoresByWeek = playerScores;

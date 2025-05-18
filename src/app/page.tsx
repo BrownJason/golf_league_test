@@ -20,31 +20,31 @@ export default async function Home() {
     if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 1) {
       partners = weekly_glance.map((res: any) => {
         if (res.partners > 0) {
-          return res.player_name;
+          return res.player_name + ' (' + res.partners + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => acc + ' / ' + val)
   
       low_score = weekly_glance.map((res: any) => {
         if (res.low_score > 0) {
-          return res.player_name;
+          return res.player_name + ' (' + res.low_score + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
   
       greens = weekly_glance.map((res: any) => {
         if (res.greens > 0) {
-          return res.player_name;
+          return res.player_name + ' (' + res.greens + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
   
       skins = weekly_glance.map((res: any) => {
         if (res.skins > 0) {
-          return res.player_name;
+          return res.player_name + ' (' + res.skins + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
   
       best_ball = weekly_glance.map((res: any) => {
         if (res.best_ball > 0) {
-          return res.player_name;
+          return res.player_name + ' (' + res.best_ball + ')';
         };
       }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
     }

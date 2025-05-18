@@ -15,32 +15,60 @@ export async function GET(
     let data;
     if (week) {
       data = await sql`
-      SELECT p.player_id, 
-             sum(p.skins) skins, 
-             sum(p.greens) greens, 
-             sum(p.partners) partners, 
-             sum(p.best_ball) best_ball, 
-             sum(p.low_score) low_score, 
-             TO_CHAR((sum(p.skins) + sum(p.greens) + sum(p.partners) + sum(p.best_ball) + sum(p.low_score)), 'FM$999,999,999.00') total
-      FROM public.weekly_winnings p
+      SELECT 
+        player_id,
+        week_date,
+        side,
+        hole_1,
+        hole_1_win,
+        hole_2,
+        hole_2_win,
+        hole_3,
+        hole_3_win,
+        hole_4,
+        hole_4_win,
+        hole_5,
+        hole_5_win,
+        hole_6,
+        hole_6_win,
+        hole_7,
+        hole_7_win,
+        hole_8,
+        hole_8_win,
+        hole_9,
+        hole_9_win
+      FROM public.skins_score p
       WHERE p.player_id = ${player_id}
       AND TO_CHAR(p.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
-      AND p.week_date = TO_DATE(${week}, 'MMDDYYYY')
-      GROUP BY p.player_id
+      AND p.week_date = ${week}
       ORDER BY p.player_id ASC`
     } else {
     data = await sql`
-      SELECT p.player_id, 
-             sum(p.skins) skins, 
-             sum(p.greens) greens, 
-             sum(p.partners) partners, 
-             sum(p.best_ball) best_ball, 
-             sum(p.low_score) low_score, 
-             TO_CHAR((sum(p.skins) + sum(p.greens) + sum(p.partners) + sum(p.best_ball) + sum(p.low_score)), 'FM$999,999,999.00') total
-      FROM public.weekly_winnings p
+      SELECT 
+        player_id,
+        week_date,
+        side,
+        hole_1,
+        hole_1_win,
+        hole_2,
+        hole_2_win,
+        hole_3,
+        hole_3_win,
+        hole_4,
+        hole_4_win,
+        hole_5,
+        hole_5_win,
+        hole_6,
+        hole_6_win,
+        hole_7,
+        hole_7_win,
+        hole_8,
+        hole_8_win,
+        hole_9,
+        hole_9_win
+      FROM public.skins_score p
       WHERE p.player_id = ${player_id}
       AND TO_CHAR(p.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
-      GROUP BY p.player_id
       ORDER BY p.player_id ASC
     `;
     }

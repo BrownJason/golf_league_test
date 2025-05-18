@@ -151,7 +151,6 @@ export const skinsColumns: ColumnDef<WeeklySkins>[] = [
     cell: ({ row }) => {
       const hole_2 = parseFloat(row.getValue("hole_2"));
       const hole_2_win = row.getValue("hole_2_win");
-      console.log(hole_2_win)
       return <div className={clsx(hole_2_win ? "border rounded-full w-10 border-black mx-auto text-center" : "text-center")}>{hole_2 === 0 ? '' : hole_2}</div>;
     },
   },

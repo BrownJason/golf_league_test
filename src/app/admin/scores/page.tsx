@@ -5,11 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useRouter } from 'next/navigation';
+import { fetchPlayerScoresByWeek } from '@/lib/api';
+import { convertDateFormat } from '@/lib/utils';
 
 interface Player {
   player_id: number;
   player_name: string;
 }
+
 
 export default function AdminScores() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -30,6 +33,9 @@ export default function AdminScores() {
   });
   const router = useRouter();
 
+  const player_id = formData.player_id;
+  const week_date = formData.week_date;
+
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -45,11 +51,77 @@ export default function AdminScores() {
     };
 
     fetchPlayers();
-  }, []);
+
+    const fetchScores = async () => {
+      if (player_id !== '') {
+        try {
+          const resp = await fetchPlayerScoresByWeek(parseInt(player_id), convertDateFormat(week_date));
+
+          setFormData({
+            player_id: player_id,
+            week_date: week_date,
+            side: resp[0].side.toString(),
+            hole_1: resp[0].hole_1.toString(),
+            hole_2: resp[0].hole_2.toString(),
+            hole_3: resp[0].hole_3.toString(),
+            hole_4: resp[0].hole_4.toString(),
+            hole_5: resp[0].hole_5.toString(),
+            hole_6: resp[0].hole_6.toString(),
+            hole_7: resp[0].hole_7.toString(),
+            hole_8: resp[0].hole_8.toString(),
+            hole_9: resp[0].hole_9.toString()
+          })
+        } catch (error) {
+          console.error('Error fetching players:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    fetchScores()
+    
+  }, [player_id, week_date]);
+  
+  const editInfo = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`/api/scores/${formData.player_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) throw new Error('Failed to edit score');
+
+      // Reset form
+      setFormData({
+        ...formData,
+        player_id: '',
+        hole_1: '',
+        hole_2: '',
+        hole_3: '',
+        hole_4: '',
+        hole_5: '',
+        hole_6: '',
+        hole_7: '',
+        hole_8: '',
+        hole_9: '',
+      });
+
+      router.refresh();
+    } catch (error) {
+      console.error('Error adding score:', error);
+      alert('Failed to add score. Please try again.');
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       // Calculate total score
       const score = Object.entries(formData)
@@ -102,8 +174,6 @@ export default function AdminScores() {
   const score = Object.entries(formData)
         .filter(([key]) => key.startsWith('hole_'))
         .reduce((sum, [, value]) => sum + Number(value), 0);
-  
-  console.log(score);
 
   return (
     <div className="p-4 md:p-6">
@@ -198,7 +268,6 @@ export default function AdminScores() {
                     value={formData[`hole_${hole}` as keyof typeof formData]}
                     onChange={(e) => setFormData({ ...formData, [`hole_${hole}`]: e.target.value })}
                     className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-                    required
                   />
                 </div>
               ))}
@@ -211,9 +280,20 @@ export default function AdminScores() {
           {/* Submit Button */}
           <Button 
             type="submit"
-            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
+            value="save"
+            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
           >
             Add Score
+          </Button>
+          
+          {/* Edit Button */}
+          <Button 
+            type="button"
+            onClick={editInfo}
+            value="edit"
+            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
+          >
+            Edit Score
           </Button>
         </form>
       </div>

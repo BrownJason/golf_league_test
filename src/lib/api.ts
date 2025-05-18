@@ -10,14 +10,11 @@ function getApiUrl(path: string): string {
     return path;
   }
 
-  console.log(path)
 
   // For server-side requests
   const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-
-  console.log(baseUrl)
 
   return `${baseUrl}${path}`;
 }
@@ -185,6 +182,21 @@ export async function fetchESPNGolfScores(): Promise<any> {
 
 export async function fetchPlayerWinnings(playerId: number): Promise<any> {
   const url = getApiUrl(`/api/players/${playerId}/winnings`);
+  const response = await fetch(url, {
+    next: {revalidate: 0},
+    cache: 'no-store'
+  });
+
+  if(!response.ok) {
+    throw new Error('Failed to fetch player winnings');
+  }
+  const data = await response.json();
+  return data;
+}
+
+export async function fetchPlayerWinningsByWeek(playerId: number, weekDate: string): Promise<any> {
+  const week = encodeURIComponent(weekDate);
+  const url = getApiUrl(`/api/players/${playerId}/winnings?week=${week}`);
   const response = await fetch(url, {
     next: {revalidate: 0},
     cache: 'no-store'

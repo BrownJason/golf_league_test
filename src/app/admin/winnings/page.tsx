@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useRouter } from 'next/navigation';
+import { convertDateFormat } from '@/lib/utils';
+import { fetchPlayerWinningsByWeek } from '@/lib/api';
 
 interface Player {
   player_id: number;
@@ -25,6 +27,9 @@ export default function AdminScores() {
   });
   const router = useRouter();
 
+  const player_id = formData.player_id;
+  const week_date = formData.week_date;
+
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -40,17 +45,72 @@ export default function AdminScores() {
     };
 
     fetchPlayers();
-  }, []);
+    
+    if (player_id !== '') {
+      const fetchScores = async () => {
+        if (player_id !== '') {
+          try {
+            const resp = await fetchPlayerWinningsByWeek(parseInt(player_id), convertDateFormat(week_date));
+  
+            setFormData({
+              player_id: player_id,
+              week_date: week_date,
+              skins: resp[0].skins.toString(),
+              greens: resp[0].greens.toString(),
+              partners: resp[0].partners.toString(),
+              best_ball: resp[0].best_ball.toString(),
+              low_score: resp[0].low_score.toString()
+            })
+          } catch (error) {
+            console.error('Error fetching players:', error);
+          } finally {
+            setIsLoading(false);
+          }
+        }
+      }
+  
+      fetchScores()
+    }
+  }, [player_id, week_date]);
+
+  const editInfo = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`/api/winnings/${formData.player_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to add score');
+
+      // Reset form
+      setFormData({
+        ...formData,
+        player_id: '', 
+        skins: '',
+        greens: '',
+        partners: '',
+        best_ball: '',
+        low_score: '',
+      });
+
+      router.refresh();
+    } catch (error) {
+      console.error('Error adding score:', error);
+      alert('Failed to add score. Please try again.');
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      // Calculate total score
-      const score = Object.entries(formData)
-        .filter(([key]) => key.startsWith('hole_'))
-        .reduce((sum, [, value]) => sum + Number(value), 0);
-
       const response = await fetch('/api/winnings', {
         method: 'POST',
         headers: {
@@ -58,7 +118,6 @@ export default function AdminScores() {
         },
         body: JSON.stringify({
           ...formData,
-          score,
         }),
       });
 
@@ -174,9 +233,19 @@ export default function AdminScores() {
           {/* Submit Button */}
           <Button 
             type="submit"
+            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
+          >
+            Add Winnings
+          </Button>
+
+          {/* Edit Button */}
+          <Button 
+            type="button"
+            onClick={editInfo}
+            value="edit"
             className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
           >
-            Add Score
+            Edit Winnings
           </Button>
         </form>
       </div>

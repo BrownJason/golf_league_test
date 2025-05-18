@@ -14,7 +14,7 @@ export const revalidate = false;
 export async function GET() {
   try {
     console.log('Attempting to fetch weekly scores...');
-    
+
     const data = await sql`
       SELECT 
         ws.id, 

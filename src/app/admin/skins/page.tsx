@@ -39,6 +39,9 @@ export default function AdminScores() {
   });
   const router = useRouter();
 
+  const player_id = formData.player_id;
+  const week_date = formData.week_date;
+
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -54,7 +57,106 @@ export default function AdminScores() {
     };
 
     fetchPlayers();
-  }, []);
+    if (player_id) {
+
+    }
+
+    if (player_id !== '') {
+      const fetchPlayerSkins = async () => {
+        try {
+          const week = encodeURIComponent(week_date);
+          const response = await fetch(`/api/players/${player_id}/skins?week=${week}`);
+          if (!response.ok) throw new Error('Failed to fetch players');
+          const data = await response.json();
+          setFormData({
+            player_id: player_id,
+            week_date: week_date,
+            side: data[0].side,
+            hole_1: data[0].hole_1,
+            hole_1_win: data[0].hole_1_win,
+            hole_2: data[0].hole_2,
+            hole_2_win: data[0].hole_2_win,
+            hole_3: data[0].hole_3,
+            hole_3_win: data[0].hole_3_win,
+            hole_4: data[0].hole_4,
+            hole_4_win: data[0].hole_4_win,
+            hole_5: data[0].hole_5,
+            hole_5_win: data[0].hole_5_win,
+            hole_6: data[0].hole_6,
+            hole_6_win: data[0].hole_6_win,
+            hole_7: data[0].hole_7,
+            hole_7_win: data[0].hole_7_win,
+            hole_8: data[0].hole_8,
+            hole_8_win: data[0].hole_8_win,
+            hole_9: data[0].hole_9,
+            hole_9_win: data[0].hole_9_win,
+          });
+        } catch (error) {
+          console.error('Error fetching players:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      fetchPlayerSkins()
+    }
+  }, [player_id, week_date]);
+
+  const editInfo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Calculate total score
+      const response = await fetch(`/api/skins/${player_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to add score');
+
+      // Reset form
+      setFormData({
+        ...formData,
+        player_id: '',
+        hole_1: '',
+        hole_1_win: false,
+        hole_2: '',
+        hole_2_win: false,
+        hole_3: '',
+        hole_3_win: false,
+        hole_4: '',
+        hole_4_win: false,
+        hole_5: '',
+        hole_5_win: false,
+        hole_6: '',
+        hole_6_win: false,
+        hole_7: '',
+        hole_7_win: false,
+        hole_8: '',
+        hole_8_win: false,
+        hole_9: '',
+        hole_9_win: false,
+      });
+
+      router.refresh();
+    } catch (error) {
+      console.error('Error adding score:', error);
+      alert('Failed to add score. Please try again.');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-[#9A9540]">Loading...</div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,8 +213,6 @@ export default function AdminScores() {
       </div>
     );
   }
-
-  console.log(formData)
 
   return (
     <div className="p-4 md:p-6">
@@ -225,9 +325,19 @@ export default function AdminScores() {
           {/* Submit Button */}
           <Button 
             type="submit"
+            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
+          >
+            Add Skins
+          </Button>
+
+          {/* Edit Button */}
+          <Button 
+            type="button"
+            onClick={editInfo}
+            value="edit"
             className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
           >
-            Add Skins Score
+            Edit Skins
           </Button>
         </form>
       </div>

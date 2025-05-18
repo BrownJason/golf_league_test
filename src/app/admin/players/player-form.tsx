@@ -21,7 +21,6 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(initialData);
 
       let response = null;
 

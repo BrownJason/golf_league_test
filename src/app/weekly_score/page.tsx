@@ -26,8 +26,6 @@ export default async function Page() {
       })
     ]);
 
-    console.log(weekly_skins)
-
     // Handle empty states
     if (!weekly_scores || weekly_scores.length === 0) {
       return (
@@ -54,7 +52,6 @@ export default async function Page() {
     const totalWinnings = (weekly_winnings || []).reduce((acc, win) => 
       acc + (parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score)), 0
     ).toPrecision(2);
-    console.log(weekly_winnings)
     const uniquePlayers = new Set(weekly_scores.map(score => score.player_id)).size;
 
     return (

@@ -10,8 +10,6 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    console.log(data)
-
     const result = await sql`
       INSERT INTO skins_Score (
         player_id,
