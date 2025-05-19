@@ -20,10 +20,7 @@ export default async function Page() {
     const [weekly_scores, weekly_skins, weekly_winnings] = await Promise.all([
       fetchWeeklyScores(),
       fetchWeeklySkins(),
-      fetchWeeklyWinnings().catch(error => {
-        console.error('Error fetching winnings:', error);
-        return [];
-      })
+      fetchWeeklyWinnings()
     ]);
 
     // Handle empty states

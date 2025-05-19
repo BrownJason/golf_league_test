@@ -39,43 +39,9 @@ export async function GET() {
 
     console.log(`Successfully fetched ${data.length} weekly scores`);
 
-    // Return empty array if no data
-    if (!data || data.length === 0) {
-      return NextResponse.json([], {
-        headers: {
-          'Cache-Control': 'no-store, must-revalidate',
-          'Pragma': 'no-cache',
-        }
-      });
-    }
-
-    return NextResponse.json(data, {
-      headers: {
-        'Cache-Control': 'no-store, must-revalidate',
-        'Pragma': 'no-cache',
-      }
-    });
+    return NextResponse.json(data || []);
   } catch (error) {
     console.error('Database Error:', error);
-    if (error instanceof Error) {
-      console.error('Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      });
-    }
-    
-    return NextResponse.json(
-      { error: 'Failed to fetch weekly scores', details: error instanceof Error ? error.message : 'Unknown error' },
-      { 
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-store, must-revalidate',
-          'Pragma': 'no-cache',
-        }
-      }
-    );
-  } finally {
-    await sql.end();
+    return NextResponse.json([], { status: 200 }); // Return empty array instead of error
   }
 } 
