@@ -65,14 +65,6 @@ export default function AdminScores() {
               })
               setDisabled(false);
             } else {
-              setFormData({
-                ...formData,
-                skins: '',
-                greens: '',
-                partners: '',
-                best_ball: '',
-                low_score: '',
-              });
               setDisabled(true);
             }
           } catch (error) {
