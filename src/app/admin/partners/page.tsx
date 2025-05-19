@@ -15,6 +15,7 @@ import {
 interface Player {
   player_id: number;
   player_name: string;
+  handicap?: number;
 }
 
 interface PartnerScore {
@@ -23,6 +24,8 @@ interface PartnerScore {
   player2_id: number;
   player1_score: number;
   player2_score: number;
+  player1_handicap: number;
+  player2_handicap: number;
   combined_score: number;
   week_date: string;
 }
@@ -34,6 +37,8 @@ export default function AdminPartnersPage() {
   const [player2, setPlayer2] = useState("");
   const [player1Score, setPlayer1Score] = useState("");
   const [player2Score, setPlayer2Score] = useState("");
+  const [player1Handicap, setPlayer1Handicap] = useState("");
+  const [player2Handicap, setPlayer2Handicap] = useState("");
   const [weekDate, setWeekDate] = useState("");
   const [combinedScore, setCombinedScore] = useState("");
   const [message, setMessage] = useState("");
@@ -58,12 +63,14 @@ export default function AdminPartnersPage() {
   useEffect(() => {
     const score1 = Number(player1Score);
     const score2 = Number(player2Score);
+    const handicap1 = Number(player1Handicap);
+    const handicap2 = Number(player2Handicap);
     if (!isNaN(score1) && !isNaN(score2)) {
-      setCombinedScore((score1 + score2).toString());
+      setCombinedScore((score1-handicap1  + score2-handicap2).toString());
     } else {
       setCombinedScore("");
     }
-  }, [player1Score, player2Score]);
+  }, [player1Score, player2Score, player1Handicap, player2Handicap]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +88,15 @@ export default function AdminPartnersPage() {
       setMessage("Please enter valid scores for both players.");
       return;
     }
+    if (
+      !player1Handicap ||
+      !player2Handicap ||
+      isNaN(Number(player1Handicap)) ||
+      isNaN(Number(player2Handicap))
+    ) {
+      setMessage("Please enter valid handicaps for both players.");
+      return;
+    }
     if (!weekDate) {
       setMessage("Please select a week/date.");
       return;
@@ -93,6 +109,8 @@ export default function AdminPartnersPage() {
         player2_id: player2,
         player1_score: Number(player1Score),
         player2_score: Number(player2Score),
+        player1_handicap: Number(player1Handicap),
+        player2_handicap: Number(player2Handicap),
         week_date: weekDate,
       }),
     });
@@ -102,6 +120,8 @@ export default function AdminPartnersPage() {
       setPlayer2("");
       setPlayer1Score("");
       setPlayer2Score("");
+      setPlayer1Handicap("");
+      setPlayer2Handicap("");
       setWeekDate("");
       setCombinedScore("");
     } else {
@@ -129,6 +149,15 @@ export default function AdminPartnersPage() {
       setMessage("Please enter valid scores for both players.");
       return;
     }
+    if (
+      !player1Handicap ||
+      !player2Handicap ||
+      isNaN(Number(player1Handicap)) ||
+      isNaN(Number(player2Handicap))
+    ) {
+      setMessage("Please enter valid handicaps for both players.");
+      return;
+    }
     if (!weekDate) {
       setMessage("Please select a week/date.");
       return;
@@ -142,6 +171,8 @@ export default function AdminPartnersPage() {
         player2_id: player2,
         player1_score: Number(player1Score),
         player2_score: Number(player2Score),
+        player1_handicap: Number(player1Handicap),
+        player2_handicap: Number(player2Handicap),
         week_date: weekDate,
       }),
     });
@@ -152,6 +183,8 @@ export default function AdminPartnersPage() {
       setPlayer2("");
       setPlayer1Score("");
       setPlayer2Score("");
+      setPlayer1Handicap("");
+      setPlayer2Handicap("");
       setWeekDate("");
       setCombinedScore("");
     } else {
@@ -187,7 +220,14 @@ export default function AdminPartnersPage() {
               >
                 Player 1
               </Label>
-              <Select value={player1} onValueChange={setPlayer1}>
+              <Select
+                value={player1}
+                onValueChange={(val) => {
+                  setPlayer1(val);
+                  const found = players.find((p) => p.player_id.toString() === val);
+                  setPlayer1Handicap(found && found.handicap !== undefined ? found.handicap.toString() : "");
+                }}
+              >
                 <SelectTrigger
                   id="player1"
                   className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
@@ -216,7 +256,14 @@ export default function AdminPartnersPage() {
               >
                 Player 2
               </Label>
-              <Select value={player2} onValueChange={setPlayer2}>
+              <Select
+                value={player2}
+                onValueChange={(val) => {
+                  setPlayer2(val);
+                  const found = players.find((p) => p.player_id.toString() === val);
+                  setPlayer2Handicap(found && found.handicap !== undefined ? found.handicap.toString() : "");
+                }}
+              >
                 <SelectTrigger
                   id="player2"
                   className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
@@ -268,6 +315,42 @@ export default function AdminPartnersPage() {
                 type="number"
                 value={player2Score}
                 onChange={(e) => setPlayer2Score(e.target.value)}
+                min={0}
+                required
+                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <Label
+                className="block text-[#9A9540] text-sm font-medium mb-2"
+                htmlFor="player1Handicap"
+              >
+                Player 1 Handicap
+              </Label>
+              <Input
+                id="player1Handicap"
+                type="number"
+                value={player1Handicap}
+                onChange={(e) => setPlayer1Handicap(e.target.value)}
+                min={0}
+                required
+                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+              />
+            </div>
+            <div>
+              <Label
+                className="block text-[#9A9540] text-sm font-medium mb-2"
+                htmlFor="player2Handicap"
+              >
+                Player 2 Handicap
+              </Label>
+              <Input
+                id="player2Handicap"
+                type="number"
+                value={player2Handicap}
+                onChange={(e) => setPlayer2Handicap(e.target.value)}
                 min={0}
                 required
                 className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
@@ -382,6 +465,8 @@ export default function AdminPartnersPage() {
                               setPlayer2(score.player2_id.toString());
                               setPlayer1Score(score.player1_score.toString());
                               setPlayer2Score(score.player2_score.toString());
+                              setPlayer1Handicap(score.player1_handicap?.toString() || "");
+                              setPlayer2Handicap(score.player2_handicap?.toString() || "");
                               setWeekDate(score.week_date.slice(0, 10));
                             }}
                           >
