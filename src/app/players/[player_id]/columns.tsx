@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
-import moment from "moment";
 
 export type PlayerScore = {
   id: number;
@@ -25,19 +24,27 @@ export type PlayerScore = {
 export const columns: ColumnDef<PlayerScore>[] = [
   {
     accessorKey: "side",
-    header: () => <div className="hidden">Side</div>,
-    enableHiding: true,
+    header: () => <div>Side</div>,
     cell: ({ row }) => {
       const side: string = row.getValue("side");
-      return <div className="hidden">{side}</div>;
+      return <div className="text-center">{side.replaceAll(side.charAt(0), side.charAt(0).toUpperCase())}</div>;
     },
   },
   {
     accessorKey: "week_date",
     header: "Week Date",
     cell: ({ row }) => {
-      const week_date: string = moment(row.getValue("week_date")).add(1, "days").format("MM/DD/YYYY");
-      return <div>{week_date}</div>;
+      const week_date_raw = row.getValue("week_date");
+      let week_date = "";
+      if (typeof week_date_raw === "string") {
+        const [year, month, day] = week_date_raw.split("-");
+        week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+      } else if (week_date_raw instanceof Date) {
+        week_date = week_date_raw.toISOString().slice(0, 10);
+        const [year, month, day] = week_date.split("-");
+        week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+      }
+      return <div className="text-center">{week_date}</div>;
     },
   },
   {

@@ -2,7 +2,7 @@
 import { columns } from "./columns";
 import WeekFilter from "./handlefilter";
 import { DataTable } from "@/components/ui/data-table";
-import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer, fetchScorecard, fetchPeers } from "@/lib/api";
+import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer, fetchScorecard, fetchPeers, fetchWeeklyPartners, fetchWeeklySkins } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
 import PlayerStats from "@/components/player_stats/player_stats";
 
@@ -27,14 +27,21 @@ export default async function Page({
 
   try {
     // Fetch all data in parallel
-    const [player, playerScores, playerWinnings, distinctWeeks, scorecard, peers] = await Promise.all([
+    const [player, playerScores, playerWinnings, distinctWeeks, scorecard, peers, allPartners, allSkins] = await Promise.all([
       fetchPlayer(parseInt(player_id)),
       selectedWeek ? fetchPlayerScoresByWeek(parseInt(player_id), selectedWeek.replaceAll('/','')) : fetchPlayerScores(parseInt(player_id)),
       fetchPlayerWinnings(parseInt(player_id)),
       fetchWeeksByPlayer(parseInt(player_id)),
       fetchScorecard(),
-      fetchPeers()
+      fetchPeers(),
+      fetchWeeklyPartners(),
+      fetchWeeklySkins(),
     ]);
+
+    // Filter partner scores for this player
+    const playerPartners = allPartners.filter((p: any) => p.player1_id === parseInt(player_id) || p.player2_id === parseInt(player_id));
+    // Filter skins for this player
+    const playerSkins = allSkins.filter((s: any) => s.player_id === parseInt(player_id));
 
     let playerScoresByWeek = playerScores;
     if (selectedWeek) {
@@ -184,6 +191,116 @@ export default async function Page({
                   header="" 
                   filterItem="week_date" 
                 />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Partner Scores Section */}
+        {playerPartners.length > 0 && (
+          <div className="bg-[#292929] rounded-xl border border-[#EDE6D6] shadow-lg overflow-hidden mt-8">
+            <div className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-4">Partner Scores</h2>
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-[#EDE6D6] scrollbar-track-[#1A1A1A] border border-[#EDE6D6] rounded-xl">
+                <div className="min-w-[640px]">
+                  <table className="min-w-full text-sm text-[#EDE6D6] bg-[#305D3C] rounded-xl">
+                    {/* Table Header */}
+                    <thead>
+                      <tr>
+                        <th className="p-2 border-b border-[#EDE6D6]">Week</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Partner</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Score</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Partner Score</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Combined</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {playerPartners.map((ps: any) => {
+                        const isPlayer1 = ps.player1_id === parseInt(player_id);
+                        const partnerName = isPlayer1 ? ps.player2_name : ps.player1_name;
+                        const playerScore = isPlayer1 ? ps.player1_score : ps.player2_score;
+                        const playerHandicap = isPlayer1 ? ps.player1_handicap : ps.player2_handicap;
+                        const partnerHandicap = isPlayer1 ? ps.player2_handicap : ps.player1_handicap;
+                        const adjustedScore = playerScore - playerHandicap;
+                        const partnerScore = isPlayer1 ? ps.player2_score : ps.player1_score;
+                        const combined = adjustedScore;
+                        // Format week_date as MM/DD/YYYY
+                        let week_date = "";
+                        if (typeof ps.week_date === "string") {
+                          const [year, month, day] = ps.week_date.split("-");
+                          week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+                        } else if (ps.week_date instanceof Date) {
+                          week_date = ps.week_date.toISOString().slice(0, 10);
+                          const [year, month, day] = week_date.split("-");
+                          week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+                        }
+                        return (
+                          <tr key={ps.id}>
+                            <td className="p-2 border-b border-[#EDE6D6] text-center">{week_date}</td>
+                            <td className="p-2 border-b border-[#EDE6D6] text-center">{partnerName}</td>
+                            <td className="p-2 border-b border-[#EDE6D6] text-center">{playerScore + ' - ' + playerHandicap + ' : ' + (playerScore - playerHandicap)}</td>
+                            <td className="p-2 border-b border-[#EDE6D6] text-center">{partnerScore + ' - ' + partnerHandicap + ' : ' +(partnerScore - partnerHandicap)}</td>
+                            <td className="p-2 border-b border-[#EDE6D6] text-center">{combined}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Skins Section */}
+        {playerSkins.length > 0 && (
+          <div className="bg-[#292929] rounded-xl border border-[#EDE6D6] shadow-lg overflow-hidden mt-8">
+            <div className="p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-4">Skins</h2>
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-[#EDE6D6] scrollbar-track-[#1A1A1A] border border-[#EDE6D6] rounded-xl">
+                <div className="min-w-[640px]">
+                  <table className="min-w-full text-sm text-[#EDE6D6] bg-[#305D3C] rounded-xl">
+                    <thead>
+                      <tr>
+                        <th className="p-2 border-b border-[#EDE6D6]">Week</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Side</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Hole</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Winnings</th>
+                        <th className="p-2 border-b border-[#EDE6D6]">Win</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {playerSkins.map((skin: any) => {
+                        // Format week_date as MM/DD/YYYY
+                        let week_date = "";
+                        if (typeof skin.week_date === "string") {
+                          const [year, month, day] = skin.week_date.split("-");
+                          week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+                        } else if (skin.week_date instanceof Date) {
+                          week_date = skin.week_date.toISOString().slice(0, 10);
+                          const [year, month, day] = week_date.split("-");
+                          week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+                        }
+                        // Show all holes with win
+                        return Array.from({ length: 9 }, (_, i) => {
+                          const holeNum = i + 1;
+                          const win = skin[`hole_${holeNum}_win`];
+                          if (!win) return null;
+                          const winnings = skin[`hole_${holeNum}`];
+                          return (
+                            <tr key={skin.id + '-' + holeNum}>
+                              <td className="p-2 border-b border-[#EDE6D6] text-center">{week_date}</td>
+                              <td className="p-2 border-b border-[#EDE6D6] text-center">{skin.side.replace(skin.side.charAt(0), skin.side.charAt(0).toUpperCase())}</td>
+                              <td className="p-2 border-b border-[#EDE6D6] text-center">{holeNum}</td>
+                              <td className="p-2 border-b border-[#EDE6D6] text-center"> {Number(winnings).toLocaleString("en-US", { style: "currency", currency: "USD" })}</td>
+                              <td className="p-2 border-b border-[#EDE6D6] text-center">🏆</td>
+                            </tr>
+                          );
+                        });
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

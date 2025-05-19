@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import { ArrowUpDown } from "lucide-react";
-import moment from "moment";
 import Link from "next/link";
 
 export type WeeklyScore = {
@@ -30,19 +29,13 @@ export type WeeklyScore = {
 export const scoreColumns: ColumnDef<WeeklyScore>[] = [
   {
     accessorKey: "player_id",
-    header: () => <div className="hidden">Player Id</div>,
-    cell: ({ row }) => {
-      const player_id = parseInt(row.getValue("player_id"));
-      return <div className="hidden">{player_id}</div>;
-    },
+    header: undefined,
+    cell: undefined,
   },
   {
     accessorKey: "side",
-    header: () => <div className="hidden">Side</div>,
-    cell: ({ row }) => {
-      const side: string = row.getValue("side");
-      return <div className="hidden">{side}</div>;
-    },
+    header: undefined,
+    cell: undefined,
   },
   {
     accessorKey: "player_name",
@@ -63,7 +56,16 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
       );
     },
     cell: ({ row }) => {
-      const week_date: string = moment(row.getValue("week_date")).add(1, "days").format("MM/DD/YYYY");
+      const week_date_raw = row.getValue("week_date");
+      let week_date = "";
+      if (typeof week_date_raw === "string") {
+        const [year, month, day] = week_date_raw.split("-");
+        week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+      } else if (week_date_raw instanceof Date) {
+        week_date = week_date_raw.toISOString().slice(0, 10);
+        const [year, month, day] = week_date.split("-");
+        week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+      }
       return <div className="text-center">{week_date}</div>;
     },
   },

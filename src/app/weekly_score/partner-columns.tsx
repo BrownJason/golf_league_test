@@ -1,7 +1,6 @@
 'use client';
 
 import { ColumnDef } from "@tanstack/react-table";
-import moment from "moment";
 
 export type PartnerScore = {
   id: number;
@@ -72,7 +71,16 @@ export const partnerColumns: ColumnDef<PartnerScore>[] = [
     accessorKey: "week_date",
     header: () => <div className="text-center">Week Date</div>,
     cell: ({ row }) => {
-      const week_date: string = moment(row.getValue("week_date")).add(1, "days").format("MM/DD/YYYY");
+      const week_date_raw = row.getValue("week_date");
+      let week_date = "";
+      if (typeof week_date_raw === "string") {
+        const [year, month, day] = week_date_raw.split("-");
+        week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+      } else if (week_date_raw instanceof Date) {
+        week_date = week_date_raw.toISOString().slice(0, 10);
+        const [year, month, day] = week_date.split("-");
+        week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+      }
       return <div className="text-center">{week_date}</div>;
     },
   },

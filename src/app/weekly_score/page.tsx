@@ -4,7 +4,7 @@ import { fetchWeeklyScores, fetchWeeklySkins, fetchWeeklyWinnings, fetchWeeklyPa
 import { DataTable } from "@/components/ui/data-table";
 import { scoreColumns } from "./score-columns";
 import { winningsColumns } from "./winnings-columns";
-import { skinsColumns } from "./skins-columns";
+import { skinsColumns, WeeklySkins as SkinsTableRow } from "./skins-columns";
 import { partnerColumns } from "./partner-columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WeekFilter from './week-filter';
@@ -35,6 +35,8 @@ export default function Page() {
   function getWeekDateString(week_date: string | Date): string {
     if (typeof week_date === 'string') return week_date;
     if (week_date && typeof week_date === 'object' && 'toISOString' in week_date && typeof week_date.toISOString === 'function') {
+      console.log('week_date:', week_date);
+      
       return week_date.toISOString().slice(0, 10);
     }
     return '';
@@ -58,7 +60,11 @@ export default function Page() {
         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
         .map((week_date) => ({
           week_date,
-          formatted_date: new Date(week_date).toLocaleDateString('en-US'),
+          // Format as MM/DD/YYYY using string split, not Date object
+          formatted_date: (() => {
+            const [year, month, day] = week_date.split("-");
+            return `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
+          })(),
         }));
       setAllWeeks(weeks);
       setLoading(false);
@@ -218,10 +224,38 @@ export default function Page() {
               <div className="overflow-hidden">
                 <div className="overflow-x-auto">
                   <div className="min-w-[800px] p-4 md:p-6">
-                    <DataTable 
-                      columns={skinsColumns} 
-                      data={filteredSkins} 
-                      header="" 
+                    <DataTable
+                      columns={skinsColumns}
+                      data={(() => {
+                        // Flatten skins data for DataTable: one row per win, matching WeeklySkins type
+                        const rows: SkinsTableRow[] = [];
+                        for (const skin of filteredSkins) {
+                          const { player_name, week_date, side } = skin;
+                          // If winnings is not present, fallback to 5
+                          for (let i = 1; i <= 9; i++) {
+                            const win: boolean = (skin as Record<string, unknown>)[`hole_${i}_win`] === true;
+                            const winningsRaw = (skin as Record<string, unknown>)[`hole_${i}`];
+                            const winnings = typeof winningsRaw === "number"
+                              ? winningsRaw
+                              : typeof winningsRaw === "string"
+                                ? parseFloat(winningsRaw)
+                                : 5;
+                          
+                            if (win) {
+                              rows.push({
+                                player_name,
+                                week_date,
+                                side,
+                                hole: i,
+                                winnings,
+                                win: true,
+                              });
+                            }
+                          }
+                        }
+                        return rows;
+                      })()}
+                      header=""
                       filterItem="player_name"
                     />
                   </div>
