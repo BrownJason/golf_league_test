@@ -63,6 +63,16 @@ export default function RootLayout({
                           Weekly Scores
                         </Link>
                       </li>
+                      <li>
+                        <Link href="/gallery" className="text-sm text-[#EDE6D6]/80 hover:text-[#EDE6D6] transitions">
+                          Gallery
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/pga_events" className="text-sm text-[#EDE6D6]/80 hover:text-[#EDE6D6] transitions">
+                          PGA Events
+                        </Link>
+                      </li>
                     </ul>
                   </div>
 

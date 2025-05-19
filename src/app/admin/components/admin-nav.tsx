@@ -46,6 +46,12 @@ export default function AdminNav() {
           >
             Skins
           </Link>
+          <Link 
+            href="/admin/partners" 
+            className="text-[#9A9540] hover:text-[#9A9540]/80"
+          >
+            Partners
+          </Link>
         </div>
         <button
           onClick={handleLogout}

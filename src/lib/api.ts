@@ -251,3 +251,25 @@ export async function fetchPeers(): Promise<any> {
   return data;
 }
 
+export async function fetchWeeklyPartners(week_date?: string) {
+  try {
+    let url = getApiUrl('/api/weekly-partners');
+    if (week_date) {
+      url += `?week_date=${week_date}`;
+    }
+    const response = await fetch(url, {
+      method: 'GET',
+      next: { revalidate: 0 },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch partner scores: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Fetch Error:', error);
+    throw error;
+  }
+}
+
