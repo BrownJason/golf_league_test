@@ -221,8 +221,8 @@ export default async function Page({
                         const playerScore = isPlayer1 ? ps.player1_score : ps.player2_score;
                         const playerHandicap = isPlayer1 ? ps.player1_handicap : ps.player2_handicap;
                         const partnerHandicap = isPlayer1 ? ps.player2_handicap : ps.player1_handicap;
-                        const adjustedScore = playerScore - playerHandicap;
                         const partnerScore = isPlayer1 ? ps.player2_score : ps.player1_score;
+                        const adjustedScore = (playerScore - playerHandicap) + (partnerScore - partnerHandicap);
                         const combined = adjustedScore;
                         // Format week_date as MM/DD/YYYY
                         let week_date = "";
