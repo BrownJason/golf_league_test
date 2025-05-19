@@ -74,6 +74,8 @@ export default function AdminScores() {
               hole_9: resp[0].hole_9.toString()
             })
             setDisabled(false);
+          } else {
+            setDisabled(true);
           }
         } catch (error) {
           console.error('Error fetching players:', error);

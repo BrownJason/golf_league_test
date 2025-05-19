@@ -69,34 +69,36 @@ export default function AdminScores() {
           const response = await fetch(`/api/players/${player_id}/skins?week=${week}`);
           if (!response.ok) throw new Error('Failed to fetch players');
           const data = await response.json();
-          setFormData({
-            player_id: player_id,
-            week_date: week_date,
-            side: data[0].side,
-            hole_1: data[0].hole_1,
-            hole_1_win: data[0].hole_1_win,
-            hole_2: data[0].hole_2,
-            hole_2_win: data[0].hole_2_win,
-            hole_3: data[0].hole_3,
-            hole_3_win: data[0].hole_3_win,
-            hole_4: data[0].hole_4,
-            hole_4_win: data[0].hole_4_win,
-            hole_5: data[0].hole_5,
-            hole_5_win: data[0].hole_5_win,
-            hole_6: data[0].hole_6,
-            hole_6_win: data[0].hole_6_win,
-            hole_7: data[0].hole_7,
-            hole_7_win: data[0].hole_7_win,
-            hole_8: data[0].hole_8,
-            hole_8_win: data[0].hole_8_win,
-            hole_9: data[0].hole_9,
-            hole_9_win: data[0].hole_9_win,
-          });
+          console.log(data)
+          if (data.length > 0) {
+              setFormData({
+              player_id: player_id,
+              week_date: week_date,
+              side: data[0].side === null || data[0].side === undefined ? 'front' : '',
+              hole_1: data[0].hole_1,
+              hole_1_win: data[0].hole_1_win,
+              hole_2: data[0].hole_2,
+              hole_2_win: data[0].hole_2_win,
+              hole_3: data[0].hole_3,
+              hole_3_win: data[0].hole_3_win,
+              hole_4: data[0].hole_4,
+              hole_4_win: data[0].hole_4_win,
+              hole_5: data[0].hole_5,
+              hole_5_win: data[0].hole_5_win,
+              hole_6: data[0].hole_6,
+              hole_6_win: data[0].hole_6_win,
+              hole_7: data[0].hole_7,
+              hole_7_win: data[0].hole_7_win,
+              hole_8: data[0].hole_8,
+              hole_8_win: data[0].hole_8_win,
+              hole_9: data[0].hole_9,
+              hole_9_win: data[0].hole_9_win,
+            });
+            setDisabled(false);
+          }
         } catch (error) {
           console.error('Error fetching players:', error);
-        } finally {
-          setDisabled(false);
-        }
+        } 
       }
 
       fetchPlayerSkins()
@@ -124,6 +126,7 @@ export default function AdminScores() {
       setFormData({
         ...formData,
         player_id: '',
+        side: 'front',
         hole_1: '',
         hole_1_win: false,
         hole_2: '',
@@ -181,6 +184,7 @@ export default function AdminScores() {
       setFormData({
         ...formData,
         player_id: '',
+        side: 'front',
         hole_1: '',
         hole_1_win: false,
         hole_2: '',

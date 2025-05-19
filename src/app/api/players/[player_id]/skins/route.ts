@@ -74,15 +74,7 @@ export async function GET(
     }
 
     if (!data || data.length === 0) {
-      return NextResponse.json([{
-        player_id: parseInt(player_id),
-        skins: 0,
-        greens: 0,
-        partners: 0,
-        best_ball: 0,
-        low_score: 0,
-        total: '$0.00'
-      }]);
+      return NextResponse.json([]);
     }
 
     return new NextResponse(JSON.stringify(data), {
