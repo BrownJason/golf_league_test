@@ -179,7 +179,7 @@ export default function Page() {
             </DialogContent>
           </Dialog>
         )}
-        <Button variant="link" className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-[#EDE6D6] hover:text-[#B2825E]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <Button variant="link" className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-[#EDE6D6] hover:text-[#B2825E]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           Back to Top
         </Button>
       </main>
