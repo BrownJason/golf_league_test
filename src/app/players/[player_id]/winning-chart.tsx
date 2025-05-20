@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { Chart } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
@@ -11,7 +11,7 @@ Chart.defaults.set("plugins.datalabels", {
   color: "#000000",
 });
 
-const PieChart = ({ values, formattedWinnings }: { values: any; player: any; weeks_played: any; avg_score: any; formattedWinnings: string[] }) => {
+const WinningsPieChart = ({ values, formattedWinnings }: { values: any; player: any; weeks_played: any; avg_score: any; formattedWinnings: string[] }) => {
   const greens = values.map((res: { greens: number }) => res.greens).reduce((res: any, value: number) => {
     return res + value
   }, 0);
@@ -37,7 +37,19 @@ const PieChart = ({ values, formattedWinnings }: { values: any; player: any; wee
         datalabels: {
           color: "#EDE6D6",
           font: {
-            size: 24,
+            size: 18,
+          },
+          formatter: (value: number) => {
+            // Ensure value is a number before formatting
+            const num = typeof value === 'number' ? value : Number(value);
+            if (isNaN(num)) return '';
+            // Format as USD currency, remove leading zero for numbers between -1 and 1
+            const formatted = num.toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2
+            });
+            return formatted.replace(/^(-?)\$0\./, '$1$.');
           }
         },
       },
@@ -46,30 +58,22 @@ const PieChart = ({ values, formattedWinnings }: { values: any; player: any; wee
   const options = {
     plugins: {
       legend: {
-        display: false
+        display: true,
+        labels: {
+          color: "#EDE6D6",
+        },
       },
       datalabels: {
-        color: "#000000",
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "#EDE6D6", // Change this to your desired color for the X-axis labels
-        },
-      },
-      y: {
-        ticks: {
-          color: "#EDE6D6", // Change this to your desired color for the Y-axis labels,
-        },
-        beginAtZero: true, // Ensure the Y-axis starts at 0
+        color: "#EDE6D6",
       },
     },
   };
 
   return (
-    <div className="flex-col">
-      <Bar data={data} options={options} />
+    <div className="flex-col w-full flex items-center justify-center">
+      <div style={{ maxWidth: 400, maxHeight: 300, width: '100%', height: '300px' }}>
+        <Pie data={data} options={options} />
+      </div>
       <span className="flex text-center w-full justify-center text-lg">
         <em>Winnings: {formattedWinnings[0]}</em>
       </span>
@@ -77,4 +81,4 @@ const PieChart = ({ values, formattedWinnings }: { values: any; player: any; wee
   );
 };
 
-export default PieChart;
+export default WinningsPieChart;
