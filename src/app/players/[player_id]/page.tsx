@@ -96,7 +96,7 @@ export default async function Page({
     }
 
     return (
-      <div className="p-4 md:p-6">
+      <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
         {/* Player Header Section - Made more compact on mobile */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] text-center mb-2 px-2">
@@ -357,7 +357,7 @@ export default async function Page({
             formattedWinnings={formattedWinnings} 
           />
         )}
-      </div>
+      </main>
     );
   } catch (error) {
     console.error('Error:', error);

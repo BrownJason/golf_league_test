@@ -11,7 +11,7 @@ export default async function Page() {
 
     return (
       <div className="p-4 md:p-6">
-        <main className="max-w-full mx-auto">
+        <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
           <div className="text-center mb-12 md:mb-16">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">
               PGA Events:

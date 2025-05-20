@@ -3,6 +3,7 @@ import "./globals.css";
 import NavBar from "./navbar";
 import Link from "next/link";
 import { ThemeProvider } from "./theme-provider";
+import BrownFamilyLogoIcon from "@/components/ui/BrownFamilyLogoIcon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +44,7 @@ export default function RootLayout({
                   {/* Brand Section */}
                   <div className="text-center md:text-left">
                     <h3 className="text-lg font-semibold text-[#EDE6D6] mb-3">
-                      <Link href="/">Brown Family Golf</Link></h3>
+                      <Link href="/"><BrownFamilyLogoIcon /></Link></h3>
                     <p className="text-sm text-[#EDE6D6]/80">
                       Bringing family together through the love of golf
                     </p>

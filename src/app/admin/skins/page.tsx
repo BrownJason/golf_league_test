@@ -233,121 +233,123 @@ export default function AdminScores() {
         </div>
 
         {/* Score Entry Form */}
-        <form onSubmit={handleSubmit} className="bg-[#243E2A] rounded-xl border border-[#9A9540] p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Player Selection */}
-            <div>
+        <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
+          <form onSubmit={handleSubmit} className="bg-[#243E2A] rounded-xl border border-[#9A9540] p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* Player Selection */}
+              <div>
+                <label className="block text-[#9A9540] text-sm font-medium mb-2">
+                  Player
+                </label>
+                <Select
+                  value={formData.player_id}
+                  onValueChange={(value) => setFormData({ ...formData, player_id: value })}
+                >
+                  <SelectTrigger className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]">
+                    <SelectValue placeholder="Select player" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
+                    {players.map((player) => (
+                      <SelectItem 
+                        key={player.player_id} 
+                        value={player.player_id.toString()}
+                        className="text-[#9A9540]"
+                      >
+                        {player.player_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Date Selection */}
+              <div>
+                <label className="block text-[#9A9540] text-sm font-medium mb-2">
+                  Date
+                </label>
+                <Input
+                  type="date"
+                  value={formData.week_date}
+                  onChange={(e) => setFormData({ ...formData, week_date: e.target.value })}
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Side Selection */}
+            <div className="mb-6">
               <label className="block text-[#9A9540] text-sm font-medium mb-2">
-                Player
+                Side
               </label>
               <Select
-                value={formData.player_id}
-                onValueChange={(value) => setFormData({ ...formData, player_id: value })}
+                value={formData.side}
+                onValueChange={(value) => setFormData({ ...formData, side: value })}
               >
                 <SelectTrigger className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]">
-                  <SelectValue placeholder="Select player" />
+                  <SelectValue placeholder="Select side" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
-                  {players.map((player) => (
-                    <SelectItem 
-                      key={player.player_id} 
-                      value={player.player_id.toString()}
-                      className="text-[#9A9540]"
-                    >
-                      {player.player_name}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="front" className="text-[#9A9540]">Front Nine</SelectItem>
+                  <SelectItem value="back" className="text-[#9A9540]">Back Nine</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            {/* Date Selection */}
-            <div>
-              <label className="block text-[#9A9540] text-sm font-medium mb-2">
-                Date
+            {/* Hole Scores */}
+            <div className="mb-6">
+              <label className="block text-[#9A9540] text-sm font-medium mb-4">
+                Hole Scores
               </label>
-              <Input
-                type="date"
-                value={formData.week_date}
-                onChange={(e) => setFormData({ ...formData, week_date: e.target.value })}
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-                required
-              />
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((hole) => (
+                  <div key={hole}>
+                    <label className="block text-[#9A9540] text-xs mb-1">
+                      Hole {hole}
+                    </label>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={formData[`hole_${hole}` as keyof typeof formData] ? Number(formData[`hole_${hole}` as keyof typeof formData]) : 0}
+                      onChange={(e) => setFormData({ ...formData, [`hole_${hole}`]: parseFloat(e.target.value) })}
+                      className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                    />
+                    <label className="block text-[#9A9540] text-xs mb-1">
+                      Hole {hole} Won
+                    </label>
+                    <Input
+                      type="checkbox"
+                      checked={formData[`hole_${hole}_win` as keyof typeof formData] ? true : false}
+                      onChange={(e) => setFormData({ ...formData, [`hole_${hole}_win`]: e.target.checked})}
+                      className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Side Selection */}
-          <div className="mb-6">
-            <label className="block text-[#9A9540] text-sm font-medium mb-2">
-              Side
-            </label>
-            <Select
-              value={formData.side}
-              onValueChange={(value) => setFormData({ ...formData, side: value })}
+            {/* Submit Button */}
+            <Button 
+              type="submit"
+              className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
             >
-              <SelectTrigger className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]">
-                <SelectValue placeholder="Select side" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
-                <SelectItem value="front" className="text-[#9A9540]">Front Nine</SelectItem>
-                <SelectItem value="back" className="text-[#9A9540]">Back Nine</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+              Add Skins
+            </Button>
 
-          {/* Hole Scores */}
-          <div className="mb-6">
-            <label className="block text-[#9A9540] text-sm font-medium mb-4">
-              Hole Scores
-            </label>
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((hole) => (
-                <div key={hole}>
-                  <label className="block text-[#9A9540] text-xs mb-1">
-                    Hole {hole}
-                  </label>
-                  <Input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={formData[`hole_${hole}` as keyof typeof formData] ? Number(formData[`hole_${hole}` as keyof typeof formData]) : 0}
-                    onChange={(e) => setFormData({ ...formData, [`hole_${hole}`]: parseFloat(e.target.value) })}
-                    className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-                  />
-                  <label className="block text-[#9A9540] text-xs mb-1">
-                    Hole {hole} Won
-                  </label>
-                  <Input
-                    type="checkbox"
-                    checked={formData[`hole_${hole}_win` as keyof typeof formData] ? true : false}
-                    onChange={(e) => setFormData({ ...formData, [`hole_${hole}_win`]: e.target.checked})}
-                    className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <Button 
-            type="submit"
-            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
-          >
-            Add Skins
-          </Button>
-
-          {/* Edit Button */}
-          <Button 
-            type="button"
-            onClick={editInfo}
-            value="edit"
-            disabled={disabled}
-            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
-          >
-            Edit Skins
-          </Button>
-        </form>
+            {/* Edit Button */}
+            <Button 
+              type="button"
+              onClick={editInfo}
+              value="edit"
+              disabled={disabled}
+              className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
+            >
+              Edit Skins
+            </Button>
+          </form>
+        </main>
       </div>
     </div>
   );
-} 
+}

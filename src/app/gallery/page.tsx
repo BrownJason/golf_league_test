@@ -11,6 +11,23 @@ import { GetImages } from "@/lib/getImages";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ParallaxHero from "./ParallaxHero";
+import BrownFamilyLogoIcon from "@/components/ui/BrownFamilyLogoIcon";
+
+// Animated golf-themed SVG background
+const GolfBackground = () => (
+  <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none animate-fade-in" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" style={{opacity:0.12}}>
+    <defs>
+      <linearGradient id="golfGradient" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#305D3C"/>
+        <stop offset="100%" stopColor="#B2825E"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="720" cy="320" rx="900" ry="120" fill="url(#golfGradient)" />
+    <circle cx="200" cy="180" r="30" fill="#EDE6D6" stroke="#B2825E" strokeWidth="4"/>
+    <rect x="1200" y="200" width="12" height="60" rx="4" fill="#B2825E"/>
+    <polygon points="1206,200 1212,220 1200,220" fill="#EDE6D6"/>
+  </svg>
+);
 
 export default function Page() {
   // Replace below with api call of images saved to a database once we have it setup for use
@@ -66,17 +83,21 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="p-0 md:p-0">
+    <div className="p-0 md:p-0 relative overflow-hidden">
+      <GolfBackground />
       <div className="flex justify-center relative" id="parallax">
         <ParallaxHero />
-        <Button variant="link" className="absolute bottom-20 z-10 text-[#EDE6D6] text-lg hover:text-[#B2825E]" onClick={() => {
+        <Button variant="link" className="absolute bottom-20 z-10 text-[#EDE6D6] text-lg hover:text-[#B2825E] animate-fade-in" onClick={() => {
           const el = document.getElementById('main');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}>
-          Scroll to Gallery   
+          <span className="inline-flex items-center gap-2">
+            <BrownFamilyLogoIcon className="w-6 h-6" />
+            Scroll to Gallery   
+          </span>
         </Button>
       </div>
-      <main className="max-w-full w-[80vw] md:w-full h-[95vh] mx-auto p-4 md:p-6 relative" id="main" style={{ scrollMarginTop: '60px' }}>
+      <main className="max-w-full w-[80vw] md:w-full h-[95vh] mx-auto p-4 md:p-6 relative animate-fade-in" id="main" style={{ scrollMarginTop: '60px' }}>
         <div className="text-center mb-12 md:mb-16">
           <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#292929] border border-[#B2825E] border-4 rounded-xl">
             <Carousel  
@@ -119,7 +140,7 @@ export default function Page() {
         {/* Thumbnails under the carousel */}
         <div
           ref={gridRef}
-          className={`flex flex-wrap justify-center gap-2 mt-4 transition-opacity duration-1000 ${gridVisible ? 'opacity-100' : 'opacity-0'}`}
+          className={`flex flex-wrap justify-center gap-2 mt-4 transition-opacity duration-1000 ${gridVisible ? 'opacity-100' : 'opacity-0'} animate-fade-in`}
         >
           {images.map((img: any, idx: number) => (
             <div
@@ -149,7 +170,7 @@ export default function Page() {
         {/* Expanded Dialog for images */}
         {expandedIdx !== null && (
           <Dialog open onOpenChange={handleClose}>
-            <DialogContent className="flex flex-col !max-w-[90vw] !max-h-[90vh] bg-[#292929] border border-[#B2825E] overflow-auto">
+            <DialogContent className="flex flex-col !max-w-[90vw] !max-h-[90vh] bg-[#292929] border border-[#B2825E] overflow-auto data-[state=open]:animate-slide-up">
               <DialogHeader>
                 <DialogTitle className="text-[#EDE6D6]">{images[expandedIdx].title}</DialogTitle>
                 <DialogDescription className="text-[#EDE6D6]">
@@ -179,8 +200,11 @@ export default function Page() {
             </DialogContent>
           </Dialog>
         )}
-        <Button variant="link" className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-[#EDE6D6] hover:text-[#B2825E]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          Back to Top
+        <Button variant="link" className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-[#EDE6D6] hover:text-[#B2825E] animate-fade-in" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <span className="inline-flex items-center gap-2">
+            <BrownFamilyLogoIcon className="w-5 h-5" />
+            Back to Top
+          </span>
         </Button>
       </main>
     </div>

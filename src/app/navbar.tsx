@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import BrownFamilyLogoIcon from "@/components/ui/BrownFamilyLogoIcon";
 import Link from "next/link";
 import { useState } from "react";
+import { GolfClubIcon, GolfFlagIcon, GolfBallIcon } from "@/components/ui/BrownFamilyLogoIcon";
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,10 +19,7 @@ export default function NavBar() {
           {/* Logo/Brand */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group">
-              <span className="text-xl">
-                Brown Family Golf
-              </span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+              <BrownFamilyLogoIcon />
             </Link>
           </div>
 
@@ -28,23 +27,26 @@ export default function NavBar() {
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Link 
               href="/" 
-              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group flex items-center gap-1"
             >
+              <GolfFlagIcon className="w-5 h-5" />
               <span>Home</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
               href="/players" 
-              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group flex items-center gap-1"
             >
+              <GolfClubIcon className="w-5 h-5" />
               <span>Players</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 
               href="/weekly_score" 
-              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group"
+              className="text-[#EDE6D6] hover:text-[#EDE6D6]/80 px-3 py-2 rounded-md text-sm font-medium transitions relative group flex items-center gap-1"
             >
-              <span>Weekly Score</span>
+              <GolfBallIcon className="w-5 h-5" />
+              <span>Weekly Scores</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#EDE6D6] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
             </Link>
             <Link 

@@ -155,7 +155,7 @@ export default function AdminScores() {
   }
 
   return (
-    <div className="p-4 md:p-6">
+    <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -255,6 +255,6 @@ export default function AdminScores() {
           </Button>
         </form>
       </div>
-    </div>
+    </main>
   );
-} 
+}

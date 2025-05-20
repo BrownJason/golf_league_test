@@ -13,6 +13,8 @@ import { WeeklyScore } from "./score-columns";
 import { WeeklyWinnings } from "./winnings-columns";
 import { WeeklySkins } from "./skins-columns";
 import { PartnerScore } from "./partner-columns";
+import { GolfBallIcon, GolfFlagIcon, GolfClubIcon } from "@/components/ui/BrownFamilyLogoIcon";
+import { Trophy } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -21,6 +23,22 @@ export const fetchCache = 'force-no-store';
 //   title: 'Weekly Performance | Brown Family Golf',
 //   description: 'Track scores and winnings week by week',
 // };
+
+// Animated golf-themed SVG background for weekly scores page
+const GolfBackground = () => (
+  <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none animate-fade-in" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" style={{opacity:0.10}}>
+    <defs>
+      <linearGradient id="golfGradientWeekly" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#305D3C"/>
+        <stop offset="100%" stopColor="#B2825E"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="720" cy="320" rx="900" ry="120" fill="url(#golfGradientWeekly)" />
+    <circle cx="1240" cy="180" r="30" fill="#EDE6D6" stroke="#B2825E" strokeWidth="4"/>
+    <rect x="100" y="200" width="12" height="60" rx="4" fill="#B2825E"/>
+    <polygon points="106,200 112,220 100,220" fill="#EDE6D6"/>
+  </svg>
+);
 
 export default function Page() {
   const [weeklyScores, setWeeklyScores] = useState<WeeklyScore[]>([]);
@@ -109,17 +127,112 @@ export default function Page() {
   const uniquePlayers = new Set(filteredScores.map(score => score.player_id)).size;
 
   return (
-    <div className="p-4 md:p-6">
-      <main className="max-w mx-auto">
+    <div className="p-4 md:p-6 relative overflow-hidden">
+      <GolfBackground />
+      <main className="max-w mx-auto p-4 md:p-6 animate-fade-in relative z-10">
         {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3">
-            Weekly Performance
+          <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3 flex items-center justify-center gap-2">
+            <GolfBallIcon className="w-7 h-7" /> Weekly Performance
           </h1>
           <div className="h-1 w-24 md:w-32 bg-text mx-auto rounded-full mb-4"></div>
           <p className="text-[#EDE6D6] text-sm md:text-base">
             Track scores and winnings week by week
           </p>
+        </div>
+
+        {/* Card-based Weekly Results */}
+        <div className="mb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {allWeeks.map((week, idx) => {
+            // Find stats for this week
+            const weekScores = weeklyScores.filter(s => getWeekDateString(s.week_date) === week.week_date);
+            const weekWinnings = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date);
+            const weekSkins = weeklySkins.filter(s => getWeekDateString(s.week_date) === week.week_date);
+            const weekPartners = weeklyPartners.filter(p => getWeekDateString(p.week_date) === week.week_date);
+            if (!weekScores.length) return null;
+            // Calculate top performer (lowest score)
+            const topScore = Math.min(...weekScores.map(s => s.adjusted_score));
+            const topPlayer = weekScores.find(s => s.adjusted_score === topScore)?.player_name;
+            // Calculate top earner
+            const winningsByPlayer = weekWinnings.reduce((acc, win) => {
+              const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
+              acc[win.player_name] = (acc[win.player_name] || 0) + total;
+              return acc;
+            }, {} as Record<string, number>);
+            const topEarner = Object.entries(winningsByPlayer).sort(([,a],[,b]) => b-a)[0]?.[0];
+            // Highlight most recent week as 'Top Week'
+            const isTopWeek = idx === 0;
+            return (
+              <div key={week.week_date} className="relative bg-[#292929] border border-[#B2825E] rounded-xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 animate-fade-in group overflow-hidden">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-[#EDE6D6] text-lg">{week.formatted_date}</span>
+                  {isTopWeek && (
+                    <span className="text-yellow-400 flex items-center gap-1 font-semibold"><Trophy className="w-5 h-5 inline" /> Top Week</span>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <GolfFlagIcon className="w-4 h-4" />
+                    <span className="text-[#EDE6D6]">Low Score:</span>
+                    <span className="font-semibold text-[#B2825E]">{topPlayer} ({topScore})</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <GolfClubIcon className="w-4 h-4" />
+                    <span className="text-[#EDE6D6]">Top Earner:</span>
+                    <span className="font-semibold text-[#B2825E]">{topEarner}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <GolfBallIcon className="w-4 h-4" />
+                    <span className="text-[#EDE6D6]">Rounds:</span>
+                    <span className="font-semibold">{weekScores.length}</span>
+                  </div>
+                  {/* Skins Stat: List who won and on which hole */}
+                  <div className="flex items-start gap-2">
+                    <GolfBallIcon className="w-4 h-4 rotate-45 mt-1" />
+                    <span className="text-[#EDE6D6]">Skins:</span>
+                    <div className="flex flex-col gap-0.5 font-semibold">
+                      {(() => {
+                        // List all skin wins for this week: Player (Hole X)
+                        const skinsList: string[] = [];
+                        for (const skin of weekSkins) {
+                          // Only use fields that are part of WeeklySkins type
+                          if (typeof skin.hole === 'number' && skin.win) {
+                            skinsList.push(`${skin.player_name} (Hole ${skin.hole})`);
+                          }
+                        }
+                        return skinsList.length > 0
+                          ? skinsList.map((s, idx) => <span key={idx} className="text-[#B2825E]">{s}</span>)
+                          : <span className="text-[#B2825E]">None</span>;
+                      })()}
+                    </div>
+                  </div>
+                  {/* Partners Stat: Show winning pair (lowest combined score) and their score */}
+                  <div className="flex items-start gap-2">
+                    <GolfClubIcon className="w-4 h-4 rotate-12 mt-1" />
+                    <span className="text-[#EDE6D6]">Partners:</span>
+                    <div className="flex flex-col gap-0.5 font-semibold">
+                      {(() => {
+                        // Find the partner pair with the lowest combined score
+                        if (!weekPartners.length) return <span className="text-[#B2825E]">None</span>;
+                        let bestPair = null;
+                        let bestScore = Infinity;
+                        for (const p of weekPartners) {
+                          if (typeof p.combined_score === 'number' && p.combined_score < bestScore) {
+                            bestScore = p.combined_score;
+                            bestPair = p;
+                          }
+                        }
+                        return bestPair
+                          ? <span className="text-[#B2825E]">{bestPair.player1_name} &amp; {bestPair.player2_name}: {bestScore}</span>
+                          : <span className="text-[#B2825E]">None</span>;
+                      })()}
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#305D3C]/30 to-[#B2825E]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none" />
+              </div>
+            );
+          })}
         </div>
 
         {/* Summary Cards */}
@@ -326,6 +439,15 @@ export default function Page() {
           </div>
         </div>
       </main>
+
+      {/* Floating Back to Top Button */}
+      <button
+        className="fixed bottom-8 right-8 z-50 bg-[#305D3C] text-[#EDE6D6] rounded-full shadow-lg hover:bg-[#B2825E] transition flex items-center gap-2 p-3 animate-fade-in"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to Top"
+      >
+        <GolfBallIcon className="w-6 h-6" />
+      </button>
     </div>
   );
 }

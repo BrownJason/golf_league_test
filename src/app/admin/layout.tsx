@@ -16,9 +16,9 @@ export default async function AdminLayout({
   return (
     <div>
       <AdminNav />
-      <div className="p-4">
+      <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
         {children}
-      </div>
+      </main>
     </div>
   );
 }

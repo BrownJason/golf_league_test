@@ -200,3 +200,6 @@
   }
 }
 
+.font-outline-1 {
+  -webkit-text-stroke: 1px #EDE6D6; /* Adjust the stroke width and color as needed */
+}

@@ -48,29 +48,31 @@ export default function ManagePlayers() {
   }
 
   return (
-    <div className="p-6 bg-[#1A3E2A] rounded-lg">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#9A9540]">Manage Players</h2>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]">
-              Add New Player
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-[#1A3E2A] border-[#9A9540]">
-            <DialogHeader>
-              <DialogTitle className="text-[#9A9540]">Add New Player</DialogTitle>
-            </DialogHeader>
-            <PlayerForm onSubmit={handleAddPlayer} />
-          </DialogContent>
-        </Dialog>
+    <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
+      <div className="p-6 bg-[#1A3E2A] rounded-lg">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-[#9A9540]">Manage Players</h2>
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]">
+                Add New Player
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-[#1A3E2A] border-[#9A9540]">
+              <DialogHeader>
+                <DialogTitle className="text-[#9A9540]">Add New Player</DialogTitle>
+              </DialogHeader>
+              <PlayerForm onSubmit={handleAddPlayer} />
+            </DialogContent>
+          </Dialog>
+        </div>
+        <DataTable 
+          columns={playerColumns} 
+          data={players} 
+          header="Players List" 
+          filterItem="player_name"
+        />
       </div>
-      <DataTable 
-        columns={playerColumns} 
-        data={players} 
-        header="Players List" 
-        filterItem="player_name"
-      />
-    </div>
+    </main>
   );
-} 
+}

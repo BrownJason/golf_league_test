@@ -1,9 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import BrownFamilyLogo from "@/components/ui/BrownFamilyLogo";
 import { fetchSeasonOverviewData, fetchWeeklyGlance } from "@/lib/api";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+// Animated golf-themed SVG background for homepage
+const GolfBackground = () => (
+  <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none animate-fade-in" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg" style={{opacity:0.10}}>
+    <defs>
+      <linearGradient id="golfGradientHome" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#305D3C"/>
+        <stop offset="100%" stopColor="#B2825E"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="720" cy="320" rx="900" ry="120" fill="url(#golfGradientHome)" />
+    <circle cx="200" cy="180" r="30" fill="#EDE6D6" stroke="#B2825E" strokeWidth="4"/>
+    <rect x="1200" y="200" width="12" height="60" rx="4" fill="#B2825E"/>
+    <polygon points="1206,200 1212,220 1200,220" fill="#EDE6D6"/>
+  </svg>
+);
 
 export default async function Home() {
  try {
@@ -51,12 +68,13 @@ export default async function Home() {
 
    
     return (
-      <div className="p-4 md:p-6">
-        <main className="max-w-full mx-auto">
+      <div className="p-4 md:p-6 relative overflow-hidden">
+        <GolfBackground />
+        <main className="max-w-full mx-auto animate-fade-in relative z-10">
           {/* Hero Section */}
-          <div className="text-center mb-12 md:mb-16">
+          <div className="text-center mb-12 md:mb-16 animate-fade-in">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">
-              Brown Family Golf
+              <BrownFamilyLogo />
             </h1>
             <div className="h-1 w-32 md:w-40 bg-[#EDE6D6] mx-auto rounded-full mb-6"></div>
             <p className="text-[#EDE6D6] text-sm md:text-base max-w-2xl mx-auto">
@@ -65,7 +83,7 @@ export default async function Home() {
           </div>
 
           {/* Feature Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in">
             {/* Players Card */}
             <Link href="/players" className="group">
               <div className="bg-[#292929] hover:bg-[#305D3C]/60 border border-[#B2825E] rounded-xl p-6 shadow shadow-black shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 hover:shadow-xl">
@@ -107,7 +125,7 @@ export default async function Home() {
           </div>
 
           {/* Quick Stats Section */}
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 mb-12 shadow shadow-black shadow-lg">
+          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 mb-12 shadow shadow-black shadow-lg animate-fade-in">
             <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Season Overview</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
@@ -131,7 +149,7 @@ export default async function Home() {
 
           
           <Link href="/weekly_score" className="group">
-            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg">
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg animate-fade-in">
               <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Week At A Glance</h2>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">

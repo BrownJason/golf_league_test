@@ -206,281 +206,283 @@ export default function AdminPartnersPage() {
             Add or edit partner scores for the week
           </p>
         </div>
-        {/* Partner Score Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="bg-[#243E2A] rounded-xl border border-[#9A9540] p-6"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Player 1 Selection */}
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="player1"
-              >
-                Player 1
-              </Label>
-              <Select
-                value={player1}
-                onValueChange={(val) => {
-                  setPlayer1(val);
-                  const found = players.find((p) => p.player_id.toString() === val);
-                  setPlayer1Handicap(found && found.handicap !== undefined ? found.handicap.toString() : "");
-                }}
-              >
-                <SelectTrigger
-                  id="player1"
-                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+        <main className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
+          {/* Partner Score Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="bg-[#243E2A] rounded-xl border border-[#9A9540] p-6"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* Player 1 Selection */}
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="player1"
                 >
-                  <SelectValue placeholder="Select Player 1" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
-                  {players.map((p) => (
-                    <SelectItem
-                      key={p.player_id}
-                      value={p.player_id.toString()}
-                      disabled={p.player_id.toString() === player2}
-                      className="text-[#9A9540]"
-                    >
-                      {p.player_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {/* Player 2 Selection */}
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="player2"
-              >
-                Player 2
-              </Label>
-              <Select
-                value={player2}
-                onValueChange={(val) => {
-                  setPlayer2(val);
-                  const found = players.find((p) => p.player_id.toString() === val);
-                  setPlayer2Handicap(found && found.handicap !== undefined ? found.handicap.toString() : "");
-                }}
-              >
-                <SelectTrigger
-                  id="player2"
-                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                  Player 1
+                </Label>
+                <Select
+                  value={player1}
+                  onValueChange={(val) => {
+                    setPlayer1(val);
+                    const found = players.find((p) => p.player_id.toString() === val);
+                    setPlayer1Handicap(found && found.handicap !== undefined ? found.handicap.toString() : "");
+                  }}
                 >
-                  <SelectValue placeholder="Select Player 2" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
-                  {players.map((p) => (
-                    <SelectItem
-                      key={p.player_id}
-                      value={p.player_id.toString()}
-                      disabled={p.player_id.toString() === player1}
-                      className="text-[#9A9540]"
-                    >
-                      {p.player_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectTrigger
+                    id="player1"
+                    className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                  >
+                    <SelectValue placeholder="Select Player 1" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
+                    {players.map((p) => (
+                      <SelectItem
+                        key={p.player_id}
+                        value={p.player_id.toString()}
+                        disabled={p.player_id.toString() === player2}
+                        className="text-[#9A9540]"
+                      >
+                        {p.player_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {/* Player 2 Selection */}
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="player2"
+                >
+                  Player 2
+                </Label>
+                <Select
+                  value={player2}
+                  onValueChange={(val) => {
+                    setPlayer2(val);
+                    const found = players.find((p) => p.player_id.toString() === val);
+                    setPlayer2Handicap(found && found.handicap !== undefined ? found.handicap.toString() : "");
+                  }}
+                >
+                  <SelectTrigger
+                    id="player2"
+                    className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                  >
+                    <SelectValue placeholder="Select Player 2" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#1A3E2A] border-[#9A9540]">
+                    {players.map((p) => (
+                      <SelectItem
+                        key={p.player_id}
+                        value={p.player_id.toString()}
+                        disabled={p.player_id.toString() === player1}
+                        className="text-[#9A9540]"
+                      >
+                        {p.player_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="player1Score"
-              >
-                Player 1 Score
-              </Label>
-              <Input
-                id="player1Score"
-                type="number"
-                value={player1Score}
-                onChange={(e) => setPlayer1Score(e.target.value)}
-                min={0}
-                required
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="player1Score"
+                >
+                  Player 1 Score
+                </Label>
+                <Input
+                  id="player1Score"
+                  type="number"
+                  value={player1Score}
+                  onChange={(e) => setPlayer1Score(e.target.value)}
+                  min={0}
+                  required
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                />
+              </div>
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="player2Score"
+                >
+                  Player 2 Score
+                </Label>
+                <Input
+                  id="player2Score"
+                  type="number"
+                  value={player2Score}
+                  onChange={(e) => setPlayer2Score(e.target.value)}
+                  min={0}
+                  required
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                />
+              </div>
             </div>
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="player2Score"
-              >
-                Player 2 Score
-              </Label>
-              <Input
-                id="player2Score"
-                type="number"
-                value={player2Score}
-                onChange={(e) => setPlayer2Score(e.target.value)}
-                min={0}
-                required
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="player1Handicap"
+                >
+                  Player 1 Handicap
+                </Label>
+                <Input
+                  id="player1Handicap"
+                  type="number"
+                  value={player1Handicap}
+                  onChange={(e) => setPlayer1Handicap(e.target.value)}
+                  min={0}
+                  required
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                />
+              </div>
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="player2Handicap"
+                >
+                  Player 2 Handicap
+                </Label>
+                <Input
+                  id="player2Handicap"
+                  type="number"
+                  value={player2Handicap}
+                  onChange={(e) => setPlayer2Handicap(e.target.value)}
+                  min={0}
+                  required
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                />
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="player1Handicap"
-              >
-                Player 1 Handicap
-              </Label>
-              <Input
-                id="player1Handicap"
-                type="number"
-                value={player1Handicap}
-                onChange={(e) => setPlayer1Handicap(e.target.value)}
-                min={0}
-                required
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
+              <div>
+                <Label
+                  className="block text-[#9A9540] text-sm font-medium mb-2"
+                  htmlFor="weekDate"
+                >
+                  Week/Date
+                </Label>
+                <Input
+                  id="weekDate"
+                  type="date"
+                  value={weekDate}
+                  onChange={(e) => setWeekDate(e.target.value)}
+                  required
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                />
+              </div>
+              <div>
+                <Label className="block text-[#9A9540] text-sm font-medium mb-2">
+                  Combined Score
+                </Label>
+                <Input
+                  value={combinedScore}
+                  readOnly
+                  tabIndex={-1}
+                  className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
+                />
+              </div>
             </div>
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="player2Handicap"
-              >
-                Player 2 Handicap
-              </Label>
-              <Input
-                id="player2Handicap"
-                type="number"
-                value={player2Handicap}
-                onChange={(e) => setPlayer2Handicap(e.target.value)}
-                min={0}
-                required
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 items-end">
-            <div>
-              <Label
-                className="block text-[#9A9540] text-sm font-medium mb-2"
-                htmlFor="weekDate"
-              >
-                Week/Date
-              </Label>
-              <Input
-                id="weekDate"
-                type="date"
-                value={weekDate}
-                onChange={(e) => setWeekDate(e.target.value)}
-                required
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-              />
-            </div>
-            <div>
-              <Label className="block text-[#9A9540] text-sm font-medium mb-2">
-                Combined Score
-              </Label>
-              <Input
-                value={combinedScore}
-                readOnly
-                tabIndex={-1}
-                className="bg-[#1A3E2A] border-[#9A9540] text-[#9A9540]"
-              />
-            </div>
-          </div>
-          {message && (
-            <div className="text-sm text-center text-red-500 dark:text-red-400 mb-2">
-              {message}
+            {message && (
+              <div className="text-sm text-center text-red-500 dark:text-red-400 mb-2">
+                {message}
+              </div>
+            )}
+            <Button
+              type="submit"
+              className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
+            >
+              Add Partner Score
+            </Button>
+            <Button
+              type="button"
+              className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
+              variant="secondary"
+              onClick={handleEdit}
+            >
+              Edit Partner Score
+            </Button>
+          </form>
+          {/* Partner Scores Table */}
+          {weekDate && partnerScores.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-2 text-[#9A9540]">
+                Partner Scores for {weekDate}
+              </h2>
+              <div className="overflow-x-auto">
+                <table className="min-w-full border text-sm bg-[#243E2A] border-[#9A9540] text-[#9A9540] rounded-xl">
+                  <thead>
+                    <tr className="bg-[#1A3E2A]">
+                      <th className="p-2 border border-[#9A9540]">Player 1</th>
+                      <th className="p-2 border border-[#9A9540]">Player 2</th>
+                      <th className="p-2 border border-[#9A9540]">Player 1 Score</th>
+                      <th className="p-2 border border-[#9A9540]">Player 2 Score</th>
+                      <th className="p-2 border border-[#9A9540]">Combined</th>
+                      <th className="p-2 border border-[#9A9540]">Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {partnerScores.map((score) => {
+                      const p1 = players.find(
+                        (p) => p.player_id === score.player1_id
+                      );
+                      const p2 = players.find(
+                        (p) => p.player_id === score.player2_id
+                      );
+                      return (
+                        <tr key={score.id} className="text-center">
+                          <td className="p-2 border border-[#9A9540]">
+                            {p1 ? p1.player_name : score.player1_id}
+                          </td>
+                          <td className="p-2 border border-[#9A9540]">
+                            {p2 ? p2.player_name : score.player2_id}
+                          </td>
+                          <td className="p-2 border border-[#9A9540]">
+                            {score.player1_score}
+                          </td>
+                          <td className="p-2 border border-[#9A9540]">
+                            {score.player2_score}
+                          </td>
+                          <td className="p-2 border border-[#9A9540] font-bold">
+                            {score.combined_score}
+                          </td>
+                          <td className="p-2 border border-[#9A9540]">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant={editId === score.id ? "default" : "outline"}
+                              className={
+                                editId === score.id
+                                  ? "bg-[#9A9540] text-[#1A3E2A]"
+                                  : "border-[#9A9540] text-[#9A9540]"
+                              }
+                              onClick={() => {
+                                setEditId(score.id);
+                                setPlayer1(score.player1_id.toString());
+                                setPlayer2(score.player2_id.toString());
+                                setPlayer1Score(score.player1_score.toString());
+                                setPlayer2Score(score.player2_score.toString());
+                                setPlayer1Handicap(score.player1_handicap?.toString() || "");
+                                setPlayer2Handicap(score.player2_handicap?.toString() || "");
+                                setWeekDate(score.week_date.slice(0, 10));
+                              }}
+                            >
+                              {editId === score.id ? "Editing" : "Edit"}
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
-          <Button
-            type="submit"
-            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530] mb-4"
-          >
-            Add Partner Score
-          </Button>
-          <Button
-            type="button"
-            className="w-full bg-[#9A9540] text-[#1A3E2A] hover:bg-[#7A7530]"
-            variant="secondary"
-            onClick={handleEdit}
-          >
-            Edit Partner Score
-          </Button>
-        </form>
-        {/* Partner Scores Table */}
-        {weekDate && partnerScores.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold mb-2 text-[#9A9540]">
-              Partner Scores for {weekDate}
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border text-sm bg-[#243E2A] border-[#9A9540] text-[#9A9540] rounded-xl">
-                <thead>
-                  <tr className="bg-[#1A3E2A]">
-                    <th className="p-2 border border-[#9A9540]">Player 1</th>
-                    <th className="p-2 border border-[#9A9540]">Player 2</th>
-                    <th className="p-2 border border-[#9A9540]">Player 1 Score</th>
-                    <th className="p-2 border border-[#9A9540]">Player 2 Score</th>
-                    <th className="p-2 border border-[#9A9540]">Combined</th>
-                    <th className="p-2 border border-[#9A9540]">Edit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {partnerScores.map((score) => {
-                    const p1 = players.find(
-                      (p) => p.player_id === score.player1_id
-                    );
-                    const p2 = players.find(
-                      (p) => p.player_id === score.player2_id
-                    );
-                    return (
-                      <tr key={score.id} className="text-center">
-                        <td className="p-2 border border-[#9A9540]">
-                          {p1 ? p1.player_name : score.player1_id}
-                        </td>
-                        <td className="p-2 border border-[#9A9540]">
-                          {p2 ? p2.player_name : score.player2_id}
-                        </td>
-                        <td className="p-2 border border-[#9A9540]">
-                          {score.player1_score}
-                        </td>
-                        <td className="p-2 border border-[#9A9540]">
-                          {score.player2_score}
-                        </td>
-                        <td className="p-2 border border-[#9A9540] font-bold">
-                          {score.combined_score}
-                        </td>
-                        <td className="p-2 border border-[#9A9540]">
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant={editId === score.id ? "default" : "outline"}
-                            className={
-                              editId === score.id
-                                ? "bg-[#9A9540] text-[#1A3E2A]"
-                                : "border-[#9A9540] text-[#9A9540]"
-                            }
-                            onClick={() => {
-                              setEditId(score.id);
-                              setPlayer1(score.player1_id.toString());
-                              setPlayer2(score.player2_id.toString());
-                              setPlayer1Score(score.player1_score.toString());
-                              setPlayer2Score(score.player2_score.toString());
-                              setPlayer1Handicap(score.player1_handicap?.toString() || "");
-                              setPlayer2Handicap(score.player2_handicap?.toString() || "");
-                              setWeekDate(score.week_date.slice(0, 10));
-                            }}
-                          >
-                            {editId === score.id ? "Editing" : "Edit"}
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+        </main>
       </div>
     </div>
   );
