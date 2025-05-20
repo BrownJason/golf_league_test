@@ -4,12 +4,13 @@
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import React from "react";
 import { GetImages } from "@/lib/getImages";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import ParallaxHero from "./ParallaxHero";
 
 export default function Page() {
   // Replace below with api call of images saved to a database once we have it setup for use
@@ -45,15 +46,42 @@ export default function Page() {
   const handlePrev = () => setExpandedIdx((idx) => (idx !== null ? (idx - 1 + images.length) % images.length : null));
   const handleNext = () => setExpandedIdx((idx) => (idx !== null ? (idx + 1) % images.length : null));
 
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [gridVisible, setGridVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setGridVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (gridRef.current) {
+      observer.observe(gridRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="p-4 md:p-6">
-      <main className="max-w-full mx-auto">
+    <div className="p-0 md:p-0">
+      <div className="flex justify-center relative" id="parallax">
+        <ParallaxHero />
+        <Button variant="link" className="absolute bottom-20 z-10 text-[#EDE6D6] text-lg hover:text-[#B2825E]" onClick={() => {
+          const el = document.getElementById('main');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}>
+          Scroll to Gallery   
+        </Button>
+      </div>
+      <main className="max-w-full w-[80vw] md:w-full h-[95vh] mx-auto p-4 md:p-6 relative" id="main" style={{ scrollMarginTop: '60px' }}>
         <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EDE6D6] mb-4 text-shadow-lg text-shadow-black">Gallery</h1>
           <div className="flex flex-col justify-center md:w-1/2 mx-auto bg-[#292929] border border-[#B2825E] border-4 rounded-xl">
             <Carousel  
                 plugins={[plugin.current]}
-                className="flex bg-[#292929] rounded-xl"
+                className="flex bg-[#292929] rounded-xl relative"
                 onMouseEnter={plugin.current.stop}
                 onMouseLeave={plugin.current.reset}
                 setApi={setApi}>
@@ -61,7 +89,7 @@ export default function Page() {
                 {images.map((img: any, idx: number) => {
                     return (
                     <CarouselItem key={img.src + idx} className="w-[1960px]">
-                        <AspectRatio ratio={16/9}>
+                        <AspectRatio ratio={16/9} className="relative w-full h-full">
                             <Image src={img.src} alt="bg img" fill unoptimized className="flex aspect-square items-center justify-center p-6 cursor-pointer" onClick={() => handleOpen(idx)} title={img.title + ': ' + img.description}/>  
                         </AspectRatio>
                         <div className="font-bold text-center w-full truncate" title={img.title}>{img.title}</div>
@@ -70,8 +98,18 @@ export default function Page() {
                     );
                 })}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                {/* Previous on left, Next on right for mobile */}
+                <div className="md:hidden absolute top-1/2 left-2 z-20 -translate-y-1/2">
+                  <CarouselPrevious />
+                </div>
+                <div className="md:hidden absolute top-1/2 right-2 z-20 -translate-y-1/2">
+                  <CarouselNext />
+                </div>
+                {/* Desktop arrows (hidden on mobile) */}
+                <div className="hidden md:block">
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </div>
             </Carousel> 
             <div className="py-2 text-center text-lg text-[#EDE6D6]">
                 Slide {current} of {count}
@@ -79,7 +117,10 @@ export default function Page() {
           </div>
         </div>
         {/* Thumbnails under the carousel */}
-        <div className="flex flex-wrap justify-center gap-2 mt-4">
+        <div
+          ref={gridRef}
+          className={`flex flex-wrap justify-center gap-2 mt-4 transition-opacity duration-1000 ${gridVisible ? 'opacity-100' : 'opacity-0'}`}
+        >
           {images.map((img: any, idx: number) => (
             <div
               key={img.src + idx}
@@ -138,6 +179,9 @@ export default function Page() {
             </DialogContent>
           </Dialog>
         )}
+        <Button variant="link" className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-[#EDE6D6] hover:text-[#B2825E]" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          Back to Top
+        </Button>
       </main>
     </div>
   );
