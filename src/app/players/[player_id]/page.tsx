@@ -5,6 +5,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { fetchPlayer, fetchPlayerScores, fetchPlayerScoresByWeek, fetchPlayerWinnings, fetchWeeksByPlayer, fetchScorecard, fetchPeers, fetchWeeklyPartners, fetchWeeklySkins } from "@/lib/api";
 import { WeeklyScore } from "@/app/weekly_score/score-columns";
 import PlayerStats from "@/components/player_stats/player_stats";
+import DownloadScoresXLSXButton from "@/components/ui/download-scores-xlsx-button";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -103,6 +104,46 @@ export default async function Page({
           </h1>
           <div className="h-1 w-24 md:w-32 bg-[#EDE6D6] mx-auto rounded-full"></div>
         </div>
+
+        {/* Download Data Button */ }
+        {playerScores.length > 0 && (
+        <div className="mb-6 md:mb-8 max-w-4xl mx-auto">
+          <div className="flex md:flex-row flex-col justify-center rounded-lg border border-[#EDE6D6] bg-[#292929] p-4 md:p-6 shadow-lg shadow-black overflow-hidden mb-6 md:mb-8">
+            <div className="text-[#EDE6D6] text-sm md:text-base font-semibold mb-2">
+              <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-4">Download Data</h2>
+              <p className="text-[#EDE6D6] text-sm md:text-base">
+                Download your scores and winnings in Excel format
+              </p>
+            </div>
+            <div className="mx-auto flex items-center justify-center m-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-[#EDE6D6] mr-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 1v22M1 12h22" />
+              </svg>
+              <DownloadScoresXLSXButton
+                playerScores={playerScores.map((score: any) => ({
+                  ...score,
+                  week_date:
+                    score.week_date instanceof Date
+                      ? score.week_date.toISOString().slice(0, 10)
+                      : score.week_date,
+                }))}
+                playerName={player.player_name}
+                partners={playerPartners}
+                winnings={playerWinnings}
+              />
+            </div>
+          </div>
+        </div>
+        )}
 
         {/* Winnings Section */}
         {formattedWinnings.length > 0 && formattedWinnings[0] !== "$.00" ? (

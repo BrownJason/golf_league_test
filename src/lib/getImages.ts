@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import golf_bg from "../../public/uploads/golf_bg_image.jpg";
 import hole_9_img1 from "../../public/uploads/hole_9_img1.jpg";
 import hole_9_img2 from "../../public/uploads/hole_9_img2.jpg"; 
