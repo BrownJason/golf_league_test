@@ -196,8 +196,11 @@ export default function Page() {
                         const skinsList: string[] = [];
                         for (const skin of weekSkins) {
                           // Only use fields that are part of WeeklySkins type
-                          if (typeof skin.hole === 'number' && skin.win) {
-                            skinsList.push(`${skin.player_name} (Hole ${skin.hole})`);
+                          for (let i = 1; i <= 9; i++) {
+                            const win: boolean = (skin as Record<string, unknown>)[`hole_${i}_win`] === true;
+                            if (win) {
+                              skinsList.push(`${skin.player_name} (Hole ${i})`);
+                            }
                           }
                         }
                         return skinsList.length > 0

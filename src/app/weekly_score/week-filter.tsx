@@ -12,7 +12,6 @@ interface WeekFilterProps {
 }
 
 export default function WeekFilter({ weeks, selectedWeek, onChange }: WeekFilterProps) {
-    console.log(weeks)
     if (!weeks || weeks.length === 0) {
         return <div className="text-[#B2825E]">No weeks available</div>;
     }
