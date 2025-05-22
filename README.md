@@ -1,6 +1,6 @@
 # Brown Family Golf League 🏌️‍♂️
 
-![Brown Family Golf Banner](public/hole_9_img1.jpg)
+![Brown Family Golf Banner](public/uploads/hole_9_img1.jpg)
 
 A modern web application built for managing golf scores, statistics, and winnings for the Brown Family Golf League. Built with Next.js 14, TypeScript, and PostgreSQL.
 
