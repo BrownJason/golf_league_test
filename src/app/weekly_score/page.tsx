@@ -36,7 +36,7 @@ const GolfBackground = () => (
     <ellipse cx="720" cy="320" rx="900" ry="120" fill="url(#golfGradientWeekly)" />
     <circle cx="1240" cy="180" r="30" fill="#EDE6D6" stroke="#B2825E" strokeWidth="4"/>
     <rect x="100" y="200" width="12" height="60" rx="4" fill="#B2825E"/>
-    <polygon points="106,200 112,220 100,220" fill="#EDE6D6"/>
+    <polygon points="150,210 110,200 110,220" fill="#EDE6D6"/>
   </svg>
 );
 

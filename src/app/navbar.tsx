@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import BrownFamilyLogoIcon from "@/components/ui/BrownFamilyLogoIcon";
 import Link from "next/link";
@@ -109,25 +108,28 @@ export default function NavBar() {
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
             href="/"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions flex flex-row "
           >
+            <GolfFlagIcon className="w-5 h-5" />
             Home
           </Link>
           <Link
             href="/players"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions flex flex-row "
           >
+            <GolfClubIcon className="w-5 h-5" />
             Players
           </Link>
           <Link
             href="/weekly_score"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions flex flex-row "
           >
+            <GolfBallIcon className="w-5 h-5" />
             Weekly Score
           </Link>
           <Link
             href="/gallery"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#EDE6D6] hover:text-[#EDE6D6]/80 hover:bg-[#243E2A] transitions flex flex-row "
           >
             Gallery
           </Link>

@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+export const runtime = 'edge';
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
@@ -15,7 +16,25 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // Check if the request is secure (HTTPS) in production
+  // and redirect to HTTPS if not
+  if (
+    process.env.NODE_ENV === 'production' &&
+    request.headers.get('x-forwarded-proto') !== 'https'
+  ) {
+    return NextResponse.redirect(
+      `https://${request.headers.get('host')}${request.nextUrl.pathname}`,
+      308
+    );
+  }
+
+  const response = NextResponse.next();
+  // If you want to set the real IP, you can try to get it from headers (e.g., x-forwarded-for)
+  const realIp = request.headers.get('x-forwarded-for');
+  if (realIp) {
+    response.headers.set('x-real-ip', realIp);
+  }
+  return response;
 }
 
 // Only apply middleware to admin routes

@@ -2,11 +2,18 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import postgres from "postgres";
 import bcrypt from 'bcryptjs';
+import { Redis } from '@upstash/redis';
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+// Set up Upstash Redis client using Vercel KV credentials
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
 
 const handler = NextAuth({
   debug: true,
@@ -17,8 +24,30 @@ const handler = NextAuth({
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      
+      async authorize(credentials, req) {
         try {
+          // Use x-real-ip header set by Edge Middleware for secure IP extraction
+          let ip = 'unknown';
+          if (req && req.headers && typeof req.headers['x-real-ip'] === 'string') {
+            ip = req.headers['x-real-ip'];
+          } else if (req && req.headers && typeof req.headers['x-forwarded-for'] === 'string') {
+            ip = req.headers['x-forwarded-for'].split(',')[0].trim();
+          }
+          if (ip === 'unknown' && req && req.headers && typeof req.headers["host"] === 'string') {
+            ip = req.headers["host"];
+          }
+          const key = `login_attempts:${ip}`;
+          const windowSec = 10 * 60; // 10 minutes
+          const maxAttempts = 5;
+          const attempts = await redis.incr(key);
+          if (attempts === 1) {
+            await redis.expire(key, windowSec);
+          }
+          if (attempts > maxAttempts) {
+            throw new Error('Too many login attempts. Please try again later.');
+          }
+
           if (!credentials?.username || !credentials?.password) {
             throw new Error('Missing credentials');
           };
@@ -28,14 +57,10 @@ const handler = NextAuth({
             WHERE username = ${credentials.username}
           `;
 
-          if (!result || result.length === 0) {
-            throw new Error('No user found');
-          }
-
           const user = result[0];
 
-          if (!user.password_hash) {
-            throw new Error('No password hash found for user');
+          if (!result || result.length === 0 || !user) {
+            throw new Error('Invalid credentials');
           }
 
           const passwordMatch = await bcrypt.compare(
@@ -44,7 +69,7 @@ const handler = NextAuth({
           );
 
           if (!passwordMatch) {
-            throw new Error('Invalid password');
+            throw new Error('Invalid credentials');
           }
 
           return {
@@ -52,8 +77,10 @@ const handler = NextAuth({
             username: user.username,
           };
         } catch (error) {
-          console.error('Auth error:', error);
-          throw error;
+          if (process.env.NODE_ENV !== 'production') {
+            console.error('Auth error:', error);
+          }
+          throw new Error('Invalid credentials');
         }
       }
     })
@@ -85,4 +112,4 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handler as GET, handler as POST }; 
+export { handler as GET, handler as POST };
