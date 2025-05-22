@@ -1,27 +1,23 @@
 # Brown Family Golf League 🏌️‍♂️
 
-![Brown Family Golf Banner](public/hole_9_img.jpg)
+![Brown Family Golf Banner](public/hole_9_img1.jpg)
 
 A modern web application built for managing golf scores, statistics, and winnings for the Brown Family Golf League. Built with Next.js 14, TypeScript, and PostgreSQL.
 
 ## 🌟 Features
 
 ### 📊 Score Tracking
-![Score Tracking](public/screenshots/weekly_scores.png)
 - Weekly score entry and tracking
 - Front/back nine scoring
 - Automatic handicap calculations
 - Historical score viewing
 
 ### 👥 Player Management
-![Player Management](public/screenshots/players.png)
-- Individual player profiles
 - Performance statistics
 - Handicap tracking
 - Historical performance data
 
 ### 💰 Winnings Tracker
-![Winnings](public/screenshots/winnings.png)
 - Track weekly winnings
 - Multiple winning categories:
   - Skins
@@ -31,7 +27,6 @@ A modern web application built for managing golf scores, statistics, and winning
   - Low Score
 
 ### 🔐 Admin Dashboard
-![Admin Dashboard](public/screenshots/admin.png)
 - Secure admin access
 - Player management
 - Score entry
@@ -57,18 +52,6 @@ A modern web application built for managing golf scores, statistics, and winning
 ## 📱 Responsive Design
 
 The application is fully responsive and works seamlessly across devices:
-
-| Desktop | Tablet | Mobile |
-|---------|---------|---------|
-| ![Desktop](public/screenshots/desktop.png) | ![Tablet](public/screenshots/tablet.png) | ![Mobile](public/screenshots/mobile.png) |
-
-## 🎨 Color Scheme
-
-| Color | Hex Code | Usage |
-|-------|----------|--------|
-| Dark Green | `#FFFFFF ` | Primary Background |
-| Gold | `#9A9540` | Accents & Text |
-| Light Green | `#243E2A` | Secondary Background |
 
 ## 📝 License
 
