@@ -153,6 +153,8 @@ export default function Page() {
             // Calculate top performer (lowest score)
             const topScore = Math.min(...weekScores.map(s => s.adjusted_score));
             const topPlayer = weekScores.find(s => s.adjusted_score === topScore)?.player_name;
+            const secondCore = Math.min(...weekScores.filter(s => s.adjusted_score !== topScore).map(s => s.adjusted_score));
+            const secondPlayer = weekScores.find(s => s.adjusted_score === secondCore)?.player_name;
             // Calculate top earner
             const winningsByPlayer = weekWinnings.reduce((acc, win) => {
               const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
@@ -174,7 +176,8 @@ export default function Page() {
                   <div className="flex items-center gap-2">
                     <GolfFlagIcon className="w-4 h-4" />
                     <span className="text-[#EDE6D6]">Low Score:</span>
-                    <span className="font-semibold text-[#B2825E]">{topPlayer} ({topScore})</span>
+                    <span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
+                    <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondCore})</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <GolfClubIcon className="w-4 h-4" />
