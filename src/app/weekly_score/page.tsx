@@ -126,6 +126,19 @@ export default function Page() {
   ).toLocaleString("en-US", { style: "currency", currency: "USD" });
   const uniquePlayers = new Set(filteredScores.map(score => score.player_id)).size;
 
+  const sortedScores = filteredScores.slice().sort((a, b) => {
+    const dateA = new Date(a.week_date).getTime();
+    const dateB = new Date(b.week_date).getTime();
+    if (dateA !== dateB) {
+      // Sort by week date, most recent first
+      return dateB - dateA;
+    }
+    // If same week, sort by adjusted score, lowest first
+    return a.adjusted_score - b.adjusted_score;
+  });
+
+  console.log('Sorted Scores:', sortedScores);
+
   return (
     <div className="p-4 md:p-6 relative overflow-hidden">
       <GolfBackground />
@@ -315,7 +328,7 @@ export default function Page() {
                   <div className="min-w-[800px] p-4 md:p-6">
                     <DataTable 
                       columns={scoreColumns} 
-                      data={filteredScores} 
+                      data={sortedScores}
                       header="" 
                       filterItem="player_name"
                     />
