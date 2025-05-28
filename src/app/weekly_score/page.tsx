@@ -143,7 +143,7 @@ export default function Page() {
 
         {/* Card-based Weekly Results */}
         <div className="mb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allWeeks.map((week, idx) => {
+          {allWeeks.slice(0,3).map((week, idx) => {
             // Find stats for this week
             const weekScores = weeklyScores.filter(s => getWeekDateString(s.week_date) === week.week_date);
             const weekWinnings = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date);
