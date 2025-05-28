@@ -9,17 +9,21 @@ Chart.register(...registerables);
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function PlayerStats({ playerScores, par3, par4, par5, peers, player_name, playerWinnings, avgScore, player, weeksPlayed, formattedWinnings }: 
   { playerScores: any[]; par3: number; par4: number; par5: number; peers: any[]; player_name: string,  playerWinnings: any, avgScore: number, player: any, weeksPlayed: number, formattedWinnings: string[] }) {
-  const trendData = {
-    labels: playerScores.map((score) => score.week_date.split("T")[0]).sort(),
-    datasets: [
-      {
-        label: "Scores",
-        data: playerScores.map((score) => score.score),
-        borderColor: "#EDE6D6",
-        fill: false,
-      },
-    ],
-  };
+    const sortedScores = [...playerScores].sort(
+      (a, b) => new Date(a.week_date).getTime() - new Date(b.week_date).getTime()
+    );
+
+    const trendData = {
+      labels: sortedScores.map((score) => score.week_date.split("T")[0]),
+      datasets: [
+        {
+          label: "Scores",
+          data: sortedScores.map((score) => score.score),
+          borderColor: "#EDE6D6",
+          fill: false,
+        },
+      ],
+    };
   const options = {
     plugins: {
       legend: {
