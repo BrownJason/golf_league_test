@@ -24,11 +24,12 @@ export default function WeekFilter({ weeks, selectedWeek, onChange }: WeekFilter
         const [year, month, day] = latestWeek.week_date.split("-");
         week_date = `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
     }
+
   return (
     <Select value={selectedWeek || week_date} onValueChange={onChange}>
       <SelectTrigger className="bg-[#1A3E2A] border-[#B2825E] text-[#B2825E] w-48">
         <SelectValue placeholder="Select Week">
-            {selectedWeek ? weeks.find(week => week.week_date === selectedWeek)?.formatted_date : week_date}
+            {selectedWeek ? weeks.find(week => week.week_date === selectedWeek)?.formatted_date : week_date}  
         </SelectValue>
       </SelectTrigger>
       <SelectContent className="bg-[#1A3E2A] border-[#B2825E]">

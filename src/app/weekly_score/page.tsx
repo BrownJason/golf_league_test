@@ -84,6 +84,12 @@ export default function Page() {
             return `${parseInt(month, 10)}/${parseInt(day, 10)}/${year}`;
           })(),
         }));
+
+        weeks.push({
+          week_date: "all",  
+          formatted_date: "All Weeks",
+        });
+
       setAllWeeks(weeks);
       setLoading(false);
     }
@@ -92,6 +98,10 @@ export default function Page() {
 
   if (loading) {
     return <div className="p-8 text-center text-[#9A9540]">Loading...</div>;
+  }
+
+  if (selectedWeek === "all") {  
+    setSelectedWeek(null);
   }
 
   if (!weeklyScores || weeklyScores.length === 0) {
@@ -136,8 +146,6 @@ export default function Page() {
     // If same week, sort by adjusted score, lowest first
     return a.adjusted_score - b.adjusted_score;
   });
-
-  console.log('Sorted Scores:', sortedScores);
 
   return (
     <div className="p-4 md:p-6 relative overflow-hidden">
@@ -289,7 +297,7 @@ export default function Page() {
           <div className="mb-6 flex justify-start items-center gap-4 px-4 pt-4 md:px-6 md:pt-6">
             <h2 className="text-[#EDE6D6] text-sm font-medium">Select Week:</h2>
             {/* WeekFilter will be hydrated client-side for filtering */}
-            <WeekFilter weeks={allWeeks} selectedWeek={selectedWeek} onChange={setSelectedWeek} />
+            <WeekFilter weeks={allWeeks} selectedWeek={selectedWeek ?? "all"} onChange={setSelectedWeek} />
           </div>
           
           <Tabs defaultValue="scores" className="w-full">
