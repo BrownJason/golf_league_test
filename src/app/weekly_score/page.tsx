@@ -219,7 +219,7 @@ export default function Page() {
                     <div className="flex flex-col gap-1 font-semibold">{(() => {
                       const greensList: string[] = [];
                       for (const greens of weekGreens) {
-                        greensList.push(`${greens.player_name} (${greens.greens})`);
+                        greensList.push(`${greens.player_name} ($${greens.greens})`);
                       }
 
                       return greensList.length > 0 ?
@@ -279,7 +279,7 @@ export default function Page() {
                     <div className="flex flex-col gap-1 font-semibold">{(() => {
                       const bestBallList: string[] = [];
                       for (const bestball of weekBestball) {
-                        bestBallList.push(`${bestball.player_name} (${bestball.best_ball})`);
+                        bestBallList.push(`${bestball.player_name} ($${bestball.best_ball})`);
                       }
 
                       return bestBallList.length > 0 ?
