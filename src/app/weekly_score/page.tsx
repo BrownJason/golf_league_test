@@ -170,6 +170,9 @@ export default function Page() {
             const weekWinnings = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date);
             const weekSkins = weeklySkins.filter(s => getWeekDateString(s.week_date) === week.week_date);
             const weekPartners = weeklyPartners.filter(p => getWeekDateString(p.week_date) === week.week_date);
+            const weekGreens = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date).filter(w => Number.parseFloat(w.greens) > 0);
+            const weekBestball = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date).filter(w => Number.parseFloat(w.best_ball) > 0);
+            
             if (!weekScores.length) return null;
             // Calculate top performer (lowest score)
             const topScore = Math.min(...weekScores.map(s => s.adjusted_score));
@@ -209,6 +212,20 @@ export default function Page() {
                     <GolfBallIcon className="w-4 h-4" />
                     <span className="text-[#EDE6D6]">Rounds:</span>
                     <span className="font-semibold">{weekScores.length}</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <GolfBallIcon className="w-4 h-4" />
+                    <span className="text-[#EDE6D6]">Greens:</span>
+                    <div className="flex flex-col gap-1 font-semibold">{(() => {
+                      const greensList: string[] = [];
+                      for (const greens of weekGreens) {
+                        greensList.push(`${greens.player_name} (${greens.greens})`);
+                      }
+
+                      return greensList.length > 0 ?
+                      greensList.map((s, idx) => <span key={idx} className="text-[#B2825E]">{s}</span>)
+                          : <span className="text-[#B2825E]">None</span>;
+                    })()}</div>
                   </div>
                   {/* Skins Stat: List who won and on which hole */}
                   <div className="flex items-start gap-2">
@@ -254,6 +271,21 @@ export default function Page() {
                           : <span className="text-[#B2825E]">None</span>;
                       })()}
                     </div>
+                  </div>
+                  {/* Best Ball stats */}
+                  <div className="flex items-start gap-2">
+                    <GolfFlagIcon className="w-4 h-4" />
+                    <span className="text-[#EDE6D6]">Best Ball:</span>
+                    <div className="flex flex-col gap-1 font-semibold">{(() => {
+                      const bestBallList: string[] = [];
+                      for (const bestball of weekBestball) {
+                        bestBallList.push(`${bestball.player_name} (${bestball.best_ball})`);
+                      }
+
+                      return bestBallList.length > 0 ?
+                      bestBallList.map((s, idx) => <span key={idx} className="text-[#B2825E]">{s}</span>)
+                          : <span className="text-[#B2825E]">None</span>;
+                    })()}</div>
                   </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-br from-[#305D3C]/30 to-[#B2825E]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none" />
