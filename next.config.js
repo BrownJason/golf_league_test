@@ -20,8 +20,15 @@ const nextConfig = {
           pathname: '**',
           search: '',
         },
+        {
+          protocol: 'https',
+          hostname: 'brown-family-golf-imgs.s3.us-east-2.amazonaws.com',
+          port: '',
+          pathname: '**',
+          search: '',
+        },
       ], 
     }
   }
   
-  module.exports = nextConfig 
+  module.exports = nextConfig

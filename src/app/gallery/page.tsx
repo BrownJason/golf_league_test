@@ -7,7 +7,6 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, Car
 import { useRef, useState, useEffect } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import React from "react";
-import { GetImages } from "@/lib/getImages";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ParallaxHero from "./ParallaxHero";
@@ -38,21 +37,31 @@ export default function Page() {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
- 
+  const [images, setImages] = useState<any[]>([]);
+
+  useEffect(() => {
+  fetch("/api/images")
+    .then(res => res.json())
+    .then(data => {
+      setImages(data);
+      setCount(data.length);
+      setCurrent(data.length > 0 ? 1 : 0);
+    })
+    .catch(console.error);
+}, []);
+
   React.useEffect(() => {
     if (!api) {
       return
     }
  
-    setCount(api.scrollSnapList().length)
+    setCount(images.length)
     setCurrent(api.selectedScrollSnap() + 1)
  
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1)
     })
-  }, [api])
-
-  const images = GetImages();
+  }, [api, images])
 
   // State for expanded dialog
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
@@ -113,8 +122,6 @@ export default function Page() {
                         <AspectRatio ratio={16/9} className="relative w-full h-full">
                             <Image src={img.src} alt="bg img" fill unoptimized className="flex aspect-square items-center justify-center p-6 cursor-pointer" onClick={() => handleOpen(idx)} title={img.title + ': ' + img.description}/>  
                         </AspectRatio>
-                        <div className="font-bold text-center w-full truncate" title={img.title}>{img.title}</div>
-                        <div className="text-center w-full truncate" title={img.description}>{img.description}</div>
                     </CarouselItem>
                     );
                 })}
@@ -159,11 +166,6 @@ export default function Page() {
                 className="object-cover w-full h-full"
                 unoptimized
               />
-              {/* Hover overlay for title and description */}
-              <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 hover:opacity-100 flex flex-col items-center justify-center text-xs text-[#EDE6D6] p-2 transition-opacity duration-200 z-10">
-                <div className="font-bold text-center w-full truncate" title={img.title}>{img.title}</div>
-                <div className="text-center w-full truncate" title={img.description}>{img.description}</div>
-              </div>
             </div>
           ))}
         </div>
