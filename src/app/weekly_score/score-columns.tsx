@@ -70,6 +70,14 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     },
   },
   {
+    accessorKey: "side",
+    header: "Side",
+    cell: ({ row }) => {
+      const side = parseInt(row.getValue("side"));
+      return <div className="text-center">{side}</div>;
+    },
+  },
+  {
     accessorKey: "score",
     header: "Score",
     cell: ({ row }) => {

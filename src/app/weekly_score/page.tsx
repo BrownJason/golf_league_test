@@ -175,10 +175,22 @@ export default function Page() {
             
             if (!weekScores.length) return null;
             // Calculate top performer (lowest score)
-            const topScore = Math.min(...weekScores.map(s => s.adjusted_score));
+            const topScore = Math.min(...weekScores.filter(w => {
+              for (const pName of weekWinnings) {
+                if (w.player_name === pName.player_name && Number.parseFloat(pName.low_score) > 0.0) {
+                  return pName;
+                }
+              }
+            }).map(s => s.adjusted_score));
             const topPlayer = weekScores.find(s => s.adjusted_score === topScore)?.player_name;
-            const secondCore = Math.min(...weekScores.filter(s => s.adjusted_score !== topScore).map(s => s.adjusted_score));
-            const secondPlayer = weekScores.find(s => s.adjusted_score === secondCore)?.player_name;
+            const secondScore = Math.min(...weekScores.filter(w => {
+              for (const pName of weekWinnings) {
+                if (w.player_name === pName.player_name && Number.parseFloat(pName.low_score) > 0.0) {
+                  return pName;
+                }
+              }
+            }).map(s => s.adjusted_score));
+            const secondPlayer = weekScores.filter(s => s.player_name !== topPlayer).find(s => s.adjusted_score === secondScore)?.player_name;
             // Calculate top earner
             const winningsByPlayer = weekWinnings.reduce((acc, win) => {
               const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
@@ -201,7 +213,7 @@ export default function Page() {
                     <GolfFlagIcon className="w-4 h-4" />
                     <span className="text-[#EDE6D6]">Low Score:</span>
                     <span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
-                    <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondCore})</span>
+                    <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <GolfClubIcon className="w-4 h-4" />
@@ -491,7 +503,11 @@ export default function Page() {
                       <span className="text-[#EDE6D6] text-sm">{index + 1}.</span>
                       <span className="text-white">{name}</span>
                     </div>
-                    <span className="text-[#EDE6D6] font-semibold">${amount}</span>
+                    <span className="text-[#EDE6D6] font-semibold">{amount.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2
+                      })}</span>
                   </div>
                 ))}
             </div>
