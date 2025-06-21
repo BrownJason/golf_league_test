@@ -73,7 +73,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     accessorKey: "side",
     header: "Side",
     cell: ({ row }) => {
-      const side = parseInt(row.getValue("side"));
+      const side: string = row.getValue("side");
       return <div className="text-center">{side}</div>;
     },
   },
