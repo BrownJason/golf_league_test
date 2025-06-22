@@ -33,11 +33,6 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     cell: undefined,
   },
   {
-    accessorKey: "side",
-    header: undefined,
-    cell: undefined,
-  },
-  {
     accessorKey: "player_name",
     header: () => <div className="text-left">Player Name</div>,
     cell: ({ row }) => {

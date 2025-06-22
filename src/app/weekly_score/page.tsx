@@ -185,7 +185,8 @@ export default function Page() {
             const topPlayer = weekScores.find(s => s.adjusted_score === topScore)?.player_name;
             const secondScore = Math.min(...weekScores.filter(w => {
               for (const pName of weekWinnings) {
-                if (w.player_name === pName.player_name && Number.parseFloat(pName.low_score) > 0.0) {
+                if ((w.player_name === pName.player_name && w.player_name !== topPlayer)
+                  && Number.parseFloat(pName.low_score) > 0.0) {
                   return pName;
                 }
               }
