@@ -192,6 +192,17 @@ export default function Page() {
               }
             }).map(s => s.adjusted_score));
             const secondPlayer = weekScores.filter(s => s.player_name !== topPlayer).find(s => s.adjusted_score === secondScore)?.player_name;
+            
+            const thirdScore = Math.min(...weekScores.filter(w => {
+              for (const pName of weekWinnings) {
+                if ((w.player_name === pName.player_name && w.player_name !== topPlayer && w.player_name !== secondPlayer)
+                  && Number.parseFloat(pName.low_score) > 0.0) {
+                  return pName;
+                }
+              }
+            }).map(s => s.adjusted_score));
+            const thirdPlayer = weekScores.filter(s => s.player_name !== topPlayer && s.player_name !== secondPlayer).find(s => s.adjusted_score === thirdScore)?.player_name;
+            
             // Calculate top earner
             const winningsByPlayer = weekWinnings.reduce((acc, win) => {
               const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
@@ -215,6 +226,9 @@ export default function Page() {
                     <span className="text-[#EDE6D6]">Low Score:</span>
                     <span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
                     <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>
+                    {  thirdPlayer && thirdScore &&
+                      <span className="font-semibold text-[#EDE6D6]">3rd: {thirdPlayer} ({thirdScore})</span>
+                    }
                   </div>
                   <div className="flex items-center gap-2">
                     <GolfClubIcon className="w-4 h-4" />
@@ -275,8 +289,11 @@ export default function Page() {
                         let bestScore = Infinity;
                         for (const p of weekPartners) {
                           if (typeof p.combined_score === 'number' && p.combined_score < bestScore) {
-                            bestScore = p.combined_score;
-                            bestPair = p;
+                            if (weeklyWinnings.some(w => w.player_name === p.player1_name && Number.parseFloat(w.partners) > 0) &&
+                                weeklyWinnings.some(w => w.player_name === p.player2_name && Number.parseFloat(w.partners) > 0)) {
+                              bestScore = p.combined_score;
+                              bestPair = p;
+                            }
                           }
                         }
                         return bestPair
