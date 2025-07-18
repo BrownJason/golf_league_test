@@ -224,11 +224,23 @@ export default function Page() {
                   <div className="flex items-center gap-2">
                     <GolfFlagIcon className="w-4 h-4" />
                     <span className="text-[#EDE6D6]">Low Score:</span>
-                    <span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
-                    <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>
-                    {  thirdPlayer && thirdScore &&
-                      <span className="font-semibold text-[#EDE6D6]">3rd: {thirdPlayer} ({thirdScore})</span>
+                    { topScore === secondScore && secondScore === thirdScore
+                      ? (<>
+                        <span className="font-semibold text-[#B2825E]">Tied: {topPlayer} ({topScore})</span>
+                        <span className="font-semibold text-[#B2825E]">Tied: {secondPlayer} ({secondScore})</span>
+                        <span className="font-semibold text-[#B2825E]">Tied: {thirdPlayer} ({thirdScore})</span>
+                      </>
+                      ) 
+                       : (
+                        <><span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
+                        <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>
+                        {  thirdPlayer && thirdScore &&
+                          <span className="font-semibold text-[#EDE6D6]">3rd: {thirdPlayer} ({thirdScore})</span>
+                        }
+                        </>
+                        )
                     }
+                    
                   </div>
                   <div className="flex items-center gap-2">
                     <GolfClubIcon className="w-4 h-4" />
