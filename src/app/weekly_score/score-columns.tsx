@@ -69,7 +69,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Side",
     cell: ({ row }) => {
       const side: string = row.getValue("side");
-      return <div className="text-center">{side}</div>;
+      return <div className="text-center">{side.replace(side.charAt(0), side.charAt(0).toUpperCase())}</div>;
     },
   },
   {

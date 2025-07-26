@@ -2,7 +2,6 @@
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import PieChart from "../../app/players/[player_id]/winning-chart";
-import { WeeklyScore } from "@/app/weekly_score/score-columns";
 
 Chart.register(...registerables);
 
@@ -46,21 +45,15 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
     },
   };
 
-  const peerNames = peers.map((peer) => (peer.player_name !== player_name ? peer.player_name : null)).filter(Boolean);
-  const peerScores = peers.map((peer) => (peer.player_name !== player_name ? peer.average_score : null)).filter(Boolean);
+  const peerNames = peers.map((peer) => (peer.player_name)).filter(Boolean);
+  const peerScores = peers.map((peer) => (peer.average_score)).filter(Boolean);
   const comparisonData = {
     labels: peerNames,
     datasets: [
       {
         label: "Peer Average Scores",
         data: peerScores,
-        backgroundColor: "#4A90E2",
-      },
-      {
-        label: "Your Score",
-        data: peers.map(() => playerScores.map((score) => score).reduce((acc: any, val: WeeklyScore) => 
-          acc + val.score, 0) / playerScores.length),
-        backgroundColor: "#E74C3C",
+        backgroundColor: peerNames.map((name) => name === player_name ? "#ff0f0fff" : "#1392a8ff"), // Highlight player's own score
       },
     ],
   };
@@ -104,6 +97,10 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
         <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
           <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Worst Score</h3>
           <p className="text-xl md:text-2xl text-[#EDE6D6]">{Math.max(...playerScores.map((score) => score.score))}</p>
+        </div>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Average Score</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6]">{(playerScores.reduce((acc, score) => acc + score.score, 0) / playerScores.length).toFixed(2)}</p>  
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6">
