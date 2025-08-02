@@ -33,38 +33,75 @@ export default async function Home() {
     let skins = 'N/A';
     let best_ball = 'N/A';
 
+    let weekly_greens: any[] = [];
+    let weekly_partners: any[] = [];
+    let weekly_skins: any[] = [];
+    let weekly_best_ball: any[] = [];
+    let weekly_low_score: any[] = [];
+
+    console.log(weekly_glance)
 
     if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 1) {
-      partners = weekly_glance.map((res: any) => {
+      weekly_partners = weekly_glance.map((res: any) => {
         if (res.partners > 0) {
           return res.player_name + ' (' + parseFloat(res.partners).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
-      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => acc + ' / ' + val)
-  
-      low_score = weekly_glance.map((res: any) => {
+      }).filter((player: string) => player !== undefined)
+      if (weekly_partners.length > 0) {
+        partners = weekly_partners.reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}});
+      } else {
+        partners = 'N/A';
+      }
+
+      weekly_low_score = weekly_glance.map((res: any) => {
         if (res.low_score > 0) {
           return res.player_name + ' (' + parseFloat(res.low_score).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
-      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+      }).filter((player: string) => player !== undefined);
+
+      if (weekly_low_score.length > 0) {
+        low_score = weekly_low_score.reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}});
+      } else {
+        low_score = 'N/A';
+      }
   
-      greens = weekly_glance.map((res: any) => {
+      weekly_greens = weekly_glance.map((res: any) => {
         if (res.greens > 0) {
           return res.player_name + ' (' + parseFloat(res.greens).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
-      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+      }).filter((player: string) => player !== undefined);
+
+      if (weekly_greens.length > 0) {
+        greens = weekly_greens.reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}});
+      } else {
+        greens = 'N/A';
+      }
   
-      skins = weekly_glance.map((res: any) => {
+      weekly_skins = weekly_glance.map((res: any) => {
         if (res.skins > 0) {
           return res.player_name + ' (' + parseFloat(res.skins).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
-      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
+      }).filter((player: string) => player !== undefined);
+
+      if (weekly_skins.length > 0) {
+        skins = weekly_skins.reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}});      
+      } else {
+        skins = 'N/A';
+      }
   
-      best_ball = weekly_glance.map((res: any) => {
+
+      weekly_best_ball = weekly_glance.map((res: any) => {
         if (res.best_ball > 0) {
           return res.player_name + ' (' + parseFloat(res.best_ball).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
         };
-      }).filter((player: string) => player !== undefined).reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}})
-    }
+      }).filter((player: string) => player !== undefined);
+
+      if (weekly_best_ball.length > 0) {
+        best_ball = weekly_best_ball.reduce((acc: string, val: string) => { if (acc.length > 0) { return (acc + ' / ' + val)}});
+      } else {
+        best_ball = 'N/A';
+      }
+    } 
 
    
     return (

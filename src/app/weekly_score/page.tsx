@@ -203,6 +203,8 @@ export default function Page() {
             }).map(s => s.adjusted_score));
             const thirdPlayer = weekScores.filter(s => s.player_name !== topPlayer && s.player_name !== secondPlayer).find(s => s.adjusted_score === thirdScore)?.player_name;
             
+            console.log(thirdScore)
+
             // Calculate top earner
             const winningsByPlayer = weekWinnings.reduce((acc, win) => {
               const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
@@ -230,8 +232,12 @@ export default function Page() {
                         <span className="font-semibold text-[#B2825E]">Tied: {secondPlayer} ({secondScore})</span>
                         <span className="font-semibold text-[#B2825E]">Tied: {thirdPlayer} ({thirdScore})</span>
                       </>
-                      ) 
-                       : (
+                      )
+                       : !isFinite(secondScore) && !isFinite(thirdScore)  ?
+                       (
+                        <><span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
+                        </>
+                        ) : (
                         <><span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
                         <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>
                         {  thirdPlayer && thirdScore &&
@@ -239,6 +245,7 @@ export default function Page() {
                         }
                         </>
                         )
+
                     }
                     
                   </div>
