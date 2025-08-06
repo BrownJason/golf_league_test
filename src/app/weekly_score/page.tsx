@@ -233,16 +233,20 @@ export default function Page() {
                         <span className="font-semibold text-[#B2825E]">Tied: {thirdPlayer} ({thirdScore})</span>
                       </>
                       )
-                       : !isFinite(secondScore) && !isFinite(thirdScore)  ?
+                       : secondScore === thirdScore && (isFinite(secondScore) && isFinite(thirdScore))
+                       ?
                        (
-                        <><span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
-                        </>
+                        <>
+                        <span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
+                        <span className="font-semibold text-[#B2825E]">Tied: {secondPlayer} ({secondScore})</span>
+                        <span className="font-semibold text-[#B2825E]">Tied: {thirdPlayer} ({thirdScore})</span>
+                      </>
                         ) : (
                         <><span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
-                        <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>
+                        { secondPlayer && secondScore && <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>}
                         {  thirdPlayer && thirdScore &&
                           <span className="font-semibold text-[#EDE6D6]">3rd: {thirdPlayer} ({thirdScore})</span>
-                        }
+                        } 
                         </>
                         )
 
