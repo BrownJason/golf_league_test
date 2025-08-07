@@ -1,20 +1,17 @@
 "use client";
 
 import { fetchWeeklyScores, fetchWeeklySkins, fetchWeeklyWinnings, fetchWeeklyPartners } from "@/lib/api";
-import { DataTable } from "@/components/ui/data-table";
-import { scoreColumns } from "./score-columns";
-import { winningsColumns } from "./winnings-columns";
-import { skinsColumns, WeeklySkins as SkinsTableRow } from "./skins-columns";
-import { partnerColumns } from "./partner-columns";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WeekFilter from './week-filter';
 import { useEffect, useState } from 'react';
 import { WeeklyScore } from "./score-columns";
 import { WeeklyWinnings } from "./winnings-columns";
 import { WeeklySkins } from "./skins-columns";
 import { PartnerScore } from "./partner-columns";
-import { GolfBallIcon, GolfFlagIcon, GolfClubIcon } from "@/components/ui/BrownFamilyLogoIcon";
-import { Trophy } from "lucide-react";
+import { GolfBallIcon } from "@/components/ui/BrownFamilyLogoIcon";
+import WeeklyResults from "@/components/weekly_stats/weekly_results";
+import PerformanceStats from "@/components/weekly_stats/performance_stats";
+import SummarizedCard from "@/components/weekly_stats/summarize_card";
+import WeeklyTabledInfo from "@/components/weekly_stats/weekly_tabled_info";
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -151,7 +148,6 @@ export default function Page() {
     <div className="p-4 md:p-6 relative overflow-hidden">
       <GolfBackground />
       <main className="max-w mx-auto p-4 md:p-6 animate-fade-in relative z-10">
-        {/* Header Section */}
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-2xl md:text-3xl font-bold text-[#EDE6D6] mb-3 flex items-center justify-center gap-2">
             <GolfBallIcon className="w-7 h-7" /> Weekly Performance
@@ -162,398 +158,25 @@ export default function Page() {
           </p>
         </div>
 
-        {/* Card-based Weekly Results */}
-        <div className="mb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allWeeks.slice(0,3).map((week, idx) => {
-            // Find stats for this week
-            const weekScores = weeklyScores.filter(s => getWeekDateString(s.week_date) === week.week_date);
-            const weekWinnings = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date);
-            const weekSkins = weeklySkins.filter(s => getWeekDateString(s.week_date) === week.week_date);
-            const weekPartners = weeklyPartners.filter(p => getWeekDateString(p.week_date) === week.week_date);
-            const weekGreens = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date).filter(w => Number.parseFloat(w.greens) > 0);
-            const weekBestball = weeklyWinnings.filter(w => getWeekDateString(w.week_date) === week.week_date).filter(w => Number.parseFloat(w.best_ball) > 0);
-            
-            if (!weekScores.length) return null;
-            // Calculate top performer (lowest score)
-            const topScore = Math.min(...weekScores.filter(w => {
-              for (const pName of weekWinnings) {
-                if (w.player_name === pName.player_name && Number.parseFloat(pName.low_score) > 0.0) {
-                  return pName;
-                }
-              }
-            }).map(s => s.adjusted_score));
-            const topPlayer = weekScores.find(s => s.adjusted_score === topScore)?.player_name;
-            const secondScore = Math.min(...weekScores.filter(w => {
-              for (const pName of weekWinnings) {
-                if ((w.player_name === pName.player_name && w.player_name !== topPlayer)
-                  && Number.parseFloat(pName.low_score) > 0.0) {
-                  return pName;
-                }
-              }
-            }).map(s => s.adjusted_score));
-            const secondPlayer = weekScores.filter(s => s.player_name !== topPlayer).find(s => s.adjusted_score === secondScore)?.player_name;
-            
-            const thirdScore = Math.min(...weekScores.filter(w => {
-              for (const pName of weekWinnings) {
-                if ((w.player_name === pName.player_name && w.player_name !== topPlayer && w.player_name !== secondPlayer)
-                  && Number.parseFloat(pName.low_score) > 0.0) {
-                  return pName;
-                }
-              }
-            }).map(s => s.adjusted_score));
-            const thirdPlayer = weekScores.filter(s => s.player_name !== topPlayer && s.player_name !== secondPlayer).find(s => s.adjusted_score === thirdScore)?.player_name;
-            
-            console.log(thirdScore)
+        <WeeklyResults weeklyScores={weeklyScores} weeklyWinnings={weeklyWinnings} weeklyPartners={weeklyPartners} weeklySkins={weeklySkins} allWeeks={allWeeks} />
 
-            // Calculate top earner
-            const winningsByPlayer = weekWinnings.reduce((acc, win) => {
-              const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
-              acc[win.player_name] = (acc[win.player_name] || 0) + total;
-              return acc;
-            }, {} as Record<string, number>);
-            const topEarner = Object.entries(winningsByPlayer).sort(([,a],[,b]) => b-a)[0]?.[0];
-            // Highlight most recent week as 'Top Week'
-            const isTopWeek = idx === 0;
-            return (
-              <div key={week.week_date} className="relative bg-[#292929] border border-[#B2825E] rounded-xl shadow-lg p-6 hover:scale-105 transition-transform duration-300 animate-fade-in group overflow-hidden">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-bold text-[#EDE6D6] text-lg">{week.formatted_date}</span>
-                  {isTopWeek && (
-                    <span className="text-yellow-400 flex items-center gap-1 font-semibold"><Trophy className="w-5 h-5 inline" /> Top Week</span>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <GolfFlagIcon className="w-4 h-4" />
-                    <span className="text-[#EDE6D6]">Low Score:</span>
-                    { topScore === secondScore && secondScore === thirdScore
-                      ? (<>
-                        <span className="font-semibold text-[#B2825E]">Tied: {topPlayer} ({topScore})</span>
-                        <span className="font-semibold text-[#B2825E]">Tied: {secondPlayer} ({secondScore})</span>
-                        <span className="font-semibold text-[#B2825E]">Tied: {thirdPlayer} ({thirdScore})</span>
-                      </>
-                      )
-                       : secondScore === thirdScore && (isFinite(secondScore) && isFinite(thirdScore))
-                       ?
-                       (
-                        <>
-                        <span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
-                        <span className="font-semibold text-[#B2825E]">Tied: {secondPlayer} ({secondScore})</span>
-                        <span className="font-semibold text-[#B2825E]">Tied: {thirdPlayer} ({thirdScore})</span>
-                      </>
-                        ) : (
-                        <><span className="font-semibold text-[#B2825E]">1st: {topPlayer} ({topScore})</span>
-                        { secondPlayer && secondScore && <span className="font-semibold text-[#EDE6D6]">2nd: {secondPlayer} ({secondScore})</span>}
-                        {  thirdPlayer && thirdScore &&
-                          <span className="font-semibold text-[#EDE6D6]">3rd: {thirdPlayer} ({thirdScore})</span>
-                        } 
-                        </>
-                        )
-
-                    }
-                    
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <GolfClubIcon className="w-4 h-4" />
-                    <span className="text-[#EDE6D6]">Top Earner:</span>
-                    <span className="font-semibold text-[#B2825E]">{topEarner}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <GolfBallIcon className="w-4 h-4" />
-                    <span className="text-[#EDE6D6]">Rounds:</span>
-                    <span className="font-semibold">{weekScores.length}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <GolfBallIcon className="w-4 h-4" />
-                    <span className="text-[#EDE6D6]">Greens:</span>
-                    <div className="flex flex-col gap-1 font-semibold">{(() => {
-                      const greensList: string[] = [];
-                      for (const greens of weekGreens) {
-                        greensList.push(`${greens.player_name} ($${greens.greens})`);
-                      }
-
-                      return greensList.length > 0 ?
-                      greensList.map((s, idx) => <span key={idx} className="text-[#B2825E]">{s}</span>)
-                          : <span className="text-[#B2825E]">None</span>;
-                    })()}</div>
-                  </div>
-                  {/* Skins Stat: List who won and on which hole */}
-                  <div className="flex items-start gap-2">
-                    <GolfBallIcon className="w-4 h-4 rotate-45 mt-1" />
-                    <span className="text-[#EDE6D6]">Skins:</span>
-                    <div className="flex flex-col gap-0.5 font-semibold">
-                      {(() => {
-                        // List all skin wins for this week: Player (Hole X)
-                        const skinsList: string[] = [];
-                        for (const skin of weekSkins) {
-                          // Only use fields that are part of WeeklySkins type
-                          for (let i = 1; i <= 9; i++) {
-                            const win: boolean = (skin as Record<string, unknown>)[`hole_${i}_win`] === true;
-                            if (win) {
-                              skinsList.push(`${skin.player_name} (Hole ${i})`);
-                            }
-                          }
-                        }
-                        return skinsList.length > 0
-                          ? skinsList.map((s, idx) => <span key={idx} className="text-[#B2825E]">{s}</span>)
-                          : <span className="text-[#B2825E]">None</span>;
-                      })()}
-                    </div>
-                  </div>
-                  {/* Partners Stat: Show winning pair (lowest combined score) and their score */}
-                  <div className="flex items-start gap-2">
-                    <GolfClubIcon className="w-4 h-4 rotate-12 mt-1" />
-                    <span className="text-[#EDE6D6]">Partners:</span>
-                    <div className="flex flex-col gap-0.5 font-semibold">
-                      {(() => {
-                        // Find the partner pair with the lowest combined score
-                        if (!weekPartners.length) return <span className="text-[#B2825E]">None</span>;
-                        let bestPair = null;
-                        let bestScore = Infinity;
-                        for (const p of weekPartners) {
-                          if (typeof p.combined_score === 'number' && p.combined_score < bestScore) {
-                            if (weeklyWinnings.some(w => w.player_name === p.player1_name && Number.parseFloat(w.partners) > 0) &&
-                                weeklyWinnings.some(w => w.player_name === p.player2_name && Number.parseFloat(w.partners) > 0)) {
-                              bestScore = p.combined_score;
-                              bestPair = p;
-                            }
-                          }
-                        }
-                        return bestPair
-                          ? <span className="text-[#B2825E]">{bestPair.player1_name} &amp; {bestPair.player2_name}: {bestScore}</span>
-                          : <span className="text-[#B2825E]">None</span>;
-                      })()}
-                    </div>
-                  </div>
-                  {/* Best Ball stats */}
-                  <div className="flex items-start gap-2">
-                    <GolfFlagIcon className="w-4 h-4" />
-                    <span className="text-[#EDE6D6]">Best Ball:</span>
-                    <div className="flex flex-col gap-1 font-semibold">{(() => {
-                      const bestBallList: string[] = [];
-                      for (const bestball of weekBestball) {
-                        bestBallList.push(`${bestball.player_name} ($${bestball.best_ball})`);
-                      }
-
-                      return bestBallList.length > 0 ?
-                      bestBallList.map((s, idx) => <span key={idx} className="text-[#B2825E]">{s}</span>)
-                          : <span className="text-[#B2825E]">None</span>;
-                    })()}</div>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-[#305D3C]/30 to-[#B2825E]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 pointer-events-none" />
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-            <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Total Rounds</h3>
-            <p className="text-2xl md:text-3xl text-white font-bold">
-              {totalRounds}
-            </p>
-          </div>
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-            <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Average Score</h3>
-            <p className="text-2xl md:text-3xl text-white font-bold">
-              {averageScore}
-            </p>
-          </div>
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-            <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Total Winnings</h3>
-            <p className="text-2xl md:text-3xl text-white font-bold">
-              {totalWinnings}
-            </p>
-          </div>
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-            <h3 className="text-[#EDE6D6] text-sm font-medium mb-2">Unique Players</h3>
-            <p className="text-2xl md:text-3xl text-white font-bold">
-              {uniquePlayers}
-            </p>
-          </div>
+          <SummarizedCard header={'Total Rounds'} summaryInfo={totalRounds}/> 
+          <SummarizedCard header={'Average Score'} summaryInfo={averageScore}/> 
+          <SummarizedCard header={'Total Winnings'} summaryInfo={totalWinnings}/> 
+          <SummarizedCard header={'Unique Players'} summaryInfo={uniquePlayers}/>
         </div>
 
-        {/* Tabs for Scores and Winnings */}
         <div className="bg-[#292929] border border-[#B2825E] rounded-xl overflow-hidden shadow shadow-black shadow-lg">
-          
-          {/* Week Filter UI */}
           <div className="mb-6 flex justify-start items-center gap-4 px-4 pt-4 md:px-6 md:pt-6">
             <h2 className="text-[#EDE6D6] text-sm font-medium">Select Week:</h2>
-            {/* WeekFilter will be hydrated client-side for filtering */}
             <WeekFilter weeks={allWeeks} selectedWeek={selectedWeek ?? "all"} onChange={setSelectedWeek} />
           </div>
-          
-          <Tabs defaultValue="scores" className="w-full">
-            <div className="px-4 pt-4 md:px-6 md:pt-6">
-              <TabsList className="grid w-full grid-cols-4 bg-[#292929] border border-[#B2825E] rounded-lg overflow-hidden">
-                <TabsTrigger 
-                  value="scores" 
-                  className="pb-4 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
-                >
-                  Scores
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="winnings"
-                  className="pb-4 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
-                >
-                  Winnings
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="skins"
-                  className="pb-4 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
-                >
-                  Skins
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="partners"
-                  className="pb-4 text-[#EDE6D6] data-[state=active]:bg-[#305D3C] data-[state=active]:text-[#EDE6D6] border data-[state=active]:border-black"
-                >
-                  Partners
-                </TabsTrigger>
-              </TabsList>
-            </div>
-
-            <TabsContent value="scores" className="mt-4">
-              <div className="overflow-hidden">
-                <div className="overflow-x-auto">
-                  <div className="min-w-[800px] p-4 md:p-6">
-                    <DataTable 
-                      columns={scoreColumns} 
-                      data={sortedScores}
-                      header="" 
-                      filterItem="player_name"
-                    />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="winnings" className="mt-4">
-              <div className="overflow-hidden">
-                <div className="overflow-x-auto">
-                  <div className="min-w-[800px] p-4 md:p-6">
-                    <DataTable 
-                      columns={winningsColumns} 
-                      data={filteredWinnings} 
-                      header="" 
-                      filterItem="player_name"
-                    />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="skins" className="mt-4">
-              <div className="overflow-hidden">
-                <div className="overflow-x-auto">
-                  <div className="min-w-[800px] p-4 md:p-6">
-                    <DataTable
-                      columns={skinsColumns}
-                      data={(() => {
-                        // Flatten skins data for DataTable: one row per win, matching WeeklySkins type
-                        const rows: SkinsTableRow[] = [];
-                        for (const skin of filteredSkins) {
-                          const { player_name, week_date, side } = skin;
-                          // If winnings is not present, fallback to 5
-                          for (let i = 1; i <= 9; i++) {
-                            const win: boolean = (skin as Record<string, unknown>)[`hole_${i}_win`] === true;
-                            const winningsRaw = (skin as Record<string, unknown>)[`hole_${i}`];
-                            const winnings = typeof winningsRaw === "number"
-                              ? winningsRaw
-                              : typeof winningsRaw === "string"
-                                ? parseFloat(winningsRaw)
-                                : 5;
-                          
-                            if (win) {
-                              rows.push({
-                                player_name,
-                                week_date,
-                                side,
-                                hole: i,
-                                winnings,
-                                win: true,
-                              });
-                            }
-                          }
-                        }
-                        return rows;
-                      })()}
-                      header=""
-                      filterItem="player_name"
-                    />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="partners" className="mt-4">
-              <div className="overflow-hidden">
-                <div className="overflow-x-auto">
-                  <div className="min-w-[800px] p-4 md:p-6">
-                    <DataTable 
-                      columns={partnerColumns} 
-                      data={filteredPartners} 
-                      header="" 
-                      filterItem="player1_name"
-                    />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
+          <WeeklyTabledInfo sortedScores={sortedScores} filteredWinnings={filteredWinnings} filteredSkins={filteredSkins} filteredPartners={filteredPartners} />
         </div>
 
-
-        {/* Best Performances Section */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-            <h3 className="text-xl font-semibold text-[#EDE6D6] mb-4">Best Rounds</h3>
-            <div className="space-y-3">
-              {filteredScores
-                .sort((a, b) => a.adjusted_score - b.adjusted_score)
-                .slice(0, 5)
-                .map((score, index) => (
-                  <div key={score.id} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[#EDE6D6] text-sm">{index + 1}.</span>
-                      <span className="text-white">{score.player_name}</span>
-                    </div>
-                    <span className="text-[#EDE6D6] font-semibold">{score.adjusted_score}</span>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-4 md:p-6 shadow shadow-black shadow-lg">
-            <h3 className="text-xl font-semibold text-[#EDE6D6] mb-4">Top Earners</h3>
-            <div className="space-y-3">
-              {Object.entries(
-                filteredWinnings.reduce((acc, win) => {
-                  const total = parseFloat(win.skins) + parseFloat(win.greens) + parseFloat(win.partners) + parseFloat(win.best_ball) + parseFloat(win.low_score);
-                  acc[win.player_name] = (acc[win.player_name] || 0) + total;
-                  return acc;
-                }, {} as Record<string, number>)
-              )
-                .sort(([, a], [, b]) => b - a)
-                .slice(0, 5)
-                .map(([name, amount], index) => (
-                  <div key={name} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[#EDE6D6] text-sm">{index + 1}.</span>
-                      <span className="text-white">{name}</span>
-                    </div>
-                    <span className="text-[#EDE6D6] font-semibold">{amount.toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 2
-                      })}</span>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
+        <PerformanceStats filteredScores={filteredScores} filteredWinnings={filteredWinnings}/>
+        
       </main>
 
       {/* Floating Back to Top Button */}
