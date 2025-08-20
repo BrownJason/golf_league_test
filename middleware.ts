@@ -34,6 +34,17 @@ export async function middleware(request: NextRequest) {
   if (realIp) {
     response.headers.set('x-real-ip', realIp);
   }
+
+  // Add cache headers for static assets
+  if (request.nextUrl.pathname.startsWith('/_next/static/')) {
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable')
+  }
+  
+  // Add cache headers for API routes
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=60')
+  }
+
   return response;
 }
 

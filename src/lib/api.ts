@@ -4,6 +4,29 @@ import { WeeklyScore } from '@/app/weekly_score/score-columns';
 import { WeeklySkins } from '@/app/weekly_score/skins-columns';
 import { WeeklyWinnings } from '@/app/weekly_score/winnings-columns';
 
+// Simple in-memory cache
+const cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
+
+function getCachedData(key: string) {
+  const cached = cache.get(key);
+  if (!cached) return null;
+  
+  if (Date.now() - cached.timestamp > cached.ttl) {
+    cache.delete(key);
+    return null;
+  }
+  
+  return cached.data;
+}
+
+function setCachedData(key: string, data: any, ttlMs: number = 300000) {
+  cache.set(key, {
+    data,
+    timestamp: Date.now(),
+    ttl: ttlMs
+  });
+}
+
 function getApiUrl(path: string): string {
   // For client-side requests
   if (typeof window !== 'undefined') {
@@ -21,11 +44,14 @@ function getApiUrl(path: string): string {
 
 export async function fetchPlayers(): Promise<Player[]> {
   try {
+    const cacheKey = 'players';
+    const cached = getCachedData(cacheKey);
+    if (cached) return cached;
+
     const url = getApiUrl('/api/players');
     const response = await fetch(url, {
       method: 'GET',
-      next: { revalidate: 0 },
-      cache: 'no-store'
+      next: { revalidate: 300 }, // Cache for 5 minutes
     });
 
     if (!response.ok) {
@@ -33,7 +59,9 @@ export async function fetchPlayers(): Promise<Player[]> {
     }
 
     const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    const result = Array.isArray(data) ? data : [];
+    setCachedData(cacheKey, result, 300000); // Cache for 5 minutes
+    return result;
   } catch (error) {
     console.error('Fetch Error:', error);
     throw error;
@@ -42,11 +70,14 @@ export async function fetchPlayers(): Promise<Player[]> {
 
 export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
   try {
+    const cacheKey = 'weekly-scores';
+    const cached = getCachedData(cacheKey);
+    if (cached) return cached;
+
     const url = getApiUrl('/api/weekly-scores');
     const response = await fetch(url, {
       method: 'GET',
-      next: { revalidate: 0 },
-      cache: 'no-store'
+      next: { revalidate: 60 }, // Cache for 1 minute
     });
 
     if (!response.ok) {
@@ -54,7 +85,9 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
     }
 
     const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    const result = Array.isArray(data) ? data : [];
+    setCachedData(cacheKey, result, 60000); // Cache for 1 minute
+    return result;
   } catch (error) {
     console.error('Fetch Error:', error);
     throw error;
@@ -63,11 +96,14 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
 
 export async function fetchWeeklySkins(): Promise<WeeklySkins[]> {
   try {
+    const cacheKey = 'weekly-skins';
+    const cached = getCachedData(cacheKey);
+    if (cached) return cached;
+
     const url = getApiUrl('/api/weekly-skins');
     const response = await fetch(url, {
       method: 'GET',
-      next: { revalidate: 0 },
-      cache: 'no-store'
+      next: { revalidate: 60 },
     });
 
     if (!response.ok) {
@@ -75,7 +111,9 @@ export async function fetchWeeklySkins(): Promise<WeeklySkins[]> {
     }
 
     const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    const result = Array.isArray(data) ? data : [];
+    setCachedData(cacheKey, result, 60000);
+    return result;
   } catch (error) {
     console.error('Fetch Error:', error);
     throw error;
@@ -83,36 +121,44 @@ export async function fetchWeeklySkins(): Promise<WeeklySkins[]> {
 }
 
 export async function fetchWeeklyWinnings(): Promise<WeeklyWinnings[]> {
+  const cacheKey = 'weekly-winnings';
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
+
   const url = getApiUrl('/api/weekly-winnings');
   const response = await fetch(url, {
-    cache: 'no-store',
-    next: { revalidate: 0 }
+    next: { revalidate: 60 }
   });
   if (!response.ok) {
     throw new Error('Failed to fetch weekly winnings');
   }
   const data = await response.json();
-  return Array.isArray(data) ? data : [];
+  const result = Array.isArray(data) ? data : [];
+  setCachedData(cacheKey, result, 60000);
+  return result;
 }
 
 export async function fetchPlayer(playerId: number): Promise<Player> {
+  const cacheKey = `player-${playerId}`;
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
+
   const url = getApiUrl(`/api/players/${playerId}`);
   const response = await fetch(url, {
-    next: { revalidate: 0 },
-    cache: 'no-store'
+    next: { revalidate: 300 },
   });
   if (!response.ok) {
     throw new Error('Failed to fetch player');
   }
   const data = await response.json();
+  setCachedData(cacheKey, data, 300000);
   return data;
 }
 
 export async function fetchPlayerScores(playerId: number): Promise<WeeklyScore[]> {
   const url = getApiUrl(`/api/players/${playerId}/scores`);
   const response = await fetch(url, {
-    next: { revalidate: 0 },
-    cache: 'no-store'
+    next: { revalidate: 300 },
   });
   if (!response.ok) {
     throw new Error('Failed to fetch player scores');
@@ -125,8 +171,7 @@ export async function fetchPlayerScoresByWeek(playerId: number, weekDate: string
   const week = encodeURIComponent(weekDate);
   const url = getApiUrl(`/api/players/${playerId}/scores?week=${week}`);
   const response = await fetch(url, {
-    next: { revalidate: 0 },
-    cache: 'no-store'
+    next: { revalidate: 300 },
   });
   if (!response.ok) {
     throw new Error('Failed to fetch player scores for week');
@@ -136,55 +181,63 @@ export async function fetchPlayerScoresByWeek(playerId: number, weekDate: string
 } 
 
 export async function fetchSeasonOverviewData(): Promise<any>{
+  const cacheKey = 'season-overview';
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
 
   const url = getApiUrl(`/api/season`);
   const response = await fetch(url, {
-    next: {revalidate: 0},
-    cache: 'no-store'
+    next: {revalidate: 300},
   });
 
   if(!response.ok) {
     throw new Error('Failed to fetch season data');
   }
   const data = await response.json();
+  setCachedData(cacheKey, data, 300000);
   return data;
 }
 
 export async function fetchWeeklyGlance(): Promise<any>{
+  const cacheKey = 'weekly-glance';
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
 
   const url = getApiUrl(`/api/weekly-glance`);
   const response = await fetch(url, {
-    next: {revalidate: 0},
-    cache: 'no-store'
+    next: {revalidate: 60},
   });
 
   if(!response.ok) {
     throw new Error('Failed to fetch season data');
   }
   const data = await response.json();
+  setCachedData(cacheKey, data, 60000);
   return data;
 }
 
 export async function fetchESPNGolfScores(): Promise<any> {
+  const cacheKey = 'espn-golf-scores';
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
   
   const url = 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard';
   const response = await fetch(url, {
-    next: {revalidate: 0},
-    cache: 'no-store'
+    next: {revalidate: 1800}, // Cache for 30 minutes
   });
 
   if(!response.ok) {
     throw new Error('Failed to fetch espn golf data');
   }
   const data = await response.json();
+  setCachedData(cacheKey, data, 1800000); // 30 minutes
   return data;
 }
 
 export async function fetchPlayerWinnings(playerId: number): Promise<any> {
   const url = getApiUrl(`/api/players/${playerId}/winnings`);
   const response = await fetch(url, {
-    next: {revalidate: 0},
-    cache: 'no-store'
+    next: {revalidate: 300},
   });
 
   if(!response.ok) {
@@ -198,8 +251,7 @@ export async function fetchPlayerWinningsByWeek(playerId: number, weekDate: stri
   const week = encodeURIComponent(weekDate);
   const url = getApiUrl(`/api/players/${playerId}/winnings?week=${week}`);
   const response = await fetch(url, {
-    next: {revalidate: 0},
-    cache: 'no-store'
+    next: {revalidate: 300},
   });
 
   if(!response.ok) {
@@ -212,8 +264,7 @@ export async function fetchPlayerWinningsByWeek(playerId: number, weekDate: stri
 export async function fetchWeeksByPlayer(playerId: number): Promise<any> {
   const url = getApiUrl(`/api/weeks?player_id=${playerId}`);
   const response = await fetch(url, {
-    next: {revalidate: 0},
-    cache: 'no-store'
+    next: {revalidate: 300},
   });
 
   if(!response.ok) {
@@ -226,8 +277,7 @@ export async function fetchWeeksByPlayer(playerId: number): Promise<any> {
 export async function fetchScorecard(): Promise<any> {
   const url = getApiUrl('/api/scorecard');
   const response = await fetch(url, {
-    next: { revalidate: 0 },
-    cache: 'no-store'
+    next: { revalidate: 60 },
   });
 
   if(!response.ok) {
@@ -240,8 +290,7 @@ export async function fetchScorecard(): Promise<any> {
 export async function fetchPeers(): Promise<any> {
   const url = getApiUrl('/api/peers');
   const response = await fetch(url, {
-    next: { revalidate: 0 },
-    cache: 'no-store'
+    next: { revalidate: 300 },
   });
 
   if(!response.ok) {
@@ -259,8 +308,7 @@ export async function fetchWeeklyPartners(week_date?: string) {
     }
     const response = await fetch(url, {
       method: 'GET',
-      next: { revalidate: 0 },
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
     if (!response.ok) {
       throw new Error(`Failed to fetch partner scores: ${response.statusText}`);
@@ -272,4 +320,3 @@ export async function fetchWeeklyPartners(week_date?: string) {
     throw error;
   }
 }
-

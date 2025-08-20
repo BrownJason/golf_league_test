@@ -69,7 +69,6 @@ export default function AdminScores() {
           const response = await fetch(`/api/players/${player_id}/skins?week=${week}`);
           if (!response.ok) throw new Error('Failed to fetch players');
           const data = await response.json();
-          console.log(data)
           if (data.length > 0) {
               setFormData({
               player_id: player_id,

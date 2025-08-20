@@ -74,7 +74,6 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const week_date = searchParams.get('week_date');
-    console.log(week_date)
     let results;
     if (week_date) {
       results = await sql`

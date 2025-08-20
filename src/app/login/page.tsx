@@ -29,7 +29,6 @@ export default function LoginPage() {
           : 'An error occurred during login';
         setError(errorMessage);
       } else if (result?.ok) {
-        console.log('Login successful, redirecting to admin...');
         router.push('/admin');
         router.refresh();
       } else {

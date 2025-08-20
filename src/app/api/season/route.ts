@@ -8,8 +8,6 @@ export async function GET() {
     const sql = getDatabase();
 
     try {
-        console.log('Fetchin season info...');
-
         const season_info = await sql`  
             WITH current_year_players AS (
             SELECT DISTINCT p.player_id
@@ -38,7 +36,6 @@ export async function GET() {
                 TO_CHAR(season_pot, '$999,999.99') AS season_pot
             FROM season_info
         `;
-        console.log(`Successfully fetch ${season_info.length} season_info`);
 
         return new NextResponse(JSON.stringify(season_info), {
             status: 200,
