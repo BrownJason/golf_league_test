@@ -39,8 +39,6 @@ export default async function Home() {
     let weekly_best_ball: any[] = [];
     let weekly_low_score: any[] = [];
 
-    console.log(weekly_glance)
-
     if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 1) {
       weekly_partners = weekly_glance.map((res: any) => {
         if (res.partners > 0) {

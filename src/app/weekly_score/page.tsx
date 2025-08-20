@@ -50,8 +50,6 @@ export default function Page() {
   function getWeekDateString(week_date: string | Date): string {
     if (typeof week_date === 'string') return week_date;
     if (week_date && typeof week_date === 'object' && 'toISOString' in week_date && typeof week_date.toISOString === 'function') {
-      console.log('week_date:', week_date);
-      
       return week_date.toISOString().slice(0, 10);
     }
     return '';

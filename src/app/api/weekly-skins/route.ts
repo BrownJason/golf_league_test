@@ -10,7 +10,6 @@ export const revalidate = false;
 
 export async function GET() {
   try {
-    console.log('Attempting to fetch weekly scores...');
     
     const data = await sql`
       SELECT 
@@ -42,8 +41,6 @@ export async function GET() {
       WHERE TO_CHAR(ws.week_date, 'yyyy') = TO_CHAR(CURRENT_DATE, 'YYYY')
       ORDER BY ws.week_date DESC, p.player_id ASC
     `;
-
-    console.log(`Successfully fetched ${data.length} weekly scores`);
 
     return NextResponse.json(data || []);
   } catch (error) {

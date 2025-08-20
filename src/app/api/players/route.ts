@@ -8,7 +8,6 @@ export async function GET() {
   const sql = getDatabase();
   
   try {
-    console.log('Fetching players...');
     
     const players = await sql`
       SELECT 
@@ -23,8 +22,6 @@ export async function GET() {
       ORDER BY player_name ASC
     `;
 
-    console.log(`Successfully fetched ${players.length} players`);
-    
     return new NextResponse(JSON.stringify(players), {
       status: 200,
       headers: {

@@ -10,7 +10,6 @@ export async function PUT(
     request: Request,
     context: { params: Promise<{ player_id: string }> }) {
     try {
-      console.log('Attempting to edit player scores...');
   
       const { player_id } = await context.params;
       const { hole_1, hole_2, hole_3, hole_4, hole_5, hole_6, hole_7, hole_8, hole_9, week_date} = await request.json();
@@ -42,8 +41,6 @@ export async function PUT(
         WHERE week_date = ${week_date}
         and player_id = ${player_id}
       `;
-  
-      console.log(`Successfully fetched ${data.length} weekly scores`);
   
       // Return empty array if no data
       if (!data || data.length === 0) {

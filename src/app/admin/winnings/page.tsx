@@ -52,7 +52,6 @@ export default function AdminScores() {
         if (player_id !== '') {
           try {
             const resp = await fetchPlayerWinningsByWeek(parseInt(player_id), convertDateFormat(week_date));
-            console.log(resp)
             if (resp.length > 0){
               setFormData({
                 player_id: player_id,
