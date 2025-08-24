@@ -86,6 +86,56 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
     },
   };
 
+  console.log(playerScores.map((score) => score.hole_1));
+  const totalPar3Holes = playerScores.reduce((acc) => {
+    return acc + 2;
+  }, 0);
+
+  const par3Avg = (playerScores.reduce((acc, score) => {
+    if (score.side === 'front') { 
+      return acc + Number(score.hole_3) + Number(score.hole_6);
+    } else {
+      return acc + Number(score.hole_2) + Number(score.hole_6);
+    }
+  }, 0) / totalPar3Holes).toPrecision(3);
+
+
+  const totalPar4Holes = playerScores.reduce((acc, score) => {
+    if (score.side === 'front') {
+      return acc + 5;
+    }
+    return acc + 6;
+  }, 0);
+
+  const par4Avg = (playerScores.reduce((acc, score) => 
+  {
+    if (score.side === 'front') {
+      return acc + Number(score.hole_1) + Number(score.hole_4) + Number(score.hole_5) + Number(score.hole_7) + Number(score.hole_9);
+    } else {
+      return acc + Number(score.hole_1) + Number(score.hole_3) + Number(score.hole_4) + Number(score.hole_5) + Number(score.hole_7) + Number(score.hole_9);
+    }
+  }, 0) / totalPar4Holes
+  ).toPrecision(3);
+  
+  const totalPar5Holes = playerScores.reduce((acc, score) => {
+    if (score.side === 'front') {
+      return acc + 2;
+    } else {
+      return acc + 1;
+    }
+  }, 0);
+
+  const par5Avg = (playerScores.reduce((acc, score) => 
+  {
+    if (score.side === 'front') {
+      return acc + Number(score.hole_2) + Number(score.hole_8);
+    } else {
+      return acc + Number(score.hole_8);
+    }
+  }, 0) / totalPar5Holes
+  ).toPrecision(3);
+  console.log("Par 5 Average: ", par5Avg);
+  
   return (
     <div className="mt-6 md:mt-8 bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6]">
       <h2 className="text-xl md:text-2xl font-bold text-[#EDE6D6] mb-6">Performance Highlights</h2>
@@ -118,6 +168,14 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
             <span>Par 3: {par3}</span>
             <span>Par 4: {par4}</span>
             <span>Par 5: {par5}</span>
+          </p>
+        </div>
+        <div className="text-center bg-[#305D3C] p-3 rounded-lg border border-[#EDE6D6] shadow shadow-lg shadow-black">
+          <h3 className="text-[#EDE6D6] text-sm md:text-base mb-2">Average Score by Hole Type</h3>
+          <p className="text-xl md:text-2xl text-[#EDE6D6] flex flex-col gap-2">
+          <span>Par 3 Avg: {par3Avg}</span>
+          <span>Par 4 Avg: {par4Avg}</span>
+          <span>Par 5 Avg: {par5Avg}</span>
           </p>
         </div>
       </div>
