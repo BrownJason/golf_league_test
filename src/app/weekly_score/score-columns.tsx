@@ -144,7 +144,7 @@ export const scoreColumns: ColumnDef<WeeklyScore>[] = [
     header: "Hole: 6",
     cell: ({ row }) => {
       const hole_6 = parseInt(row.getValue("hole_6"));
-      return <div className={clsx(hole_6 < 4 ? "text-red-500  border rounded-full w-6 border-black mx-auto text-center" : hole_6 > 4 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#EDE6D6] text-center")}>{hole_6}</div>;
+      return <div className={clsx(hole_6 < 3 ? "text-red-500  border rounded-full w-6 border-black mx-auto text-center" : hole_6 > 3 ? "text-gray-300 border w-6 border-black mx-auto text-center" : "text-[#EDE6D6] text-center")}>{hole_6}</div>;
     },
   },
   {
