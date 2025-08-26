@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/db';
+// Update the import path below to match the actual location of your auth route file.
+// For example, if the file is at src/app/api/auth/[...nextauth]/route.ts, use:
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -33,7 +38,6 @@ export async function GET() {
       }
     });
   } catch (error) {
-    console.error('Database Error:', error);
     return new NextResponse(
       JSON.stringify({ error: 'Failed to fetch players' }), 
       { status: 500 }
@@ -43,6 +47,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
+    if (!session?.user?.isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const sql = getDatabase();
     const { player_name, handicap, avg } = await request.json();
     
@@ -54,7 +66,6 @@ export async function POST(request: Request) {
     
     return NextResponse.json(result[0]);
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to create player' },
       { status: 500 }

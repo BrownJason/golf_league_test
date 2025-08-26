@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getDatabase } from '@/lib/db';
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 
 export const dynamic = 'force-dynamic';
@@ -43,7 +46,6 @@ export async function GET(
       }
     });
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch player' },
       { status: 500 }
@@ -58,6 +60,13 @@ export async function PUT(
   const sql = getDatabase();
 
   try {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
+    if (!session?.user?.isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
     // Await the params
     const { player_id } = await context.params;
     const { player_name, handicap, avg } = await request.json();
@@ -87,7 +96,6 @@ export async function PUT(
       }
     });
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to update player' },
       { status: 500 }
@@ -120,7 +128,6 @@ export async function DELETE(
     
     return NextResponse.json({ message: 'Player deleted successfully' });
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to delete player' },
       { status: 500 }

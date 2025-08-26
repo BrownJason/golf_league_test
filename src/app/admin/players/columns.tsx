@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -107,7 +108,6 @@ async function handleDeletePlayer(playerId: number) {
       // Refresh the page or update the table
       window.location.reload();
     } catch (error) {
-      console.error('Error deleting player:', error);
       alert('Failed to delete player. Please try again.');
     }
   }

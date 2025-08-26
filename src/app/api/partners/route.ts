@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
+import { getServerSession } from 'next-auth';
+// Update the path below to the correct location of your authOptions file
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'; 
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: 'verify-full' });
 
@@ -9,6 +13,14 @@ export const revalidate = false;
 // POST: Add a new partner score
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
+    if (!session?.user?.isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const data = await request.json();
     const { player1_id, player2_id, player1_score, player2_score, player1_handicap, player2_handicap, week_date } = data;
     if (!player1_id || !player2_id || player1_id === player2_id) {
@@ -61,7 +73,6 @@ export async function POST(request: Request) {
     `;
     return NextResponse.json(result[0], { status: 201 });
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to add partner score' },
       { status: 500 }
@@ -85,7 +96,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(results);
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch partner scores' },
       { status: 500 }
@@ -93,9 +103,16 @@ export async function GET(request: Request) {
   }
 }
 
-// PUT: Update an existing partner score by id
 export async function PUT(request: Request) {
   try {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
+    if (!session?.user?.isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const data = await request.json();
     const { id, player1_id, player2_id, player1_score, player2_score, player1_handicap, player2_handicap, week_date } = data;
     if (!id) {
@@ -146,7 +163,6 @@ export async function PUT(request: Request) {
     }
     return NextResponse.json(result[0]);
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to update partner score' },
       { status: 500 }

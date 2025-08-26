@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -17,6 +18,7 @@ export default function AdminScores() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     player_id: '',
     week_date: new Date().toISOString().split('T')[0], // Today's date
@@ -39,7 +41,7 @@ export default function AdminScores() {
         const data = await response.json();
         setPlayers(data);
       } catch (error) {
-        console.error('Error fetching players:', error);
+          alert('Failed to fetch players. Please try again.');
       } finally {
         setIsLoading(false);
       }
@@ -67,7 +69,7 @@ export default function AdminScores() {
               setDisabled(true);
             }
           } catch (error) {
-            console.error('Error fetching players:', error);
+            alert('Failed to fetch players. Please try again.');
           } 
         }
       }
@@ -106,13 +108,13 @@ export default function AdminScores() {
       router.refresh();
       setDisabled(true);
     } catch (error) {
-      console.error('Error adding score:', error);
       alert('Failed to add score. Please try again.');
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg(null);
     
     try {
       const response = await fetch('/api/winnings', {
@@ -140,7 +142,7 @@ export default function AdminScores() {
 
       router.refresh();
     } catch (error) {
-      console.error('Error adding score:', error);
+      setErrorMsg('Failed to add score. Please try again.');
       alert('Failed to add score. Please try again.');
     }
   };

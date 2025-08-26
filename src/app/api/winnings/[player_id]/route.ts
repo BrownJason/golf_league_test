@@ -1,5 +1,7 @@
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
@@ -11,6 +13,14 @@ export async function PUT(
     context: { params: Promise<{ player_id: string }> }) {
   try {
 
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
+    if (!session?.user?.isAdmin) {
+    return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+    );
+    }
+    
     const { player_id } = await context.params;
     const res = await request.json();
 
@@ -41,15 +51,6 @@ export async function PUT(
             'Pragma': 'no-cache',
         } });
     } catch (error) {
-        console.error('Database Error:', error);
-        if (error instanceof Error) {
-        console.error('Error details:', {
-            name: error.name,
-            message: error.message,
-            stack: error.stack
-        });
-        }
-        
         return NextResponse.json(
         { error: 'Failed to fetch weekly scores', details: error instanceof Error ? error.message : 'Unknown error' },
         { 

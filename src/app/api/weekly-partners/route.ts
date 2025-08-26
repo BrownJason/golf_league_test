@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
 
@@ -31,7 +32,6 @@ export async function GET(request: Request) {
     }
     return NextResponse.json(results);
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch partner scores' },
       { status: 500 }

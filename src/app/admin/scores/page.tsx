@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -45,7 +46,7 @@ export default function AdminScores() {
         const data = await response.json();
         setPlayers(data);
       } catch (error) {
-        console.error('Error fetching players:', error);
+        alert('Failed to fetch players. Please try again.');
       } finally {
         setIsLoading(false);
       }
@@ -78,7 +79,7 @@ export default function AdminScores() {
             setDisabled(true);
           }
         } catch (error) {
-          console.error('Error fetching players:', error);
+          alert('Failed to fetch scores. Please try again.');
         }
       }
     }
@@ -119,7 +120,6 @@ export default function AdminScores() {
       router.refresh();
       setDisabled(true);
     } catch (error) {
-      console.error('Error adding score:', error);
       alert('Failed to add score. Please try again.');
     }
   }
@@ -163,7 +163,6 @@ export default function AdminScores() {
 
       router.refresh();
     } catch (error) {
-      console.error('Error adding score:', error);
       alert('Failed to add score. Please try again.');
     }
   };

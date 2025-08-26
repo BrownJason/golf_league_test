@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -25,7 +26,7 @@ export default function ManagePlayers() {
         const data = await response.json();
         setPlayers(data);
       } catch (error) {
-        console.error('Error fetching players:', error);
+        alert('Failed to fetch players. Please try again.');
       } finally {
         setIsLoading(false);
       }

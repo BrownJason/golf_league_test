@@ -47,7 +47,6 @@ export default function Page() {
       setCount(data.length);
       setCurrent(data.length > 0 ? 1 : 0);
     })
-    .catch(console.error);
 }, []);
 
   React.useEffect(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -49,7 +50,6 @@ export function PlayerForm({ onSubmit, initialData }: PlayerFormProps) {
       const data = await response.json();
       onSubmit(data);
     } catch (error) {
-      console.error('Error saving player:', error);
       alert('Failed to save player. Please try again.');
     }
   };

@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
 import postgres from 'postgres';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 
@@ -8,6 +11,14 @@ export const revalidate = false;
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
+    if (!session?.user?.isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const data = await request.json();
     
     // Calculate total score
@@ -64,7 +75,6 @@ export async function POST(request: Request) {
     
     return NextResponse.json(result[0]);
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to add score' },
       { status: 500 }

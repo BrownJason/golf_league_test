@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import postgres from 'postgres';
 
 let sql: ReturnType<typeof postgres> | null = null;
@@ -33,7 +34,6 @@ export async function testConnection() {
     await db`SELECT 1`;
     return true;
   } catch (error) {
-    console.error('Database connection test failed:', error);
     return false;
   }
 } 

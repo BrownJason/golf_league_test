@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { fetchPlayers } from "@/lib/api";
 import Player from "@/components/ui/player";
 
@@ -51,7 +52,12 @@ export default async function Page() {
       </div>
     );
   } catch (error) {
-    console.error('Error loading players:', error);
-    throw error; // This will trigger the error boundary
+      return (
+        <div className="flex flex-col">
+          <div className="flex mx-auto bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg mt-8">
+            <div className="text-3xl">Error fetching Images</div>
+          </div>
+        </div>
+      );
   }
 }

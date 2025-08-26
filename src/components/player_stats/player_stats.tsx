@@ -86,7 +86,6 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
     },
   };
 
-  console.log(playerScores.map((score) => score.hole_1));
   const totalPar3Holes = playerScores.reduce((acc) => {
     return acc + 2;
   }, 0);
@@ -134,7 +133,6 @@ export default function PlayerStats({ playerScores, par3, par4, par5, peers, pla
     }
   }, 0) / totalPar5Holes
   ).toPrecision(3);
-  console.log("Par 5 Average: ", par5Avg);
   
   return (
     <div className="mt-6 md:mt-8 bg-[#292929] p-4 md:p-6 rounded-xl border border-[#EDE6D6]">

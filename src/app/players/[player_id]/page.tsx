@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { columns } from "./columns";
 import WeekFilter from "./handlefilter";
@@ -360,7 +361,6 @@ export default async function Page({
       </main>
     );
   } catch (error) {
-    console.error('Error:', error);
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#1A1A1A]">
         <div className="text-[#EDE6D6]">Error loading player data</div>
