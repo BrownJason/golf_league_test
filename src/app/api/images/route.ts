@@ -33,7 +33,6 @@ export async function GET() {
 
     return NextResponse.json(images);
   } catch (err) {
-    console.error("S3 fetch error:", err);
     return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
   }
 }

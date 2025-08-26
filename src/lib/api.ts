@@ -63,7 +63,6 @@ export async function fetchPlayers(): Promise<Player[]> {
     setCachedData(cacheKey, result, 300000); // Cache for 5 minutes
     return result;
   } catch (error) {
-    console.error('Fetch Error:', error);
     throw error;
   }
 }
@@ -89,7 +88,6 @@ export async function fetchWeeklyScores(): Promise<WeeklyScore[]> {
     setCachedData(cacheKey, result, 60000); // Cache for 1 minute
     return result;
   } catch (error) {
-    console.error('Fetch Error:', error);
     throw error;
   }
 }
@@ -115,7 +113,6 @@ export async function fetchWeeklySkins(): Promise<WeeklySkins[]> {
     setCachedData(cacheKey, result, 60000);
     return result;
   } catch (error) {
-    console.error('Fetch Error:', error);
     throw error;
   }
 }
@@ -316,7 +313,6 @@ export async function fetchWeeklyPartners(week_date?: string) {
     const data = await response.json();
     return Array.isArray(data) ? data : [];
   } catch (error) {
-    console.error('Fetch Error:', error);
     throw error;
   }
 }

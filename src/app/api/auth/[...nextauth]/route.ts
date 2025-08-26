@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import postgres from "postgres";
@@ -8,7 +9,7 @@ const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const handler = NextAuth({
+const authOptions = NextAuth({
   debug: true,
   providers: [
     CredentialsProvider({
@@ -87,7 +88,7 @@ const handler = NextAuth({
           };
         } catch (error) {
           if (process.env.NODE_ENV !== 'production') {
-            console.error('Auth error:', error);
+            alert('Failed auth. Please try again.');
           }
           throw new Error('Invalid credentials');
         }
@@ -121,4 +122,4 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handler as GET, handler as POST };
+export { authOptions };

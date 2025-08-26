@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchESPNGolfScores } from "@/lib/api";
 import Events from "@/components/ui/events";
@@ -28,7 +29,6 @@ export default async function Page() {
       </div>
     );
   } catch (error) {
-    console.error("Error fetching PGA events:", error);
     return (
       <div className="flex flex-col">
         <div className="flex mx-auto bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg mt-8">

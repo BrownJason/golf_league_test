@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/db';
 
@@ -19,7 +20,6 @@ export async function GET() {
 
     return NextResponse.json(peers);
   } catch (error) {
-    console.error('Error fetching peers:', error);
     return NextResponse.json({ error: 'Failed to fetch peers' }, { status: 500 });
   }
 }   

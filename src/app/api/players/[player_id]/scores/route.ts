@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getDatabase } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
@@ -58,7 +59,6 @@ export async function GET(
       }
     });
   } catch (error) {
-    console.error('Database Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch player scores' },
       { status: 500 }

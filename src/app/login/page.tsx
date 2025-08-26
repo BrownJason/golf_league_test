@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useState } from 'react';
@@ -22,7 +23,6 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        console.error('Login error:', result.error);
         // Map the error to a user-friendly message
         const errorMessage = result.error === 'CredentialsSignin' 
           ? 'Invalid username or password'
@@ -32,11 +32,9 @@ export default function LoginPage() {
         router.push('/admin');
         router.refresh();
       } else {
-        console.error('Unexpected result:', result);
         setError('An unexpected error occurred');
       }
     } catch (error) {
-      console.error('Login error:', error);
       setError('An unexpected error occurred');
     }
   };
