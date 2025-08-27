@@ -13,8 +13,8 @@ export const revalidate = false;
 // POST: Add a new partner score
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
-    if (!session?.user?.isAdmin) {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: number } } | null;
+    if (session?.user?.isAdmin !== 1) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -105,8 +105,8 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
-    if (!session?.user?.isAdmin) {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: number } } | null;
+    if (session?.user?.isAdmin !== 1) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

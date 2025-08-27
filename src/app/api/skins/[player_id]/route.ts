@@ -12,12 +12,12 @@ export async function PUT(
     request: Request,
     context: { params: Promise<{ player_id: string }> }) {
   try {
-    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
-    if (!session?.user?.isAdmin) {
-    return NextResponse.json(
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: number } } | null;
+    if (session?.user?.isAdmin !== 1) {
+      return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
-    );
+      );
     }
     
     const { player_id } = await context.params;

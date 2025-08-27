@@ -17,7 +17,7 @@ const authOptions = {
       name: 'Credentials',
       credentials: {
         username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       
       async authorize(credentials, req) {
@@ -63,10 +63,7 @@ const authOptions = {
             throw new Error('Missing credentials');
           };
 
-          const result = await sql`
-            SELECT * FROM admin_users 
-            WHERE username = ${credentials.username}
-          `;
+          const result = await sql`SELECT * FROM admin_users WHERE username = ${credentials.username}`;
 
           const user = result[0];
 
@@ -81,13 +78,15 @@ const authOptions = {
 
           if (!passwordMatch) {
             throw new Error('Invalid credentials');
-          }
+          } 
 
           return {
             id: user.id.toString(),
             username: user.username,
+            isAdmin: user.is_admin,
           };
         } catch (error) {
+          console.log(error);
           if (process.env.NODE_ENV !== 'production') {
             alert('Failed auth. Please try again.');
           }
@@ -109,6 +108,7 @@ const authOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.isAdmin = user.isAdmin;
       }
       return token;
     },
@@ -116,6 +116,7 @@ const authOptions = {
       if (session?.user) {
         session.user.id = token.id as string;
         session.user.username = token.username as string;
+        session.user.isAdmin = token.isAdmin as number;
       }
       return session;
     }

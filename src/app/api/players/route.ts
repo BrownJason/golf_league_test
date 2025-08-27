@@ -47,8 +47,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions) as { user?: { isAdmin?: boolean } } | null;
-    if (!session?.user?.isAdmin) {
+    const session = await getServerSession(authOptions) as { user?: { isAdmin?: number } } | null;
+    if (session?.user?.isAdmin !== 1) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
