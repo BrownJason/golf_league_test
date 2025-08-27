@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -9,7 +10,7 @@ const sql = postgres(process.env.DATABASE_URL!, { ssl: "verify-full" });
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const authOptions = NextAuth({
+const authOptions = {
   debug: true,
   providers: [
     CredentialsProvider({
@@ -100,18 +101,18 @@ const authOptions = NextAuth({
     error: '/login',
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
     maxAge: 30 * 30, // 15 Minutes  
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user?: any }) {
       if (user) {
         token.id = user.id;
         token.username = user.username;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (session?.user) {
         session.user.id = token.id as string;
         session.user.username = token.username as string;
@@ -120,6 +121,10 @@ const authOptions = NextAuth({
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
 export { authOptions };
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
