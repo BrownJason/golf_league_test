@@ -51,8 +51,10 @@ export default async function Home() {
       if ((yearlyWinnings !== null || yearlyWinnings !== undefined) && yearlyWinnings.length > 0) {
         const playerTotals = yearlyWinnings.reduce((acc: any, record: any) => {
           const playerName = record.player_name;
+          const playerId = record.player_id;
           if (!acc[playerName]) {
             acc[playerName] = {
+              id: playerId,
               partners: 0,
               low_score: 0,
               greens: 0,
@@ -69,31 +71,31 @@ export default async function Home() {
         }, {});
 
         top_partners = Object.entries(playerTotals)
-          .map(([name, totals]: [string, any]) => ({ name, amount: totals.partners }))
+          .map(([name, totals]: [string, any]) => ({ name, id: totals.id, amount: totals.partners }))
           .filter((player: any) => player.amount > 0)
           .sort((a: any, b: any) => b.amount - a.amount)
           .slice(0, 3);
 
         top_low_score = Object.entries(playerTotals)
-          .map(([name, totals]: [string, any]) => ({ name, amount: totals.low_score }))
+          .map(([name, totals]: [string, any]) => ({ name, id: totals.id, amount: totals.low_score }))
           .filter((player: any) => player.amount > 0)
           .sort((a: any, b: any) => b.amount - a.amount)
           .slice(0, 3);
 
         top_greens = Object.entries(playerTotals)
-          .map(([name, totals]: [string, any]) => ({ name, amount: totals.greens }))
+          .map(([name, totals]: [string, any]) => ({ name, id: totals.id, amount: totals.greens }))
           .filter((player: any) => player.amount > 0)
           .sort((a: any, b: any) => b.amount - a.amount)
           .slice(0, 3);
 
         top_skins = Object.entries(playerTotals)
-          .map(([name, totals]: [string, any]) => ({ name, amount: totals.skins }))
+          .map(([name, totals]: [string, any]) => ({ name, id: totals.id, amount: totals.skins }))
           .filter((player: any) => player.amount > 0)
           .sort((a: any, b: any) => b.amount - a.amount)
           .slice(0, 3);
 
         top_best_ball = Object.entries(playerTotals)
-          .map(([name, totals]: [string, any]) => ({ name, amount: totals.best_ball }))
+          .map(([name, totals]: [string, any]) => ({ name, id: totals.id, amount: totals.best_ball }))
           .filter((player: any) => player.amount > 0)
           .sort((a: any, b: any) => b.amount - a.amount)
           .slice(0, 3);
@@ -280,7 +282,9 @@ export default async function Home() {
                 <div className="space-y-2">
                   {top_partners.length > 0 ? top_partners.map((winner, index) => (
                     <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
-                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <Link href={`/players/${winner.id}`} className="text-[#EDE6D6] font-medium hover:text-yellow-300 transition-colors">
+                        {index + 1}. {winner.name}
+                      </Link>
                       <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
                     </div>
                   )) : (
@@ -294,7 +298,9 @@ export default async function Home() {
                 <div className="space-y-2">
                   {top_low_score.length > 0 ? top_low_score.map((winner, index) => (
                     <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
-                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <Link href={`/players/${winner.id}`} className="text-[#EDE6D6] font-medium hover:text-yellow-300 transition-colors">
+                        {index + 1}. {winner.name}
+                      </Link>
                       <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
                     </div>
                   )) : (
@@ -308,7 +314,9 @@ export default async function Home() {
                 <div className="space-y-2">
                   {top_greens.length > 0 ? top_greens.map((winner, index) => (
                     <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
-                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <Link href={`/players/${winner.id}`} className="text-[#EDE6D6] font-medium hover:text-yellow-300 transition-colors">
+                        {index + 1}. {winner.name}
+                      </Link>
                       <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
                     </div>
                   )) : (
@@ -322,7 +330,9 @@ export default async function Home() {
                 <div className="space-y-2">
                   {top_skins.length > 0 ? top_skins.map((winner, index) => (
                     <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
-                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <Link href={`/players/${winner.id}`} className="text-[#EDE6D6] font-medium hover:text-yellow-300 transition-colors">
+                        {index + 1}. {winner.name}
+                      </Link>
                       <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
                     </div>
                   )) : (
@@ -336,7 +346,9 @@ export default async function Home() {
                 <div className="space-y-2">
                   {top_best_ball.length > 0 ? top_best_ball.map((winner, index) => (
                     <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
-                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <Link href={`/players/${winner.id}`} className="text-[#EDE6D6] font-medium hover:text-yellow-300 transition-colors">
+                        {index + 1}. {winner.name}
+                      </Link>
                       <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
                     </div>
                   )) : (
