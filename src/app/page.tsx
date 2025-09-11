@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BrownFamilyLogo from "@/components/ui/BrownFamilyLogo";
-import { fetchSeasonOverviewData, fetchWeeklyGlance } from "@/lib/api";
+import { fetchSeasonOverviewData, fetchWeeklyGlance, fetchWeeklyWinnings } from "@/lib/api";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -27,6 +27,7 @@ export default async function Home() {
  try {
     const season_info = await fetchSeasonOverviewData();
     const weekly_glance = await fetchWeeklyGlance();
+    const yearlyWinnings = await fetchWeeklyWinnings();
 
     let partners = 'N/A';
     let low_score = 'N/A';
@@ -40,7 +41,64 @@ export default async function Home() {
     let weekly_best_ball: any[] = [];
     let weekly_low_score: any[] = [];
 
+    let top_partners: any[] = [];
+    let top_low_score: any[] = [];
+    let top_greens: any[] = [];
+    let top_skins: any[] = [];
+    let top_best_ball: any[] = [];
+
     if ((weekly_glance !== null || weekly_glance !== undefined) && weekly_glance.length > 1) {
+      if ((yearlyWinnings !== null || yearlyWinnings !== undefined) && yearlyWinnings.length > 0) {
+        const playerTotals = yearlyWinnings.reduce((acc: any, record: any) => {
+          const playerName = record.player_name;
+          if (!acc[playerName]) {
+            acc[playerName] = {
+              partners: 0,
+              low_score: 0,
+              greens: 0,
+              skins: 0,
+              best_ball: 0
+            };
+          }
+          acc[playerName].partners += parseFloat(record.partners || 0);
+          acc[playerName].low_score += parseFloat(record.low_score || 0);
+          acc[playerName].greens += parseFloat(record.greens || 0);
+          acc[playerName].skins += parseFloat(record.skins || 0);
+          acc[playerName].best_ball += parseFloat(record.best_ball || 0);
+          return acc;
+        }, {});
+
+        top_partners = Object.entries(playerTotals)
+          .map(([name, totals]: [string, any]) => ({ name, amount: totals.partners }))
+          .filter((player: any) => player.amount > 0)
+          .sort((a: any, b: any) => b.amount - a.amount)
+          .slice(0, 3);
+
+        top_low_score = Object.entries(playerTotals)
+          .map(([name, totals]: [string, any]) => ({ name, amount: totals.low_score }))
+          .filter((player: any) => player.amount > 0)
+          .sort((a: any, b: any) => b.amount - a.amount)
+          .slice(0, 3);
+
+        top_greens = Object.entries(playerTotals)
+          .map(([name, totals]: [string, any]) => ({ name, amount: totals.greens }))
+          .filter((player: any) => player.amount > 0)
+          .sort((a: any, b: any) => b.amount - a.amount)
+          .slice(0, 3);
+
+        top_skins = Object.entries(playerTotals)
+          .map(([name, totals]: [string, any]) => ({ name, amount: totals.skins }))
+          .filter((player: any) => player.amount > 0)
+          .sort((a: any, b: any) => b.amount - a.amount)
+          .slice(0, 3);
+
+        top_best_ball = Object.entries(playerTotals)
+          .map(([name, totals]: [string, any]) => ({ name, amount: totals.best_ball }))
+          .filter((player: any) => player.amount > 0)
+          .sort((a: any, b: any) => b.amount - a.amount)
+          .slice(0, 3);
+      }
+
       weekly_partners = weekly_glance.map((res: any) => {
         if (res.partners > 0) {
           return res.player_name + ' (' + parseFloat(res.partners).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ')';
@@ -185,7 +243,7 @@ export default async function Home() {
 
           
           <Link href="/weekly_score" className="group">
-            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 shadow shadow-black shadow-lg animate-fade-in">
+            <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 mb-12 shadow shadow-black shadow-lg animate-fade-in">
               <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Week At A Glance</h2>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
                 <div className="text-center bg-[#305D3C] rounded-lg p-2 border border-[#B2825E]">
@@ -213,6 +271,81 @@ export default async function Home() {
               </div>
             </div>
           </Link>
+
+          <div className="bg-[#292929] border border-[#B2825E] rounded-xl p-6 md:p-8 mb-12 shadow shadow-black shadow-lg animate-fade-in">
+            <h2 className="text-xl md:text-2xl font-semibold text-[#EDE6D6] mb-6 text-center">Top Seasonal Winners</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="bg-[#305D3C] rounded-lg p-4 border border-[#B2825E]">
+                <h3 className="text-lg font-bold text-[#EDE6D6] mb-3 text-center border-b border-[#B2825E] pb-2">Partners</h3>
+                <div className="space-y-2">
+                  {top_partners.length > 0 ? top_partners.map((winner, index) => (
+                    <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
+                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                    </div>
+                  )) : (
+                    <p className="text-[#EDE6D6]/60 text-center">No winners yet</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-[#305D3C] rounded-lg p-4 border border-[#B2825E]">
+                <h3 className="text-lg font-bold text-[#EDE6D6] mb-3 text-center border-b border-[#B2825E] pb-2">Low Score</h3>
+                <div className="space-y-2">
+                  {top_low_score.length > 0 ? top_low_score.map((winner, index) => (
+                    <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
+                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                    </div>
+                  )) : (
+                    <p className="text-[#EDE6D6]/60 text-center">No winners yet</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-[#305D3C] rounded-lg p-4 border border-[#B2825E]">
+                <h3 className="text-lg font-bold text-[#EDE6D6] mb-3 text-center border-b border-[#B2825E] pb-2">Greens</h3>
+                <div className="space-y-2">
+                  {top_greens.length > 0 ? top_greens.map((winner, index) => (
+                    <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
+                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                    </div>
+                  )) : (
+                    <p className="text-[#EDE6D6]/60 text-center">No winners yet</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-[#305D3C] rounded-lg p-4 border border-[#B2825E]">
+                <h3 className="text-lg font-bold text-[#EDE6D6] mb-3 text-center border-b border-[#B2825E] pb-2">Skins</h3>
+                <div className="space-y-2">
+                  {top_skins.length > 0 ? top_skins.map((winner, index) => (
+                    <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
+                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                    </div>
+                  )) : (
+                    <p className="text-[#EDE6D6]/60 text-center">No winners yet</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-[#305D3C] rounded-lg p-4 border border-[#B2825E]">
+                <h3 className="text-lg font-bold text-[#EDE6D6] mb-3 text-center border-b border-[#B2825E] pb-2">Best Ball</h3>
+                <div className="space-y-2">
+                  {top_best_ball.length > 0 ? top_best_ball.map((winner, index) => (
+                    <div key={index} className={`flex justify-between items-center p-2 rounded ${index === 0 ? 'bg-yellow-600' : index === 1 ? 'bg-gray-400' : 'bg-yellow-700'} bg-opacity-30`}>
+                      <span className="text-[#EDE6D6] font-medium">{index + 1}. {winner.name}</span>
+                      <span className="text-[#EDE6D6] font-bold">{parseFloat(winner.amount).toLocaleString("en-US", { style: "currency", currency: "USD" })}</span>
+                    </div>
+                  )) : (
+                    <p className="text-[#EDE6D6]/60 text-center">No winners yet</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </main>
     </div>
   );
